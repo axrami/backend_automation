@@ -31,15 +31,12 @@ public class Visit {
 
             visit.setVisitId("");
             visit.setContinueURL("");
-            visit.forgetSkills();
-
 
 
             LPMobileHttpResponse response = VisitRequestHandler.sendVisitRequest(env, visit, visitBaseURL, visitorId);
-            System.out.println(response);
-//            if (response.isSuccess()) {
-//
-//            }
+            if (response.isSuccess()) {
+                System.out.println("<RESPONSE CODE> " + response.getResponseCode());
+            }
         } catch (Throwable t) {
             System.out.println(t);
         }

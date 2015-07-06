@@ -79,6 +79,7 @@ public class JsonGenerator {
         obj.put("language" , env.getLanguage());
         obj.put("strings_hash", env.getLocalizedHashStr());
         obj.put("branding_md5", env.getBrandingHashStr());
+        obj.put("platform_release","5.0.2");
 
         return obj.toString();
 

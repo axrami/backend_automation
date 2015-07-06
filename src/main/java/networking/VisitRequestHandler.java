@@ -27,13 +27,14 @@ public class VisitRequestHandler {
         HttpClient httpclient = new DefaultHttpClient();
 
         String postBody = JsonGenerator.generateVisitReqeust(env, (visit != null && visit.getVisitId() != null) ? visit.getVisitId() : null, visitorId, null);
-        System.out.println(postBody);
+        System.out.println("<PostBody>" + postBody);
         return launchRequest(httpclient, visitBaseURL, postBody, visitorId, visit);
     }
 
     public static LPMobileHttpResponse launchRequest(HttpClient httpclient, String visitBaseURL, String postBody, String visitorId, LPMobileVisit visit) throws Exception {
         HttpPost httppost = new HttpPost(visitBaseURL);
-        httppost.addHeader(new BasicHeader("Context-type" , "application/json"));
+//        httppost.addHeader(new BasicHeader("Context-type" , "application/json"));
+        httppost.addHeader(new BasicHeader("Content-type" , "application/json"));
         httppost.addHeader(new BasicHeader("X-LivepersonMobile-Capabilities", "account-skills"));
 
         httppost.setEntity(new StringEntity(postBody));
@@ -46,7 +47,7 @@ public class VisitRequestHandler {
         if (response.isSuccess()) {
             parseResponseBody(httpResponse, httppost.getURI().toString(), visit);
         } else {
-            System.out.println("failed launch code:" + response.getResponseCode());
+            System.out.println("failed launch code: " + response.getResponseCode());
         }
 
         return response;
@@ -99,7 +100,6 @@ public class VisitRequestHandler {
             }
 
             if (inputStr.length() > 0) {
-                System.out.println(inputStr.toString());
                 JsonParser.parseVisitResponse(inputStr.toString(), visit);
             }
 

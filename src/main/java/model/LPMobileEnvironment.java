@@ -34,11 +34,11 @@ public class LPMobileEnvironment {
     }
 
     public String getSdkVersion() {
-        return "auto_1";
+        return "0.0.1";
     }
 
     public String getPlatformVersion() {
-        return "4.4";
+        return "21";
     }
 
     public String getAppBundleVersion() {
@@ -98,7 +98,7 @@ public class LPMobileEnvironment {
     }
 
     public String getDeviceType() {
-        return "samsung galaxy";
+        return "unknown Android SDK built for x86";
     }
 
     public String getDistributionType() {

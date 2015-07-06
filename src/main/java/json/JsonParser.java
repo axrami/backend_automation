@@ -44,7 +44,7 @@ public class JsonParser {
         Gson gson = new Gson();
         gson.toJson(jsonString);
 
-        System.out.println(gson);
+        System.out.println(jsonString);
     }
 }
 

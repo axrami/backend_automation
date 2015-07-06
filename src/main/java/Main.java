@@ -8,9 +8,8 @@ import service.Visit;
  */
 public class Main {
     public static void main(String args[]) {
-        System.out.println("ok Im running");
-        Visit session = new Visit();
-        session.launch();
+        Visit visit = new Visit();
+        visit.launch();
 
     }
 }
