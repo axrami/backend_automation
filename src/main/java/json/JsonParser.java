@@ -1,9 +1,11 @@
 package json;
 
 
-import com.google.gson.Gson;
 import model.LPMobileVisit;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
+import org.json.simple.parser.JSONParser;
 
 /**
  * Created by andrew on 6/9/15.
@@ -41,10 +43,32 @@ public class JsonParser {
 
 
     public static void parseVisitResponse(String jsonString, LPMobileVisit visit) {
-        Gson gson = new Gson();
-        gson.toJson(jsonString);
 
-        System.out.println(jsonString);
+        Object obj = JSONValue.parse(jsonString);
+        JSONObject json = (JSONObject)obj;
+
+        if (json.containsKey(F_VISIT_ID)) {
+            visit.setVisitId(json.get(F_VISIT_ID).toString());
+            System.out.println("<Visit_Id> " + visit.getVisitId());
+        } else {
+            System.out.println("<WARN>visit_id no reported" );
+        }
+
+        if (json.containsKey(F_CONTINUE_URL)) {
+            visit.setContinueURL(json.get(F_CONTINUE_URL).toString());
+            System.out.println("<Continue URL> " + visit.getContinueURL());
+        } else {
+            System.out.println("<WARN>continue_url no reported");
+        }
+
+        System.out.println(json.get(F_SKILLS_ACCOUNTS));
+
+        if (json.containsKey(F_SKILLS)) {
+            System.out.println(json.get(F_SKILLS).toString());
+        } else {
+            System.out.println("<WARN>skills not reported");
+        }
+
     }
 }
 
