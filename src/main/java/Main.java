@@ -1,4 +1,5 @@
 import model.LPMobileEnvironment;
+import model.LPMobileLogger;
 import model.SetEnvironment;
 import networking.VisitRequestHandler;
 import service.Visit;
@@ -10,6 +11,5 @@ public class Main {
     public static void main(String args[]) {
         Visit visit = new Visit();
         visit.launch();
-
     }
 }

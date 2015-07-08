@@ -2,10 +2,13 @@ package json;
 
 
 import model.LPMobileVisit;
+import model.Skill;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
+
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by andrew on 6/9/15.
@@ -44,8 +47,9 @@ public class JsonParser {
 
     public static void parseVisitResponse(String jsonString, LPMobileVisit visit) {
 
-        Object obj = JSONValue.parse(jsonString);
-        JSONObject json = (JSONObject)obj;
+//        Object obj = JSONValue.parse(jsonString);
+//        JSONObject json = (JSONObject)obj;
+        JSONObject json = (JSONObject)JSONValue.parse(jsonString);
 
         if (json.containsKey(F_VISIT_ID)) {
             visit.setVisitId(json.get(F_VISIT_ID).toString());
@@ -61,13 +65,19 @@ public class JsonParser {
             System.out.println("<WARN>continue_url no reported");
         }
 
-        System.out.println(json.get(F_SKILLS_ACCOUNTS));
 
+        // skills
         if (json.containsKey(F_SKILLS)) {
-            System.out.println(json.get(F_SKILLS).toString());
+            JSONObject accountSkillsJson = (JSONObject)json.get(F_SKILLS);
+            ConcurrentHashMap<String, ConcurrentHashMap<String, Skill>> accountSkillsMap = visit.getSkills();
+            JSONObject accountsJson = (JSONObject)accountSkillsJson.get(F_SKILLS_ACCOUNTS);
+
+            System.out.println("<F_SKILLS_ACCOUNTS>" + accountsJson);
+
         } else {
             System.out.println("<WARN>skills not reported");
         }
+
 
     }
 }

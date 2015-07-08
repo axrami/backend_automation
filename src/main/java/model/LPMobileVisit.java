@@ -10,8 +10,32 @@ public class LPMobileVisit {
     boolean callDeflectionReported = false;
     String visitId;
     String continueURL;
+    int messagesReceivced = 0;
+    int messgaesSent = 0;
+    int numberOfConintues = 0;
     int nextInterval;
+
     ConcurrentHashMap<String, ConcurrentHashMap<String, Skill>> skills = new ConcurrentHashMap<String, ConcurrentHashMap<String, Skill>>();
+
+    public void addMessage() {
+        this.messagesReceivced += 1;
+    }
+
+    public void addMessageSent() {
+        this.messgaesSent += 1;
+    }
+
+    public int getMessagesReceivced() {
+        return messagesReceivced;
+    }
+
+    public int getMessgaesSent() {
+        return messgaesSent;
+    }
+
+    public int getNumberOfConintues() {
+        return numberOfConintues;
+    }
 
     public String getVisitId() {
         return visitId;
