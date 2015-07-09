@@ -2,6 +2,7 @@ package model;
 
 /**
  * Created by andrew on 6/11/15.
+ * Sets the environment to request from server
  */
 public class SetEnvironment {
     public static LPMobileEnvironment createEnv() {

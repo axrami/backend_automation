@@ -3,11 +3,13 @@ package json;
 
 import model.LPMobileVisit;
 import model.Skill;
+import model.StateReporter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 
+import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -46,10 +48,11 @@ public class JsonParser {
 
 
     public static void parseVisitResponse(String jsonString, LPMobileVisit visit) {
+        StateReporter s = new StateReporter();
 
-//        Object obj = JSONValue.parse(jsonString);
-//        JSONObject json = (JSONObject)obj;
         JSONObject json = (JSONObject)JSONValue.parse(jsonString);
+        visit.setResponse(json.toString());
+//        System.out.println("<RESPONSE>" + visit.getResponse());
 
         if (json.containsKey(F_VISIT_ID)) {
             visit.setVisitId(json.get(F_VISIT_ID).toString());
@@ -60,22 +63,35 @@ public class JsonParser {
 
         if (json.containsKey(F_CONTINUE_URL)) {
             visit.setContinueURL(json.get(F_CONTINUE_URL).toString());
-            System.out.println("<Continue URL> " + visit.getContinueURL());
+//            System.out.println("<Continue URL> " + visit.getContinueURL());
         } else {
             System.out.println("<WARN>continue_url no reported");
         }
 
-
         // skills
         if (json.containsKey(F_SKILLS)) {
             JSONObject accountSkillsJson = (JSONObject)json.get(F_SKILLS);
-            ConcurrentHashMap<String, ConcurrentHashMap<String, Skill>> accountSkillsMap = visit.getSkills();
+            HashMap<String, HashMap<String, Skill>> accountSkillsMap = visit.getSkills();
             JSONObject accountsJson = (JSONObject)accountSkillsJson.get(F_SKILLS_ACCOUNTS);
 
             System.out.println("<F_SKILLS_ACCOUNTS>" + accountsJson);
 
         } else {
             System.out.println("<WARN>skills not reported");
+        }
+
+        if (json.containsKey(F_BRANDING_HASH_NAME)) {
+            visit.setBranding_mp5(json.get(F_BRANDING_HASH_NAME).toString());
+//            System.out.println(visit.getBranding_mp5());
+        } else {
+//            System.out.println("<WARN>branding_mp5 not reported");
+        }
+
+        if (json.containsKey(F_NEXT_INTERVAL)) {
+            visit.setNextInterval(json.get(F_NEXT_INTERVAL).hashCode());
+//            System.out.println("<NEXT_INTERVAL>" + visit.getNextInterval());
+        } else {
+//            System.out.println("<WARN>NEXT_INTERVAL not reported");
         }
 
 

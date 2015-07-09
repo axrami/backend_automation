@@ -1,11 +1,14 @@
 package model;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by andrew on 6/8/15.
+ * represents the visit populated by json parser with server response
  */
+
 public class LPMobileVisit {
     boolean callDeflectionReported = false;
     String visitId;
@@ -14,8 +17,26 @@ public class LPMobileVisit {
     int messgaesSent = 0;
     int numberOfConintues = 0;
     int nextInterval;
+    String branding_mp5;
+    String response;
 
-    ConcurrentHashMap<String, ConcurrentHashMap<String, Skill>> skills = new ConcurrentHashMap<String, ConcurrentHashMap<String, Skill>>();
+    HashMap<String, HashMap<String, Skill>> skills = new HashMap<String, HashMap<String, Skill>>();
+
+    public void setResponse(String resposne) {
+        this.response = resposne;
+    }
+
+    public String getResponse() {
+        return response;
+    }
+
+    public String getBranding_mp5() {
+        return branding_mp5;
+    }
+
+    public void setBranding_mp5(String branding_mp5) {
+        this.branding_mp5 = branding_mp5;
+    }
 
     public void addMessage() {
         this.messagesReceivced += 1;
@@ -65,16 +86,16 @@ public class LPMobileVisit {
         return getNextInterval() * 1000;
     }
 
-    public ConcurrentHashMap<String, ConcurrentHashMap<String, Skill>> getSkills() {
+    public HashMap<String, HashMap<String, Skill>> getSkills() {
         return skills;
     }
 
-    public void setSkills(ConcurrentHashMap<String, ConcurrentHashMap<String, Skill>> skills) {
+    public void setSkills(HashMap<String, HashMap<String, Skill>> skills) {
         this.skills = skills;
     }
 
     public void forgetSkills() {
-        this.skills = new ConcurrentHashMap<String, ConcurrentHashMap<String, Skill>>();
+        this.skills = new HashMap<String, HashMap<String, Skill>>();
     }
 
     public Map<String, Skill> getDefaultSkill() {

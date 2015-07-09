@@ -33,7 +33,6 @@ public class VisitRequestHandler {
 
     public static LPMobileHttpResponse launchRequest(HttpClient httpclient, String visitBaseURL, String postBody, String visitorId, LPMobileVisit visit) throws Exception {
         HttpPost httppost = new HttpPost(visitBaseURL);
-//        httppost.addHeader(new BasicHeader("Context-type" , "application/json"));
         httppost.addHeader(new BasicHeader("Content-type" , "application/json"));
         httppost.addHeader(new BasicHeader("X-LivepersonMobile-Capabilities", "account-skills"));
 
@@ -45,6 +44,7 @@ public class VisitRequestHandler {
         response.setResponseCode(httpResponse.getStatusLine().getStatusCode());
 
         if (response.isSuccess()) {
+
             parseResponseBody(httpResponse, httppost.getURI().toString(), visit);
         } else {
             System.out.println("failed launch code: " + response.getResponseCode());

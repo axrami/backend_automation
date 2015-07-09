@@ -9,7 +9,14 @@ import service.Visit;
  */
 public class Main {
     public static void main(String args[]) {
-        Visit visit = new Visit();
-        visit.launch();
+        int x = 0;
+
+        while(x < 10) {
+            Visit visit = new Visit();
+            visit.launch();
+            x++;
+        }
+
+
     }
 }
