@@ -1,6 +1,7 @@
 package json;
 
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import model.LPMobileVisit;
 import model.Skill;
 import model.StateReporter;
@@ -9,7 +10,11 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 
+import java.lang.reflect.Array;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -73,8 +78,41 @@ public class JsonParser {
             JSONObject accountSkillsJson = (JSONObject)json.get(F_SKILLS);
             HashMap<String, HashMap<String, Skill>> accountSkillsMap = visit.getSkills();
             JSONObject accountsJson = (JSONObject)accountSkillsJson.get(F_SKILLS_ACCOUNTS);
+            System.out.println(accountsJson.toJSONString());
+            Iterator accountsKeys = accountsJson.keySet().iterator();
 
-            System.out.println("<F_SKILLS_ACCOUNTS>" + accountsJson);
+            while (accountsKeys.hasNext()) {
+                String account = (String) accountsKeys.next();
+                if (account != null) {
+                    HashMap<String, Skill> skillsMap = accountSkillsMap.get(account);
+                    if (skillsMap == null) {
+                        skillsMap = new HashMap<String, Skill>();
+                    }
+                    JSONObject skillsJson = (JSONObject)accountsJson.get(account);
+                    Iterator skillsKeys = skillsJson.keySet().iterator();
+
+                    while (skillsKeys.hasNext()) {
+                        String skillName = (String)skillsKeys.next();
+
+                        if (skillName != null) {
+                            JSONObject skillJson = (JSONObject)skillsJson.get(skillName);
+                            boolean isEnabled = false;
+                            boolean isDefault = false;
+
+                            if (skillJson.containsKey(F_ENABLED)) {
+                                isEnabled = (Boolean)skillJson.get(F_ENABLED);
+                            }
+
+                            if (skillJson.containsKey(F_DEFAULT)) {
+                                isDefault = (Boolean)skillJson.get(F_DEFAULT);
+                            }
+                        }
+                    }
+                    accountSkillsMap.put(account, skillsMap);
+
+                }
+            }
+            visit.setSkills(accountSkillsMap);
 
         } else {
             System.out.println("<WARN>skills not reported");
