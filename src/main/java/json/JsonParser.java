@@ -55,7 +55,7 @@ public class JsonParser {
     public static void parseVisitResponse(String jsonString, LPMobileVisit visit) {
         StateReporter s = new StateReporter();
 
-        JSONObject json = (JSONObject)JSONValue.parse(jsonString);
+        JSONObject json = (JSONObject) JSONValue.parse(jsonString);
         visit.setResponse(json.toString());
 //        System.out.println("<RESPONSE>" + visit.getResponse());
 
@@ -63,7 +63,7 @@ public class JsonParser {
             visit.setVisitId(json.get(F_VISIT_ID).toString());
             System.out.println("<Visit_Id> " + visit.getVisitId());
         } else {
-            System.out.println("<WARN>visit_id no reported" );
+            System.out.println("<WARN>visit_id no reported");
         }
 
         if (json.containsKey(F_CONTINUE_URL)) {
@@ -75,9 +75,9 @@ public class JsonParser {
 
         // skills
         if (json.containsKey(F_SKILLS)) {
-            JSONObject accountSkillsJson = (JSONObject)json.get(F_SKILLS);
+            JSONObject accountSkillsJson = (JSONObject) json.get(F_SKILLS);
             HashMap<String, HashMap<String, Skill>> accountSkillsMap = visit.getSkills();
-            JSONObject accountsJson = (JSONObject)accountSkillsJson.get(F_SKILLS_ACCOUNTS);
+            JSONObject accountsJson = (JSONObject) accountSkillsJson.get(F_SKILLS_ACCOUNTS);
             System.out.println(accountsJson.toJSONString());
             Iterator accountsKeys = accountsJson.keySet().iterator();
 
@@ -88,23 +88,23 @@ public class JsonParser {
                     if (skillsMap == null) {
                         skillsMap = new HashMap<String, Skill>();
                     }
-                    JSONObject skillsJson = (JSONObject)accountsJson.get(account);
+                    JSONObject skillsJson = (JSONObject) accountsJson.get(account);
                     Iterator skillsKeys = skillsJson.keySet().iterator();
 
                     while (skillsKeys.hasNext()) {
-                        String skillName = (String)skillsKeys.next();
+                        String skillName = (String) skillsKeys.next();
 
                         if (skillName != null) {
-                            JSONObject skillJson = (JSONObject)skillsJson.get(skillName);
+                            JSONObject skillJson = (JSONObject) skillsJson.get(skillName);
                             boolean isEnabled = false;
                             boolean isDefault = false;
 
                             if (skillJson.containsKey(F_ENABLED)) {
-                                isEnabled = (Boolean)skillJson.get(F_ENABLED);
+                                isEnabled = (Boolean) skillJson.get(F_ENABLED);
                             }
 
                             if (skillJson.containsKey(F_DEFAULT)) {
-                                isDefault = (Boolean)skillJson.get(F_DEFAULT);
+                                isDefault = (Boolean) skillJson.get(F_DEFAULT);
                             }
                         }
                     }
