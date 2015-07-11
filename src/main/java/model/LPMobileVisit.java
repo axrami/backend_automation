@@ -11,6 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class LPMobileVisit {
     boolean callDeflectionReported = false;
+    String visitorId;
     String visitId;
     String continueURL;
     int messagesReceivced = 0;
@@ -21,6 +22,14 @@ public class LPMobileVisit {
     String response;
 
     HashMap<String, HashMap<String, Skill>> skills = new HashMap<String, HashMap<String, Skill>>();
+
+    public String getVisitorId() {
+        return visitorId;
+    }
+
+    public void setVisitorId(String visitorId) {
+        this.visitorId = visitorId;
+    }
 
     public void setResponse(String resposne) {
         this.response = resposne;

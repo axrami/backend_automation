@@ -1,4 +1,4 @@
-package networking;
+package networking.chat;
 
 /**
  * Created by andrew on 7/10/15.

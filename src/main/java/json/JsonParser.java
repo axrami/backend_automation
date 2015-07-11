@@ -1,7 +1,6 @@
 package json;
 
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import model.LPMobileVisit;
 import model.Skill;
 import model.StateReporter;
@@ -65,6 +64,11 @@ public class JsonParser {
         } else {
             System.out.println("<WARN>visit_id no reported");
         }
+
+        if (json.containsKey(F_VISITOR_ID)) {
+            visit.setVisitorId(F_VISITOR_ID);
+        }
+
 
         if (json.containsKey(F_CONTINUE_URL)) {
             visit.setContinueURL(json.get(F_CONTINUE_URL).toString());

@@ -16,6 +16,7 @@ public class Main implements Runnable {
         while(x < 1) {
             Visit visit = new Visit();
             visit.launch();
+
             x++;
         }
     }
