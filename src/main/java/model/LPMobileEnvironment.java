@@ -23,6 +23,7 @@ public class LPMobileEnvironment {
     String currentAccount;
     String currentSkill;
     String language = "en";
+
     private boolean isAccessibilityActive = false;
 
     public String getLanguage() {

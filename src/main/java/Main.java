@@ -2,6 +2,8 @@ import model.LPMobileEnvironment;
 import model.LPMobileLogger;
 import model.SetEnvironment;
 import networking.VisitRequestHandler;
+import org.joda.time.Interval;
+import org.joda.time.ReadableDuration;
 import service.Visit;
 
 /**
@@ -12,21 +14,13 @@ public class Main implements Runnable {
     // 10 threads x 100 runs = 1000 visits
 
     public void run() {
-        int x = 0;
-        while(x < 1) {
+        for (int i = 0; i < 1; i++) {
             Visit visit = new Visit();
             visit.launch();
-
-            x++;
         }
     }
 
     public static void main(String args[]) {
-       int i = 0;
-        while(i < 1) {
-            (new Thread(new Main())).start();
-            i++;
-        }
-
+        (new Thread(new Main())).start();
     }
 }

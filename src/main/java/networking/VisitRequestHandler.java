@@ -27,8 +27,12 @@ public class VisitRequestHandler {
         HttpClient httpclient = new DefaultHttpClient();
 
         String postBody = JsonGenerator.generateVisitReqeust(env, (visit != null && visit.getVisitId() != null) ? visit.getVisitId() : null, visitorId, null);
-//        System.out.println("<PostBody>" + postBody);
-        return launchRequest(httpclient, visitBaseURL, postBody, visitorId, visit);
+        System.out.println("<PostBody>" + postBody);
+        if ( visit.getContinueURL().isEmpty() ) {
+            return launchRequest(httpclient, visitBaseURL, postBody, visitorId, visit);
+        } else {
+            return continueRequest(httpclient, postBody, visit);
+        }
     }
 
     public static LPMobileHttpResponse launchRequest(HttpClient httpclient, String visitBaseURL, String postBody, String visitorId, LPMobileVisit visit) throws Exception {
@@ -55,7 +59,7 @@ public class VisitRequestHandler {
 
     public static LPMobileHttpResponse continueRequest(HttpClient httpclient, String postBody, LPMobileVisit visit) throws Exception {
         String continueURL = visit.getContinueURL();
-
+        System.out.println(visit.getContinueURL());
         HttpPost httppost = new HttpPost(continueURL);
         httppost.addHeader(new BasicHeader("Content-type", "application/json"));
         httppost.setEntity(new StringEntity(postBody));
