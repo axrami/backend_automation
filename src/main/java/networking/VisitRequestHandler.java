@@ -27,7 +27,7 @@ public class VisitRequestHandler {
         HttpClient httpclient = new DefaultHttpClient();
 
         String postBody = JsonGenerator.generateVisitReqeust(env, (visit != null && visit.getVisitId() != null) ? visit.getVisitId() : null, visitorId, null);
-        System.out.println("<PostBody>" + postBody);
+//        System.out.println("<PostBody>" + postBody);
         if ( visit.getContinueURL().isEmpty() ) {
             return launchRequest(httpclient, visitBaseURL, postBody, visitorId, visit);
         } else {

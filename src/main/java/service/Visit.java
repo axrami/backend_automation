@@ -37,7 +37,7 @@ public class Visit {
             LPMobileHttpResponse response = VisitRequestHandler.sendVisitRequest(env, visit, visitBaseURL, visitorId);
             if (response.isSuccess()) {
                 System.out.println("<RESPONSE CODE> " + response.getResponseCode());
-                continueRequest(env, visit, visitorId);
+//                continueRequest(env, visit, visitorId);
             }
         } catch (Throwable t) {
             System.out.println(t);

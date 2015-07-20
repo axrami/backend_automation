@@ -14,13 +14,20 @@ public class Main implements Runnable {
     // 10 threads x 100 runs = 1000 visits
 
     public void run() {
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 200; i++) {
             Visit visit = new Visit();
             visit.launch();
         }
     }
 
     public static void main(String args[]) {
+
+        (new Thread(new Main())).start();
+        (new Thread(new Main())).start();
+        (new Thread(new Main())).start();
+        (new Thread(new Main())).start();
+        (new Thread(new Main())).start();
         (new Thread(new Main())).start();
     }
+
 }

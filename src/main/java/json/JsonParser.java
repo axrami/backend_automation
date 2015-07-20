@@ -4,6 +4,7 @@ package json;
 import model.LPMobileVisit;
 import model.Skill;
 import model.StateReporter;
+import networking.chat.IntroChatResponse;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -135,8 +136,33 @@ public class JsonParser {
         } else {
 //            System.out.println("<WARN>NEXT_INTERVAL not reported");
         }
+    }
+
+    public static IntroChatResponse parseIntroResponse(String jsonString) {
+        JSONObject json = (JSONObject) JSONValue.parse(jsonString);
+        IntroChatResponse introChatResponse = new IntroChatResponse();
+
+        if (json.containsKey(F_SSE_URL_NAME)) {
+            introChatResponse.setSseURL(json.get(F_SSE_URL_NAME).toString());
+        }
+        if (json.containsKey(F_TYPE_NAME)) {
+            introChatResponse.setType(json.get(F_TYPE_NAME).toString());
+        }
+        if (json.containsKey(F_POST_URL_NAME)) {
+            introChatResponse.setPostURL(json.get(F_POST_URL_NAME).toString());
+        }
+        if (json.containsKey(F_MEDIA_URL_NAME)) {
+            introChatResponse.setMediaURL(json.get(F_MEDIA_URL_NAME).toString());
+        }
+        if (json.containsKey(F_SSE_URL_NAME)) {
+            introChatResponse.setSseURL(json.get(F_SSE_URL_NAME).toString());
+        }
+        if (json.containsKey(F_ENGAGEMENT_ID_NAME)) {
+            introChatResponse.setEngagementId(json.get(F_ENGAGEMENT_ID_NAME).toString());
+        }
 
 
+        return introChatResponse;
     }
 }
 
