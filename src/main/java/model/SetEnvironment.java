@@ -5,7 +5,7 @@ package model;
  * Sets the environment to request from server
  */
 public class SetEnvironment {
-    public static LPMobileEnvironment createEnv() {
+    public static LPMobileEnvironment createBaseEnv() {
         LPMobileEnvironment env = new LPMobileEnvironment();
         env.setAppID("com.liveperson.mobile.ecosmart-P36511428");
         env.setLanguage("en");
@@ -19,6 +19,13 @@ public class SetEnvironment {
         env.setCurrentAccount("P36511428");
         env.setTzOffset("-25200");
         env.setLocale("en_US");
+
+        return env;
+    }
+
+    public static LPMobileEnvironment genNewEnv(){
+        LPMobileEnvironment env = new LPMobileEnvironment();
+
 
         return env;
     }

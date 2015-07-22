@@ -16,7 +16,6 @@ public class Chat {
 
     static String bundleId;
     String ChatDomain = LPMobileProperties.getChatStagDomain();
-    LPMobileEnvironment env = SetEnvironment.createEnv();
 
     final int notificationId = 1212212;
 

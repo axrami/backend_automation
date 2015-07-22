@@ -3,19 +3,17 @@ package json;
 
 import model.LPMobileVisit;
 import model.Skill;
-import model.StateReporter;
 import networking.chat.IntroChatResponse;
-import org.json.simple.JSONArray;
+import org.apache.http.HttpResponse;
+import org.apache.http.conn.BasicManagedEntity;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
-import org.json.simple.parser.JSONParser;
 
-import java.lang.reflect.Array;
-import java.util.Collection;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by andrew on 6/9/15.
@@ -53,7 +51,6 @@ public class JsonParser {
 
 // divide this from a json gen and env setter
     public static void parseVisitResponse(String jsonString, LPMobileVisit visit) {
-        StateReporter s = new StateReporter();
 
         JSONObject json = (JSONObject) JSONValue.parse(jsonString);
         visit.setResponse(json.toString());
@@ -83,19 +80,21 @@ public class JsonParser {
             JSONObject accountSkillsJson = (JSONObject) json.get(F_SKILLS);
             HashMap<String, HashMap<String, Skill>> accountSkillsMap = visit.getSkills();
             JSONObject accountsJson = (JSONObject) accountSkillsJson.get(F_SKILLS_ACCOUNTS);
-            System.out.println(accountsJson.toJSONString());
+            Iterator accountsKeys = accountsJson.keySet().iterator();
 
-            for (Object o : accountsJson.keySet()) {
-                String account = (String) o;
+            while (accountsKeys.hasNext()) {
+                String account = (String) accountsKeys.next();
                 if (account != null) {
                     HashMap<String, Skill> skillsMap = accountSkillsMap.get(account);
                     if (skillsMap == null) {
-                        skillsMap = new HashMap<>();
+                        skillsMap = new HashMap<String, Skill>();
                     }
-                    JSONObject skillsJson = (JSONObject) accountsJson.get(account);
 
-                    for (Object o1 : skillsJson.keySet()) {
-                        String skillName = (String) o1;
+                    JSONObject skillsJson = (JSONObject) accountsJson.get(account);
+                    Iterator skillsKeys = skillsJson.keySet().iterator();
+
+                    while (skillsKeys.hasNext()) {
+                        String skillName = (String) skillsKeys.next();
 
                         if (skillName != null) {
                             JSONObject skillJson = (JSONObject) skillsJson.get(skillName);
@@ -108,6 +107,13 @@ public class JsonParser {
 
                             if (skillJson.containsKey(F_DEFAULT)) {
                                 isDefault = (Boolean) skillJson.get(F_DEFAULT);
+                            }
+
+                            Skill newSkill = new Skill(isDefault, isEnabled);
+                            Skill oldSkill = skillsMap.putIfAbsent(skillName, newSkill);
+
+                            if (oldSkill != null && !newSkill.equals(oldSkill)) {
+                                skillsMap.replace(skillName, newSkill);
                             }
                         }
                     }
@@ -161,6 +167,36 @@ public class JsonParser {
 
 
         return introChatResponse;
+    }
+
+    public static void parseResponseBody(HttpResponse httpResponse, String uri, LPMobileVisit visit) {
+        if (httpResponse.getEntity() instanceof BasicManagedEntity) {
+            BasicManagedEntity entity = (BasicManagedEntity)httpResponse.getEntity();
+            BufferedReader br = null;
+            StringBuilder inputStr = new StringBuilder(1000);
+            try {
+                br = new BufferedReader(new InputStreamReader(entity.getContent(),"utf8"), 8192);
+                String currentLine;
+                while ((currentLine = br.readLine()) != null) {
+                    inputStr.append(currentLine);
+                }
+            } catch (IOException e1) {
+                System.out.println(e1);
+            } finally {
+                if (br != null) {
+                    try {
+                        br.close();
+                    } catch (IOException e1) {
+                        System.out.println(e1);
+                    }
+                }
+            }
+
+            if (inputStr.length() > 0) {
+                JsonParser.parseVisitResponse(inputStr.toString(), visit);
+            }
+
+        }
     }
 }
 

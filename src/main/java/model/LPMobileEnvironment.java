@@ -2,7 +2,9 @@ package model;
 
 /**
  * Created by andrew on 6/11/15.
+ * Environment used to create postbody
  */
+
 public class LPMobileEnvironment {
     String locale;
     String connectionType;
