@@ -6,7 +6,7 @@ package model;
 public class LPMobileHttpResponse {
     private String url;
     private int responseCode;
-    private String postBody;
+    public String postBody;
 
     public String getUrl() {
         return url;

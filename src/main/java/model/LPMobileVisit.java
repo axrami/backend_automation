@@ -22,12 +22,9 @@ public class LPMobileVisit {
     int nextInterval;
     String branding_mp5;
     String response;
-    private List<LPMobileHttpResponse> responses;
+    private List responses = new ArrayList<LPMobileHttpResponse>();
 
     public void addResponse(LPMobileHttpResponse response) {
-        if (responses == null) {
-            responses = new ArrayList<>();
-        }
         responses.add(response);
     }
 
