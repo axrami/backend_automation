@@ -23,11 +23,13 @@ import java.io.InputStreamReader;
 public class VisitRequestHandler {
     private static final String FUNNEL_EVENT_URL = "https://%s/api/v1/visit/%s/funnel";
 
+
+    // break this up have jsonGen in another method
     public static LPMobileHttpResponse sendVisitRequest(LPMobileEnvironment env, LPMobileVisit visit, String visitBaseURL, String visitorId) throws Exception {
         HttpClient httpclient = new DefaultHttpClient();
 
-        String postBody = JsonGenerator.generateVisitReqeust(env, (visit != null && visit.getVisitId() != null) ? visit.getVisitId() : null, visitorId, null);
-//        System.out.println("<PostBody>" + postBody);
+        String postBody = JsonGenerator.generateVisitRequest(env, (visit != null && visit.getVisitId() != null) ? visit.getVisitId() : null, visitorId, null);
+        System.out.println("<PostBody>" + postBody);
         if ( visit.getContinueURL().isEmpty() ) {
             return launchRequest(httpclient, visitBaseURL, postBody, visitorId, visit);
         } else {
@@ -37,9 +39,12 @@ public class VisitRequestHandler {
 
     public static LPMobileHttpResponse launchRequest(HttpClient httpclient, String visitBaseURL, String postBody, String visitorId, LPMobileVisit visit) throws Exception {
         HttpPost httppost = new HttpPost(visitBaseURL);
-        httppost.addHeader(new BasicHeader("Content-type" , "application/json"));
+        httppost.addHeader(new BasicHeader("Content-type", "application/json"));
         httppost.addHeader(new BasicHeader("X-LivepersonMobile-Capabilities", "account-skills"));
-
+        if(visitorId != null) {
+//            System.out.println("<VISITORID>" + visitorId);
+            httppost.setHeader("Cookie", "visitor_id=" + visitorId);
+        }
         httppost.setEntity(new StringEntity(postBody));
         HttpResponse httpResponse = httpclient.execute(httppost);
 
@@ -48,7 +53,6 @@ public class VisitRequestHandler {
         response.setResponseCode(httpResponse.getStatusLine().getStatusCode());
 
         if (response.isSuccess()) {
-
             parseResponseBody(httpResponse, httppost.getURI().toString(), visit);
         } else {
             System.out.println("failed launch code: " + response.getResponseCode());

@@ -51,7 +51,7 @@ public class JsonParser {
     private static final String F_POPUP_CHAT = "popup_chat";
     private static final String F_SSO_KEY = "ssoKey";
 
-
+// divide this from a json gen and env setter
     public static void parseVisitResponse(String jsonString, LPMobileVisit visit) {
         StateReporter s = new StateReporter();
 
@@ -61,7 +61,7 @@ public class JsonParser {
 
         if (json.containsKey(F_VISIT_ID)) {
             visit.setVisitId(json.get(F_VISIT_ID).toString());
-            System.out.println("<Visit_Id> " + visit.getVisitId());
+//            System.out.println("<Visit_Id> " + visit.getVisitId());
         } else {
             System.out.println("<WARN>visit_id no reported");
         }
@@ -84,20 +84,18 @@ public class JsonParser {
             HashMap<String, HashMap<String, Skill>> accountSkillsMap = visit.getSkills();
             JSONObject accountsJson = (JSONObject) accountSkillsJson.get(F_SKILLS_ACCOUNTS);
             System.out.println(accountsJson.toJSONString());
-            Iterator accountsKeys = accountsJson.keySet().iterator();
 
-            while (accountsKeys.hasNext()) {
-                String account = (String) accountsKeys.next();
+            for (Object o : accountsJson.keySet()) {
+                String account = (String) o;
                 if (account != null) {
                     HashMap<String, Skill> skillsMap = accountSkillsMap.get(account);
                     if (skillsMap == null) {
-                        skillsMap = new HashMap<String, Skill>();
+                        skillsMap = new HashMap<>();
                     }
                     JSONObject skillsJson = (JSONObject) accountsJson.get(account);
-                    Iterator skillsKeys = skillsJson.keySet().iterator();
 
-                    while (skillsKeys.hasNext()) {
-                        String skillName = (String) skillsKeys.next();
+                    for (Object o1 : skillsJson.keySet()) {
+                        String skillName = (String) o1;
 
                         if (skillName != null) {
                             JSONObject skillJson = (JSONObject) skillsJson.get(skillName);

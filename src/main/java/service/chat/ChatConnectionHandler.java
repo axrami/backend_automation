@@ -24,19 +24,22 @@ import java.io.InputStream;
 public class ChatConnectionHandler {
     public IntroChatResponse introChatResponse;
     public HttpsURLConnection sseClient;
+    public static String CHAT_BASE_URL = "https://%s/api/v2/chat/";
 
     public void creatChatConnection(LPMobileEnvironment env, String visitId, String visitorId) {
+//        System.out.println("<ChatHandler>" + visitorId);
         boolean success = false;
+        String ssoKey = null;
         introChatResponse = sendIntroRequest(env, visitId, visitorId);
-
     }
 
     public IntroChatResponse sendIntroRequest(LPMobileEnvironment env, String visitId, String visitorId) {
         IntroChatResponse introChatResponse = null;
         try {
-            String postBody = JsonGenerator.generateVisitReqeust(env, visitId, visitorId, null);
-            String chatBaseURL = LPMobileProperties.getChatStagDomain();
-            HttpResponse httpResponse = sendPostRequest(chatBaseURL, postBody, null, visitorId);
+            String postBody = JsonGenerator.generateVisitRequest(env, visitId, visitorId, null);
+            System.out.println("<IntoPostBody>" + postBody);
+            String chatBaseURL = String.format( CHAT_BASE_URL ,LPMobileProperties.getChatStagDomain());
+            HttpResponse httpResponse = sendPostRequest(chatBaseURL, "intro/" , postBody, null, visitorId);
 
             int statusCode = httpResponse.getStatusLine().getStatusCode();
 
@@ -63,10 +66,11 @@ public class ChatConnectionHandler {
         return introChatResponse;
     }
 
-    public static HttpResponse sendPostRequest(String chatBaseURL, String postBody, String secretToken, String visitorId) throws IOException {
+    public static HttpResponse sendPostRequest(String chatBaseURL, String uriSuffix ,String postBody, String secretToken, String visitorId) throws IOException {
         HttpClient httpClient = new DefaultHttpClient();
-        String url = chatBaseURL;
+        String url = chatBaseURL + uriSuffix;
         HttpPost httppost = new HttpPost(url);
+        System.out.println(url);
         httppost.addHeader(new BasicHeader("Content-type", "application/json"));
         httppost.addHeader(new BasicHeader("X-LivepersonMobile-Capabilities", "account-skills"));
         httppost.setEntity(new StringEntity(postBody, "UTF8"));

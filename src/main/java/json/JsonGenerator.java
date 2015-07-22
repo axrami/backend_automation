@@ -9,7 +9,7 @@ import org.json.simple.JSONObject;
  */
 public class JsonGenerator {
 
-    public static String generateVisitReqeust(LPMobileEnvironment env, String visitId, String visitorId, String ssoKey) {
+    public static String generateVisitRequest(LPMobileEnvironment env, String visitId, String visitorId, String ssoKey) {
         JSONObject obj = new JSONObject();
 
         obj.put("sdk_version", env.getSdkVersion());

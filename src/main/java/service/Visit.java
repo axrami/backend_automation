@@ -7,6 +7,7 @@ import model.LPMobileVisit;
 import model.SetEnvironment;
 import networking.VisitRequestHandler;
 import properties.LPMobileProperties;
+import service.chat.ChatConnectionHandler;
 
 
 /**
@@ -22,22 +23,22 @@ public class Visit {
     private static String APP_LAUNCHER_URL = "https://%s/api/v1/app/launch";
     private static int numOfContinues = 0;
 
-    private static LPMobileEnvironment env = SetEnvironment.createEnv();
+    private LPMobileEnvironment env = SetEnvironment.createEnv();
 
-    public static void launch() {
+    public void launch() {
         try {
             String visitDomain = LPMobileProperties.getVisitStagDomain();
             visitBaseURL = String.format(APP_LAUNCHER_URL, visitDomain);
             System.out.println(visitBaseURL);
 
-            visit.setVisitId("");
-            visit.setContinueURL("");
-
+//            visit.setVisitId(""); May not need
+//            visit.setContinueURL("");
 
             LPMobileHttpResponse response = VisitRequestHandler.sendVisitRequest(env, visit, visitBaseURL, visitorId);
             if (response.isSuccess()) {
                 System.out.println("<RESPONSE CODE> " + response.getResponseCode());
 //                continueRequest(env, visit, visitorId);
+
             }
         } catch (Throwable t) {
             System.out.println(t);
@@ -45,12 +46,12 @@ public class Visit {
 
     }
 
-    private static void continueRequest(LPMobileEnvironment env, LPMobileVisit visit, String visitorId) {
+    private void continueRequest(LPMobileEnvironment env, LPMobileVisit visit, String visitorId) {
         int nextInterval = visit.getNextInterval();
-
-        for (int i = 0; i < 3; i++) {
+        beginChat(env, visit, visitorId);
+        for (int i = 0; i < 1; i++) {
             try {
-                Thread.sleep(nextInterval * 1000);
+                Thread.sleep(nextInterval * 100);
                 LPMobileHttpResponse response = VisitRequestHandler.sendVisitRequest(env, visit, visitBaseURL, visitorId);
                 System.out.println("<CONTINUE_VISIT>" + visit.getVisitId());
                 System.out.println("<CONTINUE_RESPONSE>" + response.getResponseCode());
@@ -60,6 +61,10 @@ public class Visit {
             }
         }
 
+    }
 
+    private void beginChat(LPMobileEnvironment env, LPMobileVisit visit, String visitorId) {
+        ChatConnectionHandler chat = new ChatConnectionHandler();
+        chat.creatChatConnection(env , visit.getVisitId(), visitorId);
     }
 }
