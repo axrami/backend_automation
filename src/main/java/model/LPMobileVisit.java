@@ -1,6 +1,8 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -20,6 +22,18 @@ public class LPMobileVisit {
     int nextInterval;
     String branding_mp5;
     String response;
+    private List<LPMobileHttpResponse> responses;
+
+    public void addResponse(LPMobileHttpResponse response) {
+        if (responses == null) {
+            responses = new ArrayList<>();
+        }
+        responses.add(response);
+    }
+
+    public List getResponses() {
+        return responses;
+    }
 
     HashMap<String, HashMap<String, Skill>> skills = new HashMap<String, HashMap<String, Skill>>();
 

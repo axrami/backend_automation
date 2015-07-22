@@ -1,4 +1,4 @@
-import service.Instance;
+import service.Session;
 
 /**
  * Created by andrew on 6/16/15.
@@ -9,8 +9,8 @@ public class Main implements Runnable {
 
     public void run() {
         for (int x = 0; x < 1; x++) {
-            Instance i = new Instance();
-            i.beginVisit();
+            Session i = new Session();
+            i.continuedVisit();
 
         }
     }

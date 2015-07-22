@@ -6,6 +6,7 @@ package model;
 public class LPMobileHttpResponse {
     private String url;
     private int responseCode;
+    private String postBody;
 
     public String getUrl() {
         return url;
@@ -25,5 +26,13 @@ public class LPMobileHttpResponse {
 
     public boolean isSuccess() {
         return responseCode >= 200 && responseCode < 300;
+    }
+
+    public String getPostBody() {
+        return postBody;
+    }
+
+    public void setPostBody(String postBody) {
+        this.postBody = postBody;
     }
 }
