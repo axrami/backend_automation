@@ -27,6 +27,12 @@ public class Session {
         this.visit = visitHandler.getVisit();
     }
 
+    public void beginVisit(LPMobileEnvironment env) {
+        VisitHandler visitHandler = new VisitHandler();
+        visitHandler.launch(env, visitor);
+        this.visit = visitHandler.getVisit();
+    }
+
 
     public void continuedVisit() {
         if (this.visit == null) {

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="SessionTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2015-07-23T18:38:41" hostname="aramirez2-mac.local" time="0.572">
+  <properties/>
+  <testcase name="beginVisit" classname="SessionTest" time="0.572"/>
+  <system-out><![CDATA[<PostBody>{"device_id":"286c5550ba06df78","extras":{"detected_settings":{"tz_offset":"-25200","locale":"en_US"}},"device_type":"unknown Android SDK built for x86","language":"en","strings_hash":"38ceb8450c28f8adbe48ee71ae01e744","platform":"Android","platform_version":"21","skill":"mobile","sdk_version":"0.0.1","site_id":"P36511428","app_id":"com.liveperson.mobile.ecosmart-P36511428","branding_md5":"e3fa6750a0c2e557342831924e6d39d4","platform_release":"5.0.2"}
+HTTP/1.1 201 Created [Date: Thu, 23 Jul 2015 18:38:38 GMT, Content-Type: application/json, Content-Length: 907, Connection: keep-alive, Access-Control-Allow-Origin: *, Cache-Control: no-cache, no-store, must-revalidate, Pragma: no-cache, Expires: 0]
+<RESPONSE CODE> 201
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
