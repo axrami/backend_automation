@@ -10,6 +10,9 @@ public class IntroChatResponse {
     String mediaURL;
     String engagementId;
     String cookieHeader;
+    String lastEventId;
+    boolean success = false;
+
 
     public IntroChatResponse() {}
 
@@ -20,6 +23,14 @@ public class IntroChatResponse {
         this.mediaURL = mediaURL;
         this.engagementId = engagementId;
         this.cookieHeader = cookieHeader;
+    }
+
+    public String getLastEventId() {
+        return lastEventId;
+    }
+
+    public void setLastEventId(String lastEventId) {
+        this.lastEventId = lastEventId;
     }
 
     public String getCookieHeader() {
@@ -69,6 +80,8 @@ public class IntroChatResponse {
     public void setType(String type) {
         this.type = type;
     }
+
+
 
     @Override
     public String toString() {

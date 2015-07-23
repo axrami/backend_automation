@@ -20,6 +20,8 @@ import properties.LPMobileProperties;
 import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * Created by andrew on 7/10/15.
@@ -27,18 +29,25 @@ import java.io.InputStream;
 public class ChatConnectionHandler {
     public IntroChatResponse introChatResponse;
     public static String CHAT_BASE_URL = "https://%s/api/v2/chat/";
+    public HttpsURLConnection sseClient;
 
     public void createChatConnection(LPMobileEnvironment env, LPMobileVisit visit, Visitor visitor, LPMobileChat chat) {
+        boolean success = false;
         introChatResponse = sendIntroRequest(env, visit, visitor);
+        success = openSseChatConnection();
+        if (success = true) {
+            chatConnected();
+        }
+
     }
 
     public IntroChatResponse sendIntroRequest(LPMobileEnvironment env, LPMobileVisit visit, Visitor visitor) {
         IntroChatResponse introChatResponse = null;
 
         try {
-            String postbody = JsonGenerator.generateVisitRequest(env, visit.getVisitId(), visitor.getVisitorId(), null);
+            String postBody = JsonGenerator.generateVisitRequest(env, visit.getVisitId(), visitor.getVisitorId(), null);
             visit.setChatBaseURL(String.format(CHAT_BASE_URL, LPMobileProperties.getChatStagDomain()));
-            HttpResponse httpResponse = sendPostRequest(visit, postbody, null, visitor);
+            HttpResponse httpResponse = sendPostRequest(visit, postBody, null, visitor);
 
             int statusCode = httpResponse.getStatusLine().getStatusCode();
 
@@ -89,6 +98,31 @@ public class ChatConnectionHandler {
         return b;
     }
 
+    public boolean openSseChatConnection() {
+        try {
+            if (introChatResponse == null) {
+                return false;
+            }
+            String sseUrl = introChatResponse.getSseURL() + introChatResponse.getEngagementId();
+
+            try {
+                URL url = new URL(sseUrl);
+                sseClient = (HttpsURLConnection) url.openConnection();
+                sseClient.setRequestProperty("Last-Event-Id" , introChatResponse.getLastEventId() );
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public void chatConnected() {
+        System.out.println("Chat started?");
+
+    }
 
 
 }

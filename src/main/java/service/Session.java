@@ -4,7 +4,6 @@ package service;
 import model.*;
 import networking.ContinueRequestHandler;
 import networking.VisitHandler;
-import service.chat.ChatConnectionHandler;
 import service.chat.ChatHandler;
 
 /**
@@ -42,8 +41,8 @@ public class Session {
         if (this.visit == null ) {
             beginVisit();
         }
-        ChatConnectionHandler chat = new ChatConnectionHandler();
-        chat.createChatConnection(env, visit, visitor);
+        ChatHandler chat = new ChatHandler();
+        chat.createConnection(env, visit, visitor);
 
     }
 
