@@ -18,9 +18,11 @@ import org.apache.http.message.BasicHeader;
 import properties.LPMobileProperties;
 
 import javax.net.ssl.HttpsURLConnection;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.net.ProtocolException;
 import java.net.URL;
 
 /**
@@ -30,6 +32,7 @@ public class ChatConnectionHandler {
     public IntroChatResponse introChatResponse;
     public static String CHAT_BASE_URL = "https://%s/api/v2/chat/";
     public HttpsURLConnection sseClient;
+    public String COOKIE_HEADER_NAME = "Cookie";
 
     public void createChatConnection(LPMobileEnvironment env, LPMobileVisit visit, Visitor visitor, LPMobileChat chat) {
         boolean success = false;
@@ -104,7 +107,7 @@ public class ChatConnectionHandler {
                 return false;
             }
             String sseUrl = introChatResponse.getSseURL() + introChatResponse.getEngagementId();
-
+            System.out.println(sseUrl);
             try {
                 URL url = new URL(sseUrl);
                 sseClient = (HttpsURLConnection) url.openConnection();
@@ -121,7 +124,46 @@ public class ChatConnectionHandler {
 
     public void chatConnected() {
         System.out.println("Chat started?");
+        sendSSEPostRequest();
 
+    }
+
+    public boolean sendSSEPostRequest() {
+        boolean success = false;
+        DataOutputStream outputStream = null;
+
+        try {
+            if (sseClient != null) {
+                sseClient.setRequestMethod("POST");
+                String cookieHeader = introChatResponse.getCookieHeader();
+                if(cookieHeader != null && !cookieHeader.isEmpty()) {
+                    sseClient.setRequestProperty(COOKIE_HEADER_NAME, cookieHeader);
+                }
+
+                sseClient.setUseCaches(false);
+                sseClient.setDoInput(true);
+                sseClient.setDoOutput(true);
+
+                outputStream = new DataOutputStream(sseClient.getOutputStream());
+                outputStream.writeBytes("");
+                outputStream.flush();
+                success = true;
+            }
+        } catch (ProtocolException e ) {
+            e.printStackTrace();
+            success = false;
+        } catch ( IOException e ) {
+            e.printStackTrace();
+        } finally {
+            if (outputStream != null) {
+                try {
+                    outputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return success;
     }
 
 
