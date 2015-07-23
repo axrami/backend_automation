@@ -16,15 +16,17 @@ public class LPMobileVisit {
     String visitorId;
     String visitId;
     String continueURL;
-    int messagesReceivced = 0;
-    int messgaesSent = 0;
-    int numberOfConintues = 0;
+    String chatBaseURL;
     int nextInterval;
     String branding_mp5;
     String response;
+    String ssoKey;
     private List responses = new ArrayList<LPMobileHttpResponse>();
 
     public void addResponse(LPMobileHttpResponse response) {
+        if (responses.isEmpty()) {
+            responses = new ArrayList<LPMobileHttpResponse>();
+        }
         responses.add(response);
     }
 
@@ -58,25 +60,6 @@ public class LPMobileVisit {
         this.branding_mp5 = branding_mp5;
     }
 
-    public void addMessage() {
-        this.messagesReceivced += 1;
-    }
-
-    public void addMessageSent() {
-        this.messgaesSent += 1;
-    }
-
-    public int getMessagesReceivced() {
-        return messagesReceivced;
-    }
-
-    public int getMessgaesSent() {
-        return messgaesSent;
-    }
-
-    public int getNumberOfConintues() {
-        return numberOfConintues;
-    }
 
     public String getVisitId() {
         return visitId;
@@ -116,6 +99,14 @@ public class LPMobileVisit {
 
     public void forgetSkills() {
         this.skills = new HashMap<String, HashMap<String, Skill>>();
+    }
+
+    public String getChatBaseURL() {
+        return chatBaseURL;
+    }
+
+    public void setChatBaseURL(String chatBaseURL) {
+        this.chatBaseURL = chatBaseURL;
     }
 
     public Map<String, Skill> getDefaultSkill() {

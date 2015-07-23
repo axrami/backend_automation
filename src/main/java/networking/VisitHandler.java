@@ -36,9 +36,9 @@ public class VisitHandler {
             visitBaseURL = String.format(APP_LAUNCHER_URL, visitDomain);
 
             LPMobileHttpResponse response = sendVisitRequest(env, visit, visitBaseURL, visitor.getVisitorId());
+            visit.addResponse(response);
             if (response.isSuccess()) {
                 System.out.println("<RESPONSE CODE> " + response.getResponseCode());
-
             }
         } catch (Throwable t) {
             t.printStackTrace();
@@ -63,6 +63,8 @@ public class VisitHandler {
         System.out.println(httpResponse.toString());
         LPMobileHttpResponse response = new LPMobileHttpResponse();
         response.setUrl(visitBaseURL);
+        response.setHttpResponse(httpResponse.toString());
+        response.setPostBody(postBody);
         response.setResponseCode(httpResponse.getStatusLine().getStatusCode());
 
         if (response.isSuccess()) {

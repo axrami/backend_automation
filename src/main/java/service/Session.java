@@ -4,6 +4,8 @@ package service;
 import model.*;
 import networking.ContinueRequestHandler;
 import networking.VisitHandler;
+import service.chat.ChatConnectionHandler;
+import service.chat.ChatHandler;
 
 /**
  * Created by andrew on 7/21/15.
@@ -18,8 +20,8 @@ public class Session {
     }
 
     public void beginVisit() {
-        if (env == null) {
-            env = SetEnvironment.createBaseEnv();
+        if (this.env == null) {
+            this.env = SetEnvironment.createBaseEnv();
         }
         VisitHandler visitHandler = new VisitHandler();
         visitHandler.launch(env , visitor);
@@ -40,8 +42,20 @@ public class Session {
         if (this.visit == null ) {
             beginVisit();
         }
+        ChatConnectionHandler chat = new ChatConnectionHandler();
+        chat.createChatConnection(env, visit, visitor);
 
     }
 
+    public LPMobileEnvironment getEnv() {
+        return env;
+    }
 
+    public Visitor getVisitor() {
+        return visitor;
+    }
+
+    public LPMobileVisit getVisit() {
+        return visit;
+    }
 }

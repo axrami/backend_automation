@@ -39,6 +39,7 @@ public class ContinueRequestHandler {
         LPMobileHttpResponse response = new LPMobileHttpResponse();
         response.setUrl(continueURL);
         response.setResponseCode(httpResponse.getStatusLine().getStatusCode());
+        response.setHttpResponse(httpResponse.toString());
         response.setPostBody(postBody);
 
         return response;

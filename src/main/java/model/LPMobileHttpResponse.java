@@ -7,6 +7,15 @@ public class LPMobileHttpResponse {
     private String url;
     private int responseCode;
     public String postBody;
+    public String httpResponse;
+
+    public String getHttpResponse() {
+        return httpResponse;
+    }
+
+    public void setHttpResponse(String httpResponse) {
+        this.httpResponse = httpResponse;
+    }
 
     public String getUrl() {
         return url;

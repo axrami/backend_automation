@@ -10,7 +10,7 @@ public class Main implements Runnable {
     public void run() {
         for (int x = 0; x < 1; x++) {
             Session i = new Session();
-            i.continuedVisit();
+            i.beginChat();
 
         }
     }

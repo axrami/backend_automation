@@ -2,7 +2,10 @@ package service.chat;
 
 import json.JsonGenerator;
 import json.JsonParser;
+import model.LPMobileChat;
 import model.LPMobileEnvironment;
+import model.LPMobileVisit;
+import model.Visitor;
 import networking.chat.IntroChatResponse;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -23,27 +26,23 @@ import java.io.InputStream;
  */
 public class ChatConnectionHandler {
     public IntroChatResponse introChatResponse;
-    public HttpsURLConnection sseClient;
     public static String CHAT_BASE_URL = "https://%s/api/v2/chat/";
 
-    public void creatChatConnection(LPMobileEnvironment env, String visitId, String visitorId) {
-//        System.out.println("<ChatHandler>" + visitorId);
-        boolean success = false;
-        String ssoKey = null;
-        introChatResponse = sendIntroRequest(env, visitId, visitorId);
+    public void createChatConnection(LPMobileEnvironment env, LPMobileVisit visit, Visitor visitor, LPMobileChat chat) {
+        introChatResponse = sendIntroRequest(env, visit, visitor);
     }
 
-    public IntroChatResponse sendIntroRequest(LPMobileEnvironment env, String visitId, String visitorId) {
+    public IntroChatResponse sendIntroRequest(LPMobileEnvironment env, LPMobileVisit visit, Visitor visitor) {
         IntroChatResponse introChatResponse = null;
+
         try {
-            String postBody = JsonGenerator.generateVisitRequest(env, visitId, visitorId, null);
-            System.out.println("<IntoPostBody>" + postBody);
-            String chatBaseURL = String.format( CHAT_BASE_URL ,LPMobileProperties.getChatStagDomain());
-            HttpResponse httpResponse = sendPostRequest(chatBaseURL, "intro/" , postBody, null, visitorId);
+            String postbody = JsonGenerator.generateVisitRequest(env, visit.getVisitId(), visitor.getVisitorId(), null);
+            visit.setChatBaseURL(String.format(CHAT_BASE_URL, LPMobileProperties.getChatStagDomain()));
+            HttpResponse httpResponse = sendPostRequest(visit, postbody, null, visitor);
 
             int statusCode = httpResponse.getStatusLine().getStatusCode();
 
-            if (statusCode == 200) {
+            if (statusCode == 200 ) {
                 System.out.println("200!");
                 if (httpResponse.getEntity() instanceof BasicManagedEntity) {
                     BasicManagedEntity e = (BasicManagedEntity)httpResponse.getEntity();
@@ -57,35 +56,39 @@ public class ChatConnectionHandler {
                     }
                 }
             } else {
-                System.out.println("damn.. response " + introChatResponse.toString());
+                System.out.println("Chat Failed");
             }
 
         } catch (IOException e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
+
         return introChatResponse;
     }
 
-    public static HttpResponse sendPostRequest(String chatBaseURL, String uriSuffix ,String postBody, String secretToken, String visitorId) throws IOException {
+    public HttpResponse sendPostRequest(LPMobileVisit visit, String postBody, String secretToken, Visitor visitor) throws IOException {
         HttpClient httpClient = new DefaultHttpClient();
-        String url = chatBaseURL + uriSuffix;
-        HttpPost httppost = new HttpPost(url);
-        System.out.println(url);
-        httppost.addHeader(new BasicHeader("Content-type", "application/json"));
-        httppost.addHeader(new BasicHeader("X-LivepersonMobile-Capabilities", "account-skills"));
-        httppost.setEntity(new StringEntity(postBody, "UTF8"));
+        String url = visit.getChatBaseURL() + "intro/";
+        HttpPost httpPost = new HttpPost(url);
+        httpPost.addHeader(new BasicHeader("Content-type" , "application/json"));
+        httpPost.addHeader(new BasicHeader("X-Liveperson-Capabilities", "account-skills"));
+        httpPost.setEntity(new StringEntity(postBody, "UTF8"));
 
-        HttpResponse response = httpClient.execute(httppost);
+        HttpResponse response = httpClient.execute(httpPost);
         return response;
+
     }
 
-    public static StringBuffer getBodyContent(BasicManagedEntity e) throws IOException {
+    public StringBuffer getBodyContent(BasicManagedEntity e) throws IOException {
         InputStream is = e.getContent();
         int c;
         StringBuffer b = new StringBuffer();
-        while ((c=is.read())!=-1) {
+        while ((c=is.read()) !=-1) {
             b.append((char)c);
         }
         return b;
     }
+
+
+
 }
