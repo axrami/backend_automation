@@ -49,7 +49,6 @@ public class Session {
         }
         ChatHandler chat = new ChatHandler();
         chat.createConnection(env, visit, visitor);
-
     }
 
     public LPMobileEnvironment getEnv() {

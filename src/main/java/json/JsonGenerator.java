@@ -94,4 +94,11 @@ public class JsonGenerator {
 
         return obj.toString();
     }
+
+    public static String generateChatLineReqeust(String chatLine) {
+        JSONObject obj = new JSONObject();
+        obj.put("text" ,  chatLine);
+        return obj.toString();
+
+    }
 }

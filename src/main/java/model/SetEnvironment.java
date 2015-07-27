@@ -23,11 +23,4 @@ public class SetEnvironment {
         return env;
     }
 
-    public static LPMobileEnvironment genNewEnv(){
-        LPMobileEnvironment env = new LPMobileEnvironment();
-
-
-        return env;
-    }
-
 }

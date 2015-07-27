@@ -15,6 +15,8 @@ import org.apache.http.conn.BasicManagedEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import properties.LPMobileProperties;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -33,6 +35,7 @@ public class ChatConnectionHandler {
     public static String CHAT_BASE_URL = "https://%s/api/v2/chat/";
     public HttpsURLConnection sseClient;
     public String COOKIE_HEADER_NAME = "Cookie";
+    public Logger logger = LoggerFactory.getLogger("ChatConnectionHandler");
 
     public void createChatConnection(LPMobileEnvironment env, LPMobileVisit visit, Visitor visitor, LPMobileChat chat) {
         boolean success = false;
@@ -40,6 +43,7 @@ public class ChatConnectionHandler {
         success = openSseChatConnection();
         if (success = true) {
             chatConnected();
+            sendLine(visit, visitor, introChatResponse);
         }
 
     }
@@ -55,7 +59,7 @@ public class ChatConnectionHandler {
             int statusCode = httpResponse.getStatusLine().getStatusCode();
 
             if (statusCode == 200 ) {
-                System.out.println("200!");
+                logger.debug("<IntroSuccessful>");
                 if (httpResponse.getEntity() instanceof BasicManagedEntity) {
                     BasicManagedEntity e = (BasicManagedEntity)httpResponse.getEntity();
                     StringBuffer b = getBodyContent(e);
@@ -64,11 +68,12 @@ public class ChatConnectionHandler {
                         Header[] headers = httpResponse.getHeaders("set-cookie");
                         if (headers != null && headers.length > 0) {
                             introChatResponse.setCookieHeader(headers[0].getValue());
+                            logger.debug("<sendIntroRequest> Headers " + headers[0].getValue());
                         }
                     }
                 }
             } else {
-                System.out.println("Chat Failed");
+                logger.debug("<Intro Not Successful>");
             }
 
         } catch (IOException e) {
@@ -91,6 +96,31 @@ public class ChatConnectionHandler {
 
     }
 
+    public void sendLine(LPMobileVisit visit, Visitor visitor, IntroChatResponse intro) {
+        try {
+            String postBody = JsonGenerator.generateChatLineReqeust("Hello");
+            sendLinePostReqeust(visit, postBody, visitor, intro);
+        } catch (IOException e ) {
+            e.printStackTrace();
+        }
+    }
+
+    public HttpResponse sendLinePostReqeust(LPMobileVisit visit, String postBody, Visitor visitor, IntroChatResponse intro) throws IOException {
+        HttpClient httpCLient = new DefaultHttpClient();
+        String url = visit.getChatBaseURL() + "line/" + intro.getEngagementId();
+        logger.debug("<sendLinePostReqeust> url " + url);
+        HttpPost httpPost = new HttpPost(url);
+        httpPost.addHeader(new BasicHeader("Content-type" , "application/json"));
+        httpPost.addHeader(new BasicHeader("X-Liveperson-Capabilities", "account-skills"));
+        httpPost.setEntity(new StringEntity(postBody, "UTF8"));
+        HttpResponse response = httpCLient.execute(httpPost);
+        logger.debug("<sendLinePostReqeust> sendLinePostReqeust " + response);
+        return response;
+
+    }
+
+
+
     public StringBuffer getBodyContent(BasicManagedEntity e) throws IOException {
         InputStream is = e.getContent();
         int c;
@@ -107,7 +137,7 @@ public class ChatConnectionHandler {
                 return false;
             }
             String sseUrl = introChatResponse.getSseURL() + introChatResponse.getEngagementId();
-            System.out.println(sseUrl);
+            logger.debug("<openSseChatConnection> sseURL " + sseUrl);
             try {
                 URL url = new URL(sseUrl);
                 sseClient = (HttpsURLConnection) url.openConnection();
@@ -123,7 +153,7 @@ public class ChatConnectionHandler {
     }
 
     public void chatConnected() {
-        System.out.println("Chat started?");
+        logger.debug("<chatConnected>");
         sendSSEPostRequest();
 
     }

@@ -13,6 +13,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import properties.LPMobileProperties;
 
 
@@ -25,6 +27,7 @@ public class VisitHandler {
     String visitBaseURL;
     String visitDomain;
     String APP_LAUNCHER_URL = "https://%s/api/v1/app/launch";
+    public Logger logger = LoggerFactory.getLogger("VisitHandler");
 
     public LPMobileVisit getVisit() {
         return visit;
@@ -38,7 +41,7 @@ public class VisitHandler {
             LPMobileHttpResponse response = sendVisitRequest(env, visit, visitBaseURL, visitor.getVisitorId());
             visit.addResponse(response);
             if (response.isSuccess()) {
-                System.out.println("<RESPONSE CODE> " + response.getResponseCode());
+                logger.debug("<launch> response_code" + response.getResponseCode());
             }
         } catch (Throwable t) {
             t.printStackTrace();
@@ -56,11 +59,11 @@ public class VisitHandler {
         }
 
         String postBody = JsonGenerator.generateVisitRequest(env, (visit != null && visit.getVisitId() != null) ? visit.getVisitId() : null, visitorId, null);
-        System.out.println("<PostBody>" + postBody);
+        logger.debug("<sendVisitRequest> postBody " + postBody);
 
         httppost.setEntity(new StringEntity(postBody));
         HttpResponse httpResponse = httpclient.execute(httppost);
-        System.out.println(httpResponse.toString());
+        logger.debug("<sendVisitRequest> httpResponse " + httpResponse);
         LPMobileHttpResponse response = new LPMobileHttpResponse();
         response.setUrl(visitBaseURL);
         response.setHttpResponse(httpResponse.toString());
@@ -70,7 +73,7 @@ public class VisitHandler {
         if (response.isSuccess()) {
             JsonParser.parseResponseBody(httpResponse, httppost.getURI().toString(), visit);
         } else {
-            System.out.println("failed launch code: " + response.getResponseCode());
+            logger.debug("<sendVisitRequest> Failed code: " + response.getResponseCode());
         }
 
         return response;

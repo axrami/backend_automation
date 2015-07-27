@@ -29,6 +29,29 @@ public class ChatHandler {
         chatConnectionHandler.createChatConnection(env, visit,visitor, chat);
     }
 
+    public void sendLine() {
+
+    }
+
+    public void sendOutro() {
+
+    }
+
+    public void sendFeedback(){
+
+    }
+
+    public void getChatHistory() {
+
+    }
+
+    public void sendAdvisory() {
+
+    }
+
+
+
+
 
 
 }

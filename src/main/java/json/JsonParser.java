@@ -8,6 +8,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.conn.BasicManagedEntity;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -48,19 +50,18 @@ public class JsonParser {
     private static final String F_BUTTON = "button";
     private static final String F_POPUP_CHAT = "popup_chat";
     private static final String F_SSO_KEY = "ssoKey";
+    public static Logger logger = LoggerFactory.getLogger("JsonParser");
 
 // divide this from a json gen and env setter
     public static void parseVisitResponse(String jsonString, LPMobileVisit visit) {
 
         JSONObject json = (JSONObject) JSONValue.parse(jsonString);
         visit.setResponse(json.toString());
-//        System.out.println("<RESPONSE>" + visit.getResponse());
 
         if (json.containsKey(F_VISIT_ID)) {
             visit.setVisitId(json.get(F_VISIT_ID).toString());
-//            System.out.println("<Visit_Id> " + visit.getVisitId());
         } else {
-            System.out.println("<WARN>visit_id no reported");
+            logger.debug("<parseVisitResponse> visit_id not reported");
         }
 
         if (json.containsKey(F_VISITOR_ID)) {
@@ -70,9 +71,8 @@ public class JsonParser {
 
         if (json.containsKey(F_CONTINUE_URL)) {
             visit.setContinueURL(json.get(F_CONTINUE_URL).toString());
-//            System.out.println("<Continue URL> " + visit.getContinueURL());
         } else {
-            System.out.println("<WARN>continue_url no reported");
+            logger.debug("<parseVisitResponse> continue_)url not reported");
         }
 
         // skills
@@ -124,21 +124,17 @@ public class JsonParser {
             visit.setSkills(accountSkillsMap);
 
         } else {
-            System.out.println("<WARN>skills not reported");
+            logger.debug("<parseVisitResponse> skills not reported");
         }
 
         if (json.containsKey(F_BRANDING_HASH_NAME)) {
             visit.setBranding_mp5(json.get(F_BRANDING_HASH_NAME).toString());
-//            System.out.println(visit.getBranding_mp5());
         } else {
-//            System.out.println("<WARN>branding_mp5 not reported");
         }
 
         if (json.containsKey(F_NEXT_INTERVAL)) {
             visit.setNextInterval(json.get(F_NEXT_INTERVAL).hashCode());
-//            System.out.println("<NEXT_INTERVAL>" + visit.getNextInterval());
         } else {
-//            System.out.println("<WARN>NEXT_INTERVAL not reported");
         }
     }
 
@@ -181,13 +177,13 @@ public class JsonParser {
                     inputStr.append(currentLine);
                 }
             } catch (IOException e1) {
-                System.out.println(e1);
+                logger.debug(e1.toString());
             } finally {
                 if (br != null) {
                     try {
                         br.close();
                     } catch (IOException e1) {
-                        System.out.println(e1);
+                        logger.debug(e1.toString());
                     }
                 }
             }
