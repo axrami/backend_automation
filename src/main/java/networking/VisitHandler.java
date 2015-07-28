@@ -41,7 +41,7 @@ public class VisitHandler {
             LPMobileHttpResponse response = sendVisitRequest(env, visit, visitBaseURL, visitor.getVisitorId());
             visit.addResponse(response);
             if (response.isSuccess()) {
-                logger.debug("<launch> response_code" + response.getResponseCode());
+                logger.debug("<launch> response_code " + response.getResponseCode());
             }
         } catch (Throwable t) {
             t.printStackTrace();
@@ -73,7 +73,7 @@ public class VisitHandler {
         if (response.isSuccess()) {
             JsonParser.parseResponseBody(httpResponse, httppost.getURI().toString(), visit);
         } else {
-            logger.debug("<sendVisitRequest> Failed code: " + response.getResponseCode());
+            logger.error("<sendVisitRequest> Failed code: " + response.getResponseCode());
         }
 
         return response;
