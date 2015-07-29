@@ -40,10 +40,11 @@ public class SessionTest {
     }
 
     @Test
-    public void sendMessage() {
+    public void beginChatSendMessage() {
         Session session = new Session();
+        session.beginVisit();
         session.beginChat();
-
+        session.sendMessage();
     }
 
 

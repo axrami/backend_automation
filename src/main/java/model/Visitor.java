@@ -8,7 +8,7 @@ public class Visitor {
 
     public String getVisitorId() {
         if (visitorId == null ) {
-            return "1234567";
+            return "";
         }
         return visitorId;
     }

@@ -41,7 +41,7 @@
 </td>
 <td>
 <div class="infoBox" id="duration">
-<div class="counter">1.065s</div>
+<div class="counter">1.152s</div>
 <p>duration</p>
 </div>
 </td>
@@ -66,9 +66,6 @@
 <li>
 <a href="#tab1">Standard output</a>
 </li>
-<li>
-<a href="#tab2">Standard error</a>
-</li>
 </ul>
 <div id="tab0" class="tab">
 <h2>Tests</h2>
@@ -81,8 +78,8 @@
 </tr>
 </thead>
 <tr>
-<td class="success">sendMessage</td>
-<td>1.065s</td>
+<td class="success">beginChatSendMessage</td>
+<td>1.152s</td>
 <td class="success">passed</td>
 </tr>
 </table>
@@ -90,30 +87,23 @@
 <div id="tab1" class="tab">
 <h2>Standard output</h2>
 <span class="code">
-<pre>10:50:25.865 [Test worker] DEBUG VisitHandler - &lt;sendVisitRequest&gt; postBody {&quot;device_id&quot;:&quot;286c5550ba06df78&quot;,&quot;extras&quot;:{&quot;detected_settings&quot;:{&quot;tz_offset&quot;:&quot;-25200&quot;,&quot;locale&quot;:&quot;en_US&quot;}},&quot;device_type&quot;:&quot;unknown Android SDK built for x86&quot;,&quot;language&quot;:&quot;en&quot;,&quot;strings_hash&quot;:&quot;38ceb8450c28f8adbe48ee71ae01e744&quot;,&quot;platform&quot;:&quot;Android&quot;,&quot;platform_version&quot;:&quot;21&quot;,&quot;skill&quot;:&quot;mobile&quot;,&quot;sdk_version&quot;:&quot;0.0.1&quot;,&quot;site_id&quot;:&quot;P36511428&quot;,&quot;app_id&quot;:&quot;com.liveperson.mobile.ecosmart-P36511428&quot;,&quot;branding_md5&quot;:&quot;e3fa6750a0c2e557342831924e6d39d4&quot;,&quot;platform_release&quot;:&quot;5.0.2&quot;}
-10:50:26.490 [Test worker] DEBUG VisitHandler - &lt;sendVisitRequest&gt; httpResponse HTTP/1.1 201 Created [Date: Wed, 29 Jul 2015 14:50:19 GMT, Content-Type: application/json, Content-Length: 907, Connection: keep-alive, Access-Control-Allow-Origin: *, Cache-Control: no-cache, no-store, must-revalidate, Pragma: no-cache, Expires: 0]
-10:50:26.498 [Test worker] DEBUG VisitHandler - &lt;launch&gt; response_code 201
-10:50:26.635 [Test worker] DEBUG ChatConnectionHandler - &lt;IntroSuccessful&gt;
-10:50:26.636 [Test worker] DEBUG ChatConnectionHandler - &lt;sendIntroRequest&gt; Headers secret-token=F98A8FA2CAD550448590CFF9F69F2B784E34A7F4776304E537A6F8; Version=1; Path=/
-10:50:26.636 [Test worker] DEBUG ChatConnectionHandler - &lt;openSseChatConnection&gt; sseURL https://dispatch.staging.look.io/api/v2/chat/sse/d882978571552669e8c7135d3bc8a58c
-10:50:26.649 [Test worker] DEBUG ChatConnectionHandler - &lt;chatConnected&gt;
-10:50:26.729 [Test worker] DEBUG ChatConnectionHandler - &lt;sendLinePostReqeust&gt; url https://dispatch.staging.look.io/api/v2/chat/line/d882978571552669e8c7135d3bc8a58c
-10:50:26.838 [Test worker] DEBUG ChatConnectionHandler - &lt;sendLinePostReqeust&gt; sendLinePostReqeust HTTP/1.1 401 Unauthorized [Date: Wed, 29 Jul 2015 14:50:19 GMT, Content-Type: application/json, Content-Length: 0, Connection: keep-alive, Access-Control-Allow-Origin: *]
-</pre>
-</span>
-</div>
-<div id="tab2" class="tab">
-<h2>Standard error</h2>
-<span class="code">
-<pre>Jul 29, 2015 10:50:26 AM org.apache.http.impl.client.DefaultRequestDirector handleResponse
-WARNING: Authentication error: Unable to respond to any of these challenges: {}
+<pre>15:58:02.689 [Test worker] DEBUG VisitHandler - &lt;sendVisitRequest&gt; postBody {&quot;device_id&quot;:&quot;286c5550ba06df78&quot;,&quot;extras&quot;:{&quot;detected_settings&quot;:{&quot;tz_offset&quot;:&quot;-25200&quot;,&quot;locale&quot;:&quot;en_US&quot;}},&quot;device_type&quot;:&quot;unknown Android SDK built for x86&quot;,&quot;language&quot;:&quot;en&quot;,&quot;strings_hash&quot;:&quot;38ceb8450c28f8adbe48ee71ae01e744&quot;,&quot;platform&quot;:&quot;Android&quot;,&quot;platform_version&quot;:&quot;21&quot;,&quot;skill&quot;:&quot;mobile&quot;,&quot;sdk_version&quot;:&quot;0.0.1&quot;,&quot;site_id&quot;:&quot;P36511428&quot;,&quot;app_id&quot;:&quot;com.liveperson.mobile.ecosmart-P36511428&quot;,&quot;branding_md5&quot;:&quot;e3fa6750a0c2e557342831924e6d39d4&quot;,&quot;platform_release&quot;:&quot;5.0.2&quot;}
+15:58:03.346 [Test worker] DEBUG VisitHandler - &lt;sendVisitRequest&gt; httpResponse HTTP/1.1 201 Created [Date: Wed, 29 Jul 2015 19:57:56 GMT, Content-Type: application/json, Content-Length: 907, Connection: keep-alive, Access-Control-Allow-Origin: *, Cache-Control: no-cache, no-store, must-revalidate, Pragma: no-cache, Expires: 0]
+15:58:03.355 [Test worker] DEBUG VisitHandler - &lt;launch&gt; response_code 201
+15:58:03.515 [Test worker] DEBUG ChatConnectionHandler - &lt;IntroSuccessful&gt;
+15:58:03.520 [Test worker] DEBUG ChatConnectionHandler - &lt;sendIntroRequest&gt; Headers secret-token=088240ECDF560DFADA8119894D57E323C8F03437445A37; Version=1; Path=/
+15:58:03.521 [Test worker] DEBUG ChatConnectionHandler - &lt;openSseChatConnection&gt; sseURL https://dispatch.staging.look.io/api/v2/chat/sse/d6213ff66bb6edaa4d0bb58ebc5fc096
+15:58:03.532 [Test worker] DEBUG ChatConnectionHandler - &lt;chatConnected&gt;
+15:58:03.609 [Test worker] DEBUG ChatConnectionHandler - &lt;sendLinePostReqeust&gt; url https://dispatch.staging.look.io/api/v2/chat/line/d6213ff66bb6edaa4d0bb58ebc5fc096
+15:58:03.609 [Test worker] DEBUG ChatConnectionHandler - &lt;CookieHeader&gt;secret-token=088240ECDF560DFADA8119894D57E323C8F03437445A37; Version=1; Path=/
+15:58:03.746 [Test worker] DEBUG ChatConnectionHandler - &lt;sendLinePostReqeust&gt; sendLinePostReqeust HTTP/1.1 200 OK [Date: Wed, 29 Jul 2015 19:57:56 GMT, Content-Type: application/json, Content-Length: 0, Connection: keep-alive, Access-Control-Allow-Origin: *, Cache-Control: no-cache, no-store, must-revalidate, Pragma: no-cache, Expires: 0]
 </pre>
 </span>
 </div>
 </div>
 <div id="footer">
 <p>Generated by 
-<a href="http://www.gradle.org">Gradle 2.2</a> at Jul 29, 2015 10:50:26 AM</p>
+<a href="http://www.gradle.org">Gradle 2.2</a> at Jul 29, 2015 3:58:03 PM</p>
 </div>
 </div>
 </body>

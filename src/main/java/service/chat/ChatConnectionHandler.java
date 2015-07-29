@@ -37,14 +37,15 @@ public class ChatConnectionHandler {
     public String COOKIE_HEADER_NAME = "Cookie";
     public Logger logger = LoggerFactory.getLogger("ChatConnectionHandler");
 
-    public void createChatConnection(LPMobileEnvironment env, LPMobileVisit visit, Visitor visitor, LPMobileChat chat) {
+    public IntroChatResponse createChatConnection(LPMobileEnvironment env, LPMobileVisit visit, Visitor visitor, LPMobileChat chat) {
         boolean success = false;
         introChatResponse = sendIntroRequest(env, visit, visitor);
         success = openSseChatConnection();
         if (success = true) {
             chatConnected();
-            sendLine(visit, visitor, introChatResponse);
+//            sendLine(visit, visitor, introChatResponse);
         }
+        return introChatResponse;
 
     }
 
@@ -96,9 +97,9 @@ public class ChatConnectionHandler {
 
     }
 
-    public void sendLine(LPMobileVisit visit, Visitor visitor, IntroChatResponse intro) {
+    public void sendLine(LPMobileVisit visit, Visitor visitor, IntroChatResponse intro, String postBody) {
         try {
-            String postBody = JsonGenerator.generateChatLineReqeust("Hello");
+//            String postBody = JsonGenerator.generateChatLineReqeust("Hello");
             sendLinePostRequest(visit, postBody, visitor, intro);
         } catch (IOException e ) {
             e.printStackTrace();
@@ -112,7 +113,7 @@ public class ChatConnectionHandler {
         HttpPost httpPost = new HttpPost(url);
         httpPost.addHeader(new BasicHeader("Content-type" , "application/json"));
         httpPost.addHeader(new BasicHeader("X-Liveperson-Capabilities", "account-skills"));
-        httpPost.addHeader(new BasicHeader("Cookie" , introChatResponse.getCookieHeader()));
+        httpPost.addHeader(new BasicHeader("Cookie", introChatResponse.getCookieHeader()));
         logger.debug("<CookieHeader>" + introChatResponse.getCookieHeader());
         httpPost.setEntity(new StringEntity(postBody, "UTF8"));
         HttpResponse response = httpCLient.execute(httpPost);

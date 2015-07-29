@@ -23,14 +23,24 @@ import java.util.logging.Handler;
  */
 public class ChatHandler {
 
+    boolean chatConnected = false;
+    ChatConnectionHandler chatConnectionHandler = new ChatConnectionHandler();
+    LPMobileChat chat = new LPMobileChat();
+    LPMobileEnvironment env;
+    LPMobileVisit visit;
+    Visitor visitor;
+    IntroChatResponse introChatResponse;
+
     public void createConnection(LPMobileEnvironment env, LPMobileVisit visit, Visitor visitor) {
-        LPMobileChat chat = new LPMobileChat();
-        ChatConnectionHandler chatConnectionHandler = new ChatConnectionHandler();
-        chatConnectionHandler.createChatConnection(env, visit,visitor, chat);
+        this.env = env;
+        this.visit = visit;
+        this.visitor = visitor;
+        this.introChatResponse = chatConnectionHandler.createChatConnection(env, visit,visitor, chat);
     }
 
     public void sendLine() {
-
+        String postBody = JsonGenerator.generateChatLineReqeust("Hello");
+        chatConnectionHandler.sendLine(visit, visitor, introChatResponse, postBody);
     }
 
     public void sendOutro() {
@@ -49,9 +59,27 @@ public class ChatHandler {
 
     }
 
+    public LPMobileEnvironment getEnv() {
+        return env;
+    }
 
+    public void setEnv(LPMobileEnvironment env) {
+        this.env = env;
+    }
 
+    public LPMobileVisit getVisit() {
+        return visit;
+    }
 
+    public void setVisit(LPMobileVisit visit) {
+        this.visit = visit;
+    }
 
+    public Visitor getVisitor() {
+        return visitor;
+    }
 
+    public void setVisitor(Visitor visitor) {
+        this.visitor = visitor;
+    }
 }

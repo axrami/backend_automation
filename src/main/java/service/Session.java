@@ -13,7 +13,7 @@ public class Session {
     private Visitor visitor = new Visitor();
     private LPMobileVisit visit;
     private LPMobileEnvironment env;
-
+    ChatHandler chat = new ChatHandler();
     public void setEnv(LPMobileEnvironment env) {
         this.env = env;
     }
@@ -47,8 +47,11 @@ public class Session {
         if (this.visit == null ) {
             beginVisit();
         }
-        ChatHandler chat = new ChatHandler();
         chat.createConnection(env, visit, visitor);
+    }
+
+    public void sendMessage() {
+        chat.sendLine();
     }
 
     public LPMobileEnvironment getEnv() {

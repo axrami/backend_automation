@@ -11,17 +11,17 @@ import java.util.concurrent.TimeUnit;
 public class ExecutorService {
 
     public void beginCounter() {
-        ScheduledExecutorService executor = Executors.newScheduledThreadPool(80);
         ScheduledExecutorService executor2 = Executors.newScheduledThreadPool(80);
 
         Runnable task = () -> {
+//            Session session = new Session();
+//            session.beginVisit();
             Session session = new Session();
-            session.beginVisit();
+            session.beginChat();
         };
 
         int intDelay = 0;
         int period = 1;
-        executor.scheduleAtFixedRate(task, intDelay, period, TimeUnit.MILLISECONDS);
         executor2.scheduleAtFixedRate(task, intDelay, period, TimeUnit.MILLISECONDS);
     }
 
