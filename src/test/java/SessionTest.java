@@ -39,5 +39,12 @@ public class SessionTest {
 
     }
 
+    @Test
+    public void sendMessage() {
+        Session session = new Session();
+        session.beginChat();
+
+    }
+
 
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="SessionTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2015-07-29T14:50:25" hostname="aramirez2-mac.local" time="1.065">
+  <properties/>
+  <testcase name="sendMessage" classname="SessionTest" time="1.065"/>
+  <system-out><![CDATA[10:50:25.865 [Test worker] DEBUG VisitHandler - <sendVisitRequest> postBody {"device_id":"286c5550ba06df78","extras":{"detected_settings":{"tz_offset":"-25200","locale":"en_US"}},"device_type":"unknown Android SDK built for x86","language":"en","strings_hash":"38ceb8450c28f8adbe48ee71ae01e744","platform":"Android","platform_version":"21","skill":"mobile","sdk_version":"0.0.1","site_id":"P36511428","app_id":"com.liveperson.mobile.ecosmart-P36511428","branding_md5":"e3fa6750a0c2e557342831924e6d39d4","platform_release":"5.0.2"}
+10:50:26.490 [Test worker] DEBUG VisitHandler - <sendVisitRequest> httpResponse HTTP/1.1 201 Created [Date: Wed, 29 Jul 2015 14:50:19 GMT, Content-Type: application/json, Content-Length: 907, Connection: keep-alive, Access-Control-Allow-Origin: *, Cache-Control: no-cache, no-store, must-revalidate, Pragma: no-cache, Expires: 0]
+10:50:26.498 [Test worker] DEBUG VisitHandler - <launch> response_code 201
+10:50:26.635 [Test worker] DEBUG ChatConnectionHandler - <IntroSuccessful>
+10:50:26.636 [Test worker] DEBUG ChatConnectionHandler - <sendIntroRequest> Headers secret-token=F98A8FA2CAD550448590CFF9F69F2B784E34A7F4776304E537A6F8; Version=1; Path=/
+10:50:26.636 [Test worker] DEBUG ChatConnectionHandler - <openSseChatConnection> sseURL https://dispatch.staging.look.io/api/v2/chat/sse/d882978571552669e8c7135d3bc8a58c
+10:50:26.649 [Test worker] DEBUG ChatConnectionHandler - <chatConnected>
+10:50:26.729 [Test worker] DEBUG ChatConnectionHandler - <sendLinePostReqeust> url https://dispatch.staging.look.io/api/v2/chat/line/d882978571552669e8c7135d3bc8a58c
+10:50:26.838 [Test worker] DEBUG ChatConnectionHandler - <sendLinePostReqeust> sendLinePostReqeust HTTP/1.1 401 Unauthorized [Date: Wed, 29 Jul 2015 14:50:19 GMT, Content-Type: application/json, Content-Length: 0, Connection: keep-alive, Access-Control-Allow-Origin: *]
+]]></system-out>
+  <system-err><![CDATA[Jul 29, 2015 10:50:26 AM org.apache.http.impl.client.DefaultRequestDirector handleResponse
+WARNING: Authentication error: Unable to respond to any of these challenges: {}
+]]></system-err>
+</testsuite>

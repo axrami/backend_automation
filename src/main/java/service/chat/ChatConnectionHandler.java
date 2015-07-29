@@ -73,7 +73,7 @@ public class ChatConnectionHandler {
                     }
                 }
             } else {
-                logger.debug("<Intro Not Successful>");
+                logger.error("<Intro Not Successful>");
             }
 
         } catch (IOException e) {
@@ -99,19 +99,21 @@ public class ChatConnectionHandler {
     public void sendLine(LPMobileVisit visit, Visitor visitor, IntroChatResponse intro) {
         try {
             String postBody = JsonGenerator.generateChatLineReqeust("Hello");
-            sendLinePostReqeust(visit, postBody, visitor, intro);
+            sendLinePostRequest(visit, postBody, visitor, intro);
         } catch (IOException e ) {
             e.printStackTrace();
         }
     }
 
-    public HttpResponse sendLinePostReqeust(LPMobileVisit visit, String postBody, Visitor visitor, IntroChatResponse intro) throws IOException {
+    public HttpResponse sendLinePostRequest(LPMobileVisit visit, String postBody, Visitor visitor, IntroChatResponse intro) throws IOException {
         HttpClient httpCLient = new DefaultHttpClient();
         String url = visit.getChatBaseURL() + "line/" + intro.getEngagementId();
         logger.debug("<sendLinePostReqeust> url " + url);
         HttpPost httpPost = new HttpPost(url);
         httpPost.addHeader(new BasicHeader("Content-type" , "application/json"));
         httpPost.addHeader(new BasicHeader("X-Liveperson-Capabilities", "account-skills"));
+        httpPost.addHeader(new BasicHeader("Cookie" , introChatResponse.getCookieHeader()));
+        logger.debug("<CookieHeader>" + introChatResponse.getCookieHeader());
         httpPost.setEntity(new StringEntity(postBody, "UTF8"));
         HttpResponse response = httpCLient.execute(httpPost);
         logger.debug("<sendLinePostReqeust> sendLinePostReqeust " + response);

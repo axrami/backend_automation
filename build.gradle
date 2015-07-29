@@ -11,6 +11,7 @@ repositories {
 dependencies {
     compile 'org.apache.httpcomponents:httpclient:4.1.1'
     compile 'com.google.code.gson:gson:2.3.1'
+    compile 'org.glassfish.jersey.media:jersey-media-jaxb:2.16'
     compile group: 'com.googlecode.json-simple' , name: 'json-simple' , version: '1.1.1'
     compile 'ch.qos.logback:logback-classic:0.9.26'
     testCompile "org.mockito:mockito-core:1+"

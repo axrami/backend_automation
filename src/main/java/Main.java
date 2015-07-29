@@ -11,8 +11,10 @@ import java.util.concurrent.TimeUnit;
 public class Main {
 
     public static void main(String args[]) {
-        ExecutorService e = new ExecutorService();
-        e.beginCounter();
+//        ExecutorService e = new ExecutorService();
+//        e.beginCounter();
+        Session session = new Session();
+        session.beginChat();
 
     }
 
