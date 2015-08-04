@@ -5,12 +5,14 @@ import model.LPMobileVisit;
 import org.apache.http.HttpResponse;
 import org.apache.http.conn.BasicManagedEntity;
 import org.eclipse.persistence.jaxb.JAXBContextFactory;
+import org.eclipse.persistence.jaxb.MarshallerProperties;
 import org.eclipse.persistence.jaxb.UnmarshallerProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 import java.io.BufferedReader;
@@ -45,10 +47,7 @@ public class IntroMarshaller {
                 um.setProperty(UnmarshallerProperties.MEDIA_TYPE, "application/json");
                 um.setProperty(UnmarshallerProperties.JSON_INCLUDE_ROOT, true);
                 Intro intro = um.unmarshal(responseJson, Intro.class).getValue();
-
-                logger.debug("<survey> " + intro.isSurveys_enabled());
-                logger.debug("<continue> " + intro.getContinue_url());
-                logger.debug("<lang> " + intro.getSupported_languages());
+                marshalIntro(intro);
                 visit.setIntro(intro);
 
 //                logger.debug("Unmarshalled " + intro.());
@@ -58,8 +57,23 @@ public class IntroMarshaller {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-
         }
+
+    }
+
+    public void marshalIntro(Intro intro) {
+        try {
+            JAXBContext jc = JAXBContextFactory.createContext(new Class[]{Intro.class}, null);
+            Marshaller marshaller = jc.createMarshaller();
+            marshaller.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.marshal(intro, System.out);
+
+
+        } catch (JAXBException e ) {
+            e.printStackTrace();
+        }
+
     }
 
 
