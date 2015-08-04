@@ -1,17 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="SessionTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2015-07-29T19:58:02" hostname="aramirez2-mac.local" time="1.152">
+<testsuite name="SessionTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2015-08-03T12:55:26" hostname="aramirez2-mac.local" time="0.604">
   <properties/>
-  <testcase name="beginChatSendMessage" classname="SessionTest" time="1.152"/>
-  <system-out><![CDATA[15:58:02.689 [Test worker] DEBUG VisitHandler - <sendVisitRequest> postBody {"device_id":"286c5550ba06df78","extras":{"detected_settings":{"tz_offset":"-25200","locale":"en_US"}},"device_type":"unknown Android SDK built for x86","language":"en","strings_hash":"38ceb8450c28f8adbe48ee71ae01e744","platform":"Android","platform_version":"21","skill":"mobile","sdk_version":"0.0.1","site_id":"P36511428","app_id":"com.liveperson.mobile.ecosmart-P36511428","branding_md5":"e3fa6750a0c2e557342831924e6d39d4","platform_release":"5.0.2"}
-15:58:03.346 [Test worker] DEBUG VisitHandler - <sendVisitRequest> httpResponse HTTP/1.1 201 Created [Date: Wed, 29 Jul 2015 19:57:56 GMT, Content-Type: application/json, Content-Length: 907, Connection: keep-alive, Access-Control-Allow-Origin: *, Cache-Control: no-cache, no-store, must-revalidate, Pragma: no-cache, Expires: 0]
-15:58:03.355 [Test worker] DEBUG VisitHandler - <launch> response_code 201
-15:58:03.515 [Test worker] DEBUG ChatConnectionHandler - <IntroSuccessful>
-15:58:03.520 [Test worker] DEBUG ChatConnectionHandler - <sendIntroRequest> Headers secret-token=088240ECDF560DFADA8119894D57E323C8F03437445A37; Version=1; Path=/
-15:58:03.521 [Test worker] DEBUG ChatConnectionHandler - <openSseChatConnection> sseURL https://dispatch.staging.look.io/api/v2/chat/sse/d6213ff66bb6edaa4d0bb58ebc5fc096
-15:58:03.532 [Test worker] DEBUG ChatConnectionHandler - <chatConnected>
-15:58:03.609 [Test worker] DEBUG ChatConnectionHandler - <sendLinePostReqeust> url https://dispatch.staging.look.io/api/v2/chat/line/d6213ff66bb6edaa4d0bb58ebc5fc096
-15:58:03.609 [Test worker] DEBUG ChatConnectionHandler - <CookieHeader>secret-token=088240ECDF560DFADA8119894D57E323C8F03437445A37; Version=1; Path=/
-15:58:03.746 [Test worker] DEBUG ChatConnectionHandler - <sendLinePostReqeust> sendLinePostReqeust HTTP/1.1 200 OK [Date: Wed, 29 Jul 2015 19:57:56 GMT, Content-Type: application/json, Content-Length: 0, Connection: keep-alive, Access-Control-Allow-Origin: *, Cache-Control: no-cache, no-store, must-revalidate, Pragma: no-cache, Expires: 0]
+  <testcase name="beginVisit" classname="SessionTest" time="0.604"/>
+  <system-out><![CDATA[08:55:26.844 [Test worker] DEBUG VisitHandler - <sendVisitRequest> postBody {"device_id":"286c5550ba06df78","extras":{"detected_settings":{"tz_offset":"-25200","locale":"en_US"}},"device_type":"unknown Android SDK built for x86","language":"en","strings_hash":"38ceb8450c28f8adbe48ee71ae01e744","platform":"Android","platform_version":"21","skill":"mobile","sdk_version":"0.0.1","site_id":"P36511428","app_id":"com.liveperson.mobile.ecosmart-P36511428","branding_md5":"e3fa6750a0c2e557342831924e6d39d4","platform_release":"5.0.2"}
+08:55:27.347 [Test worker] DEBUG VisitHandler - <sendVisitRequest> httpResponse HTTP/1.1 201 Created [Date: Mon, 03 Aug 2015 12:55:27 GMT, Content-Type: application/json, Content-Length: 907, Connection: keep-alive, Access-Control-Allow-Origin: *, Cache-Control: no-cache, no-store, must-revalidate, Pragma: no-cache, Expires: 0]
+08:55:27.348 [Test worker] DEBUG IntroMarshaller - unmarshal attempt
+08:55:27.380 [Test worker] DEBUG VisitHandler - <launch> response_code 201
 ]]></system-out>
-  <system-err><![CDATA[]]></system-err>
+  <system-err><![CDATA[com.sun.xml.internal.bind.v2.runtime.IllegalAnnotationsException: 4 counts of IllegalAnnotationExceptions
+Class has two properties of the same name "continue_url"
+	this problem is related to the following location:
+		at public java.lang.String json.model.Intro.getContinue_url()
+		at json.model.Intro
+	this problem is related to the following location:
+		at public java.lang.String json.model.Intro.continue_url
+		at json.model.Intro
+Class has two properties of the same name "next_interval"
+	this problem is related to the following location:
+		at public java.lang.String json.model.Intro.getNext_interval()
+		at json.model.Intro
+	this problem is related to the following location:
+		at public java.lang.String json.model.Intro.next_interval
+		at json.model.Intro
+Class has two properties of the same name "visit_id"
+	this problem is related to the following location:
+		at public java.lang.String json.model.Intro.getVisit_id()
+		at json.model.Intro
+	this problem is related to the following location:
+		at public java.lang.String json.model.Intro.visit_id
+		at json.model.Intro
+Class has two properties of the same name "visitor_id"
+	this problem is related to the following location:
+		at public java.lang.String json.model.Intro.getVisitor_id()
+		at json.model.Intro
+	this problem is related to the following location:
+		at public java.lang.String json.model.Intro.visitor_id
+		at json.model.Intro
+
+	at com.sun.xml.internal.bind.v2.runtime.IllegalAnnotationsException$Builder.check(IllegalAnnotationsException.java:91)
+	at com.sun.xml.internal.bind.v2.runtime.JAXBContextImpl.getTypeInfoSet(JAXBContextImpl.java:445)
+	at com.sun.xml.internal.bind.v2.runtime.JAXBContextImpl.<init>(JAXBContextImpl.java:277)
+	at com.sun.xml.internal.bind.v2.runtime.JAXBContextImpl.<init>(JAXBContextImpl.java:124)
+	at com.sun.xml.internal.bind.v2.runtime.JAXBContextImpl$JAXBContextBuilder.build(JAXBContextImpl.java:1123)
+	at com.sun.xml.internal.bind.v2.ContextFactory.createContext(ContextFactory.java:147)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+	at javax.xml.bind.ContextFinder.newInstance(ContextFinder.java:247)
+	at javax.xml.bind.ContextFinder.newInstance(ContextFinder.java:234)
+	at javax.xml.bind.ContextFinder.find(ContextFinder.java:462)
+	at javax.xml.bind.JAXBContext.newInstance(JAXBContext.java:641)
+	at javax.xml.bind.JAXBContext.newInstance(JAXBContext.java:584)
+	at json.IntroMarshaller.unmarshalJson(IntroMarshaller.java:29)
+	at networking.VisitHandler.sendVisitRequest(VisitHandler.java:76)
+	at networking.VisitHandler.launch(VisitHandler.java:42)
+	at service.Session.beginVisit(Session.java:33)
+	at SessionTest.beginVisit(SessionTest.java:35)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:47)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:44)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:271)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:70)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:50)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:238)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:63)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:236)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:53)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:229)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:309)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.runTestClass(JUnitTestClassExecuter.java:86)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassExecuter.execute(JUnitTestClassExecuter.java:49)
+	at org.gradle.api.internal.tasks.testing.junit.JUnitTestClassProcessor.processTestClass(JUnitTestClassProcessor.java:69)
+	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.processTestClass(SuiteTestClassProcessor.java:48)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.messaging.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:32)
+	at org.gradle.messaging.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:93)
+	at com.sun.proxy.$Proxy2.processTestClass(Unknown Source)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.processTestClass(TestWorker.java:105)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:497)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:35)
+	at org.gradle.messaging.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.messaging.remote.internal.hub.MessageHub$Handler.run(MessageHub.java:360)
+	at org.gradle.internal.concurrent.DefaultExecutorFactory$StoppableExecutorImpl$1.run(DefaultExecutorFactory.java:64)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+]]></system-err>
 </testsuite>

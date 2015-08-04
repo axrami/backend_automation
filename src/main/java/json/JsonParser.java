@@ -11,6 +11,8 @@ import org.json.simple.JSONValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ws.rs.GET;
+import javax.ws.rs.Produces;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -54,9 +56,11 @@ public class JsonParser {
 
 // divide this from a json gen and env setter
     public static void parseVisitResponse(String jsonString, LPMobileVisit visit) {
-
-        JSONObject json = (JSONObject) JSONValue.parse(jsonString);
+        int number = 1;
+        JSONObject json = (JSONObject) JSONValue.parse("1");
+        new HashMap<String, Object>();
         visit.setResponse(json.toString());
+        logger.debug("<jsonString> " + jsonString);
 
         if (json.containsKey(F_VISIT_ID)) {
             visit.setVisitId(json.get(F_VISIT_ID).toString());
@@ -194,6 +198,8 @@ public class JsonParser {
 
         }
     }
+
+
 }
 
 

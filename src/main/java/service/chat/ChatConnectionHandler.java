@@ -43,7 +43,6 @@ public class ChatConnectionHandler {
         success = openSseChatConnection();
         if (success = true) {
             chatConnected();
-//            sendLine(visit, visitor, introChatResponse);
         }
         return introChatResponse;
 
@@ -97,15 +96,6 @@ public class ChatConnectionHandler {
 
     }
 
-    public void sendLine(LPMobileVisit visit, Visitor visitor, IntroChatResponse intro, String postBody) {
-        try {
-//            String postBody = JsonGenerator.generateChatLineReqeust("Hello");
-            sendLinePostRequest(visit, postBody, visitor, intro);
-        } catch (IOException e ) {
-            e.printStackTrace();
-        }
-    }
-
     public HttpResponse sendLinePostRequest(LPMobileVisit visit, String postBody, Visitor visitor, IntroChatResponse intro) throws IOException {
         HttpClient httpCLient = new DefaultHttpClient();
         String url = visit.getChatBaseURL() + "line/" + intro.getEngagementId();
@@ -118,6 +108,35 @@ public class ChatConnectionHandler {
         httpPost.setEntity(new StringEntity(postBody, "UTF8"));
         HttpResponse response = httpCLient.execute(httpPost);
         logger.debug("<sendLinePostReqeust> sendLinePostReqeust " + response);
+        return response;
+
+    }
+
+    public HttpResponse sendOutroPostReqeust(LPMobileVisit visit, String postBody, Visitor visitor, IntroChatResponse intro) throws IOException {
+        HttpClient httpClient = new DefaultHttpClient();
+        String url = visit.getChatBaseURL() + "outro/" + intro.getEngagementId();
+        logger.debug("<sendOutroPostReqeust> url " + url);
+        HttpPost httpPost = new HttpPost(url);
+        httpPost.addHeader(new BasicHeader("Content-type" , "application/json"));
+        httpPost.addHeader(new BasicHeader("X-Liveperson-Capabilities", "account-skills"));
+        httpPost.addHeader(new BasicHeader("Cookie", introChatResponse.getCookieHeader()));
+        httpPost.setEntity(new StringEntity(postBody, "UTF8"));
+        HttpResponse response = httpClient.execute(httpPost);
+        return response;
+    }
+
+    public HttpResponse sendPost(LPMobileVisit visit, Visitor visitor, String postBody, IntroChatResponse intro, String suffix) throws IOException{
+        HttpClient httpCLient = new DefaultHttpClient();
+        String url = visit.getChatBaseURL() + suffix + intro.getEngagementId();
+        logger.debug("<sendPost> postURL " + url);
+        HttpPost httpPost = new HttpPost(url);
+        httpPost.addHeader(new BasicHeader("Content-type" , "application/json"));
+        httpPost.addHeader(new BasicHeader("X-Liveperson-Capabilities", "account-skills"));
+        if (!introChatResponse.getCookieHeader().isEmpty()) {
+            httpPost.addHeader(new BasicHeader("Cookie" , introChatResponse.getCookieHeader()));
+        }
+        httpPost.setEntity(new StringEntity(postBody, "UTF8"));
+        HttpResponse response = httpCLient.execute(httpPost);
         return response;
 
     }

@@ -1,5 +1,7 @@
 package model;
 
+import json.model.Intro;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class LPMobileVisit {
     boolean callDeflectionReported = false;
+    Intro intro;
     String visitorId;
     String visitId;
     String continueURL;
@@ -21,7 +24,16 @@ public class LPMobileVisit {
     String branding_mp5;
     String response;
     String ssoKey;
-    private List responses = new ArrayList<LPMobileHttpResponse>();
+    List responses = new ArrayList<LPMobileHttpResponse>();
+    HashMap<String, HashMap<String, Skill>> skills = new HashMap<String, HashMap<String, Skill>>();
+
+    public Intro getIntro() {
+        return intro;
+    }
+
+    public void setIntro(Intro intro) {
+        this.intro = intro;
+    }
 
     public void addResponse(LPMobileHttpResponse response) {
         if (responses.isEmpty()) {
@@ -33,8 +45,6 @@ public class LPMobileVisit {
     public List getResponses() {
         return responses;
     }
-
-    HashMap<String, HashMap<String, Skill>> skills = new HashMap<String, HashMap<String, Skill>>();
 
     public String getVisitorId() {
         return visitorId;
@@ -59,7 +69,6 @@ public class LPMobileVisit {
     public void setBranding_mp5(String branding_mp5) {
         this.branding_mp5 = branding_mp5;
     }
-
 
     public String getVisitId() {
         return visitId;

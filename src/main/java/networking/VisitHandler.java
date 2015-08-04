@@ -1,6 +1,7 @@
 package networking;
 
 
+import json.IntroMarshaller;
 import json.JsonGenerator;
 import json.JsonParser;
 import model.LPMobileEnvironment;
@@ -71,7 +72,9 @@ public class VisitHandler {
         response.setResponseCode(httpResponse.getStatusLine().getStatusCode());
 
         if (response.isSuccess()) {
-            JsonParser.parseResponseBody(httpResponse, httppost.getURI().toString(), visit);
+            IntroMarshaller intro = new IntroMarshaller();
+            intro.unmarshalJson(httpResponse, visit);
+//            JsonParser.parseResponseBody(httpResponse, httppost.getURI().toString(), visit);
         } else {
             logger.error("<sendVisitRequest> Failed code: " + response.getResponseCode());
         }

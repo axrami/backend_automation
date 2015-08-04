@@ -32,11 +32,7 @@ public class SessionTest {
     @Test
     public void beginVisit() {
         Session session = new Session();
-        LPMobileEnvironment env = createBaseEnv();
-        session.beginVisit(env);
-        LPMobileVisit visit = session.getVisit();
-        System.out.println(env.getDeviceID());
-
+        session.beginVisit();
     }
 
     @Test
@@ -45,6 +41,16 @@ public class SessionTest {
         session.beginVisit();
         session.beginChat();
         session.sendMessage();
+        session.sendMessage();
+        session.endChat();
+
+    }
+
+    @Test
+    public void jsonTest() {
+        Session session = new Session();
+        System.out.println(session.jsonGen().age);
+
     }
 
 

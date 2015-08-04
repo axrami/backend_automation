@@ -9,13 +9,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class JsonGen {
-//    public String name;
-//    public int age;
-//
-//    public JsonGen() {}
-//
-//    public JsonGen(String name, int age) {
-//        this.name = name;
-//        this.age = age;
-//    }
+    public String name;
+    public int age;
+
+    public JsonGen() {}
+
+    public JsonGen(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
 }
