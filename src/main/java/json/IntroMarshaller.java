@@ -1,6 +1,5 @@
 package json;
 
-import json.model.Employee;
 import json.model.Intro;
 import model.LPMobileVisit;
 import org.apache.http.HttpResponse;
@@ -46,6 +45,10 @@ public class IntroMarshaller {
                 um.setProperty(UnmarshallerProperties.MEDIA_TYPE, "application/json");
                 um.setProperty(UnmarshallerProperties.JSON_INCLUDE_ROOT, true);
                 Intro intro = um.unmarshal(responseJson, Intro.class).getValue();
+
+                logger.debug("<survey> " + intro.isSurveys_enabled());
+                logger.debug("<continue> " + intro.getContinue_url());
+                logger.debug("<lang> " + intro.getSupported_languages());
                 visit.setIntro(intro);
 
 //                logger.debug("Unmarshalled " + intro.());

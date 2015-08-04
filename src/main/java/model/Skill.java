@@ -41,27 +41,6 @@ public class Skill {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (!(obj instanceof Skill)) return false;
-
-        Skill skill = (Skill) obj;
-
-        if (isDefault != skill.isDefault) return false;
-        if (isEnabled !=skill.isEnabled) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = (isDefault ? 1 : 0);
-        result = 31 * result + (isEnabled ? 1 : 0);
-        return result;
-    }
-
-
-    @Override
     public String toString() {
         return "model.Skill{" +
                 "isDefault=" + isDefault +

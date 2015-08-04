@@ -1,14 +1,8 @@
 package json.model;
 
-import model.Skill;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by andrew on 7/30/15.
@@ -20,14 +14,22 @@ public class Intro {
     String button_text;
     String button_text_color;
     String button_tint;
-    String continue_url;
-    List <String> supported_languages;
-    String visit_url;
-    String mask_cc;
+//    Object button;
+    int button_visibility;
+//    Object default_availability;
+    int enabled;
+//    Object skills;
+    int voice_enabled;
     String welcome_text;
-    String voice_enabled;
-//    List<String> skills;
-    Map<String, Map<String, Skill>> skills;
+    String default_language;
+    List <String> supported_languages;
+    boolean surveys_enabled;
+    boolean hide_email_chat;
+    int next_interval;
+    String continue_url;
+    int show_exit_survey_condition;
+    String mask_cc;
+    String visit_url;
 
     public String getVisit_id() {
         return visit_id;
@@ -93,19 +95,75 @@ public class Intro {
         this.visit_url = visit_url;
     }
 
-    public String getVoice_enabled() {
-        return voice_enabled;
-    }
-
-    public void setVoice_enabled(String voice_enabled) {
-        this.voice_enabled = voice_enabled;
-    }
-
     public String getWelcome_text() {
         return welcome_text;
     }
 
     public void setWelcome_text(String welcome_text) {
         this.welcome_text = welcome_text;
+    }
+
+    public boolean isSurveys_enabled() {
+        return surveys_enabled;
+    }
+
+    public void setSurveys_enabled(boolean surveys_enabled) {
+        this.surveys_enabled = surveys_enabled;
+    }
+
+    public boolean isHide_email_chat() {
+        return hide_email_chat;
+    }
+
+    public void setHide_email_chat(boolean hide_email_chat) {
+        this.hide_email_chat = hide_email_chat;
+    }
+
+    public int getNext_interval() {
+        return next_interval;
+    }
+
+    public void setNext_interval(int next_interval) {
+        this.next_interval = next_interval;
+    }
+
+    public int getShow_exit_survey_condition() {
+        return show_exit_survey_condition;
+    }
+
+    public void setShow_exit_survey_condition(int show_exit_survey_condition) {
+        this.show_exit_survey_condition = show_exit_survey_condition;
+    }
+
+    public int getButton_visibility() {
+        return button_visibility;
+    }
+
+    public void setButton_visibility(int button_visibility) {
+        this.button_visibility = button_visibility;
+    }
+
+    public String getDefault_language() {
+        return default_language;
+    }
+
+    public void setDefault_language(String default_language) {
+        this.default_language = default_language;
+    }
+
+    public int getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(int enabled) {
+        this.enabled = enabled;
+    }
+
+    public int getVoice_enabled() {
+        return voice_enabled;
+    }
+
+    public void setVoice_enabled(int voice_enabled) {
+        this.voice_enabled = voice_enabled;
     }
 }
