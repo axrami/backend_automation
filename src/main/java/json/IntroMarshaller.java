@@ -15,10 +15,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.StringReader;
+import java.io.*;
 
 
 /**
@@ -50,7 +47,6 @@ public class IntroMarshaller {
                 marshalIntro(intro);
                 visit.setIntro(intro);
 
-//                logger.debug("Unmarshalled " + intro.());
             }
 
         } catch (JAXBException e) {
@@ -61,19 +57,14 @@ public class IntroMarshaller {
 
     }
 
-    public void marshalIntro(Intro intro) {
-        try {
+    public String marshalIntro(Intro intro) throws JAXBException {
             JAXBContext jc = JAXBContextFactory.createContext(new Class[]{Intro.class}, null);
             Marshaller marshaller = jc.createMarshaller();
             marshaller.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
-            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-            marshaller.marshal(intro, System.out);
-
-
-        } catch (JAXBException e ) {
-            e.printStackTrace();
-        }
-
+//            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            StringWriter sw = new StringWriter();
+            marshaller.marshal(intro, sw);
+            return sw.toString();
     }
 
 
