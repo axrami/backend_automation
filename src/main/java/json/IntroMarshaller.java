@@ -1,6 +1,6 @@
 package json;
 
-import json.model.Intro;
+import json.model.*;
 import model.LPMobileVisit;
 import org.apache.http.HttpResponse;
 import org.apache.http.conn.BasicManagedEntity;
@@ -25,8 +25,9 @@ import java.io.*;
 public class IntroMarshaller {
     public Logger logger = LoggerFactory.getLogger("IntroMarshaller");
 
-    public void unmarshalJson(HttpResponse httpResponse, LPMobileVisit visit) {
-        logger.debug("unmarshal attempt");
+    private static final Class[] classList = new Class[]{Intro.class, Line.class};
+
+    public Object unmarshalJson(HttpResponse httpResponse, Class clazz) {
         try {
             if (httpResponse.getEntity() instanceof BasicManagedEntity) {
                 BasicManagedEntity entity = (BasicManagedEntity) httpResponse.getEntity();
@@ -36,35 +37,42 @@ public class IntroMarshaller {
                 while ((currentLine = br.readLine()) != null) {
                     inputStr.append(currentLine);
                 }
+
                 logger.debug("<Response>  " + inputStr.toString());
                 StreamSource responseJson = new StreamSource(new StringReader("{\"response\":" + inputStr.toString() + "}"));
-
-                JAXBContext jc = JAXBContextFactory.createContext(new Class[]{Intro.class}, null);
+                JAXBContext jc = JAXBContextFactory.createContext(new Class[]{clazz}, null);
                 Unmarshaller um = jc.createUnmarshaller();
                 um.setProperty(UnmarshallerProperties.MEDIA_TYPE, "application/json");
                 um.setProperty(UnmarshallerProperties.JSON_INCLUDE_ROOT, true);
-                Intro intro = um.unmarshal(responseJson, Intro.class).getValue();
-                marshalIntro(intro);
-                visit.setIntro(intro);
-
+                Object unmarshalledObj = um.unmarshal(responseJson, clazz).getValue();
+//                Intro intro = um.unmarshal(responseJson, Intro.class).getValue();
+//                System.out.println(intro.getBranding_md5().isEmpty()); // true
+//                visit.setIntro(intro);
+                return unmarshalledObj;
             }
-
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (JAXBException | IOException e) {
             e.printStackTrace();
         }
-
+        return null;
     }
 
-    public String marshalIntro(Intro intro) throws JAXBException {
-            JAXBContext jc = JAXBContextFactory.createContext(new Class[]{Intro.class}, null);
+    public String marshalIntro(Object obj) throws JAXBException {
+            JAXBContext jc = JAXBContextFactory.createContext(classList, null);
             Marshaller marshaller = jc.createMarshaller();
             marshaller.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
 //            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             StringWriter sw = new StringWriter();
-            marshaller.marshal(intro, sw);
+            marshaller.marshal(obj, sw);
             return sw.toString();
+    }
+
+    public String marshalLine(Line line) throws JAXBException {
+        JAXBContext jc = JAXBContextFactory.createContext(new Class[]{Intro.class}, null);
+        Marshaller marshaller = jc.createMarshaller();
+        marshaller.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
+        StringWriter sw = new StringWriter();
+        marshaller.marshal(line, sw);
+        return sw.toString();
     }
 
 

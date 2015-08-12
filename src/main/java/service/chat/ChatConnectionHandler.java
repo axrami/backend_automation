@@ -1,8 +1,10 @@
 package service.chat;
 
+import json.IntroMarshaller;
 import json.JsonGenerator;
 import json.JsonParser;
 import json.model.Intro;
+import json.model.Line;
 import model.LPMobileChat;
 import model.LPMobileEnvironment;
 import model.LPMobileVisit;
@@ -37,6 +39,7 @@ public class ChatConnectionHandler {
     public HttpsURLConnection sseClient;
     public String COOKIE_HEADER_NAME = "Cookie";
     public Logger logger = LoggerFactory.getLogger("ChatConnectionHandler");
+    IntroMarshaller marshaller = new IntroMarshaller();
 
     public IntroChatResponse createChatConnection(LPMobileEnvironment env, LPMobileVisit visit, Visitor visitor, LPMobileChat chat) {
         boolean success = false;
@@ -56,7 +59,6 @@ public class ChatConnectionHandler {
             String postBody = JsonGenerator.generateVisitRequest(env, visit.getVisitId(), visitor.getVisitorId(), null);
             visit.setChatBaseURL(String.format(CHAT_BASE_URL, LPMobileProperties.getChatStagDomain()));
             HttpResponse httpResponse = sendPostRequest(visit, postBody, null, "intro/");
-
             int statusCode = httpResponse.getStatusLine().getStatusCode();
 
             if (statusCode == 200 ) {
@@ -94,61 +96,9 @@ public class ChatConnectionHandler {
         if (intro != null) {
             httpPost.addHeader(new BasicHeader("Cookie", intro.getCookieHeader()));
         }
-
         HttpResponse response = httpClient.execute(httpPost);
         return response;
 
-    }
-
-    // Example: {"text":"hello"}
-    public HttpResponse sendLinePostRequest(LPMobileVisit visit, String postBody, IntroChatResponse intro) throws IOException {
-        return sendPostRequest(visit, postBody, intro, "line/" + intro.getEngagementId());
-    }
-
-    // Body not parsed
-    public HttpResponse sendOutroPostReqeust(LPMobileVisit visit, String postBody, IntroChatResponse intro) throws IOException {
-        return sendPostRequest(visit, postBody, intro, "outro/" + intro.getEngagementId());
-    }
-
-    // Example: {“prechat”:survey,"postchat":survey,"offline":survey}
-    public HttpResponse sendSurveyPostRequest(LPMobileVisit visit, String postBody, IntroChatResponse intro) throws IOException{
-        return sendPostRequest(visit, postBody, intro, "survey/" + intro.getEngagementId());
-    }
-
-    // Example: {"email_address":"visitor@email.com","message":"feedback text"}
-    public HttpResponse sendFeedbackPostRequest(LPMobileVisit visit, String postBody, IntroChatResponse intro) throws IOException {
-        return sendPostRequest(visit, postBody, intro, "feedback/" + intro.getEngagementId());
-    }
-
-    // Example: {"capabilities":["show_leavemessage","capability2",”capability3”]}
-    public HttpResponse sendCapabilitiesPostRequest(LPMobileVisit visit, String postBody, IntroChatResponse intro) throws IOException {
-        return sendPostRequest(visit, postBody, intro, "capabilities/" + intro.getEngagementId());
-    }
-
-    // Example (to send chat history to email): {"email_addresses":["email1","email2"]}
-    // Example (to send chat history to SSE channel): {}
-    public HttpResponse sendChatHistoryPostRequest(LPMobileVisit visit, String postBody, IntroChatResponse intro) throws IOException {
-        return sendPostRequest(visit, postBody, intro, "chat_history/" + intro.getEngagementId());
-    }
-
-    // Example: {“variable”:value}
-    public HttpResponse sendCustomVarsPostRequest(LPMobileVisit visit, String postBody, IntroChatResponse intro) throws IOException {
-        return sendPostRequest(visit, postBody, intro, "custom_vars/" + intro.getEngagementId());
-    }
-
-    // Example: {"action":"typing_start"}
-    public HttpResponse sendAdvisoryPostRequest(LPMobileVisit visit, String postBody, IntroChatResponse intro) throws IOException {
-        return sendPostRequest(visit, postBody, intro, "advisory/" + intro.getEngagementId());
-    }
-
-    // Body: binary
-    public HttpResponse sendScreenShotPostRequest(LPMobileVisit visit, String postBody, IntroChatResponse intro) throws IOException {
-        return sendPostRequest(visit, postBody, intro, "screenshot/" + intro.getEngagementId());
-    }
-
-    //Example: {"permission":"revoked", “asset”:”screenshare”} , {"permission":"granted", “asset”:”screenshare”}
-    public HttpResponse sendPermissionPostRequest(LPMobileVisit visit, String postBody, IntroChatResponse intro) throws IOException {
-        return sendPostRequest(visit, postBody, intro, "permission/" + intro.getEngagementId());
     }
 
 

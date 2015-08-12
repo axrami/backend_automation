@@ -4,6 +4,7 @@ package networking;
 import json.IntroMarshaller;
 import json.JsonGenerator;
 import json.JsonParser;
+import json.model.Intro;
 import model.LPMobileEnvironment;
 import model.LPMobileHttpResponse;
 import model.LPMobileVisit;
@@ -72,8 +73,15 @@ public class VisitHandler {
         response.setResponseCode(httpResponse.getStatusLine().getStatusCode());
 
         if (response.isSuccess()) {
-            IntroMarshaller intro = new IntroMarshaller();
-            intro.unmarshalJson(httpResponse, visit);
+            IntroMarshaller introMarshaller = new IntroMarshaller();
+            Class introClass = Class.forName("json.model.Intro");
+            Object marshalledObj = introMarshaller.unmarshalJson(httpResponse, introClass);
+            if (marshalledObj instanceof Intro) {
+                Intro intro = (Intro)marshalledObj;
+                this.visit.setIntro(intro);
+            } else {
+                logger.error("<sendVisitRequest> Server response isSuccess: failed to unmarshall ");
+            }
 //            JsonParser.parseResponseBody(httpResponse, httppost.getURI().toString(), visit);
         } else {
             logger.error("<sendVisitRequest> Failed code: " + response.getResponseCode());

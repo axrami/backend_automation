@@ -24,11 +24,20 @@ public class LPMobileVisit {
     String branding_mp5;
     String response;
     String ssoKey;
+    String branding;
     List responses = new ArrayList<LPMobileHttpResponse>();
     HashMap<String, HashMap<String, Skill>> skills = new HashMap<String, HashMap<String, Skill>>();
 
     public Intro getIntro() {
         return intro;
+    }
+
+    public String getBranding() {
+        return branding;
+    }
+
+    public void setBranding(String branding) {
+        this.branding = branding;
     }
 
     public void setIntro(Intro intro) {

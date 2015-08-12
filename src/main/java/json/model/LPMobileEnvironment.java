@@ -1,10 +1,12 @@
-package model;
+package json.model;
+
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Created by andrew on 6/11/15.
- * Environment used to create postbody
+ * Created by andrew on 8/11/15.
  */
 
+@XmlRootElement
 public class LPMobileEnvironment {
     String locale;
     String connectionType;
@@ -24,26 +26,8 @@ public class LPMobileEnvironment {
     String brandingHashStr;
     String currentAccount;
     String currentSkill;
-    String language = "en";
-    boolean reqeust_visitor_id;
-
-    private boolean isAccessibilityActive = false;
-
-    public String getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(String language) {
-        this.language = language;
-    }
-
-    public String getSdkVersion() {
-        return "0.0.1";
-    }
-
-    public String getPlatformVersion() {
-        return "8.3";
-    }
+    String language;
+    boolean request_visitor_id;
 
     public String getAppBundleVersion() {
         return appBundleVersion;
@@ -69,20 +53,20 @@ public class LPMobileEnvironment {
         this.brandingHashStr = brandingHashStr;
     }
 
-    public String getCurrentAccount() {
-        return currentAccount;
-    }
-
-    public void setCurrentAccount(String currentAccount) {
-        this.currentAccount = currentAccount;
-    }
-
     public String getConnectionType() {
         return connectionType;
     }
 
     public void setConnectionType(String connectionType) {
         this.connectionType = connectionType;
+    }
+
+    public String getCurrentAccount() {
+        return currentAccount;
+    }
+
+    public void setCurrentAccount(String currentAccount) {
+        this.currentAccount = currentAccount;
     }
 
     public String getCurrentSkill() {
@@ -101,10 +85,6 @@ public class LPMobileEnvironment {
         this.deviceID = deviceID;
     }
 
-    public String getDeviceType() {
-        return "iPhone6";
-    }
-
     public String getDistributionType() {
         return distributionType;
     }
@@ -113,12 +93,20 @@ public class LPMobileEnvironment {
         this.distributionType = distributionType;
     }
 
-    public Boolean getJailBroken() {
+    public Boolean isJailBroken() {
         return jailBroken;
     }
 
     public void setJailBroken(Boolean jailBroken) {
         this.jailBroken = jailBroken;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 
     public String getLatitude() {
@@ -145,7 +133,7 @@ public class LPMobileEnvironment {
         this.localizedHashStr = localizedHashStr;
     }
 
-    public Boolean getLocationServices() {
+    public Boolean isLocationServices() {
         return locationServices;
     }
 
@@ -169,20 +157,20 @@ public class LPMobileEnvironment {
         this.platform = platform;
     }
 
-    public Boolean getPush() {
+    public Boolean isPush() {
         return push;
-    }
-
-    public boolean isAccessibilityActive() {
-        return isAccessibilityActive;
-    }
-
-    public void setAccessibilityActive(boolean isAccessibilityActive) {
-        this.isAccessibilityActive = isAccessibilityActive;
     }
 
     public void setPush(Boolean push) {
         this.push = push;
+    }
+
+    public boolean isRequest_visitor_id() {
+        return request_visitor_id;
+    }
+
+    public void setRequest_visitor_id(boolean request_visitor_id) {
+        this.request_visitor_id = request_visitor_id;
     }
 
     public String getSkillId() {
@@ -200,31 +188,4 @@ public class LPMobileEnvironment {
     public void setTzOffset(String tzOffset) {
         this.tzOffset = tzOffset;
     }
-
-    @Override
-    public String toString() {
-        return "LPMobileEnvironment{" +
-                "sdkVersion='" + getSdkVersion() + '\'' +
-                ", platformVersion='" + getPlatformVersion() + '\'' +
-                ", locale='" + locale + '\'' +
-                ", connectionType='" + connectionType + '\'' +
-                ", push=" + push +
-                ", jailBroken=" + jailBroken +
-                ", locationServices=" + locationServices +
-                ", appBundleVersion='" + appBundleVersion + '\'' +
-                ", tzOffset='" + tzOffset + '\'' +
-                ", distributionType='" + distributionType + '\'' +
-                ", longitude='" + longitude + '\'' +
-                ", latitude='" + latitude + '\'' +
-                ", deviceID='" + deviceID + '\'' +
-                ", deviceType='" + getDeviceType() + '\'' +
-                ", appID='" + appID + '\'' +
-                ", platform='" + platform + '\'' +
-                ", skillId='" + skillId + '\'' +
-                ", isAccessibilityActive='" + isAccessibilityActive + '\'' +
-                ", localizedHashStr='" + localizedHashStr + '\'' +
-                ", brandingHashStr='" + brandingHashStr + '\'' +
-                '}';
-    }
-
 }

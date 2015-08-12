@@ -38,20 +38,12 @@ public class SessionTest {
     @Test
     public void beginChatSendMessage() {
         Session session = new Session();
-        session.beginVisit();
+        session.beginVisit(createBaseEnv());
         session.beginChat();
-        session.sendMessage();
-        session.sendMessage();
-        session.endChat();
+
 
     }
 
-    @Test
-    public void jsonTest() {
-        Session session = new Session();
-        System.out.println(session.jsonGen().age);
-
-    }
 
 
 }

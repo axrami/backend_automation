@@ -56,9 +56,7 @@ public class JsonParser {
 
 // divide this from a json gen and env setter
     public static void parseVisitResponse(String jsonString, LPMobileVisit visit) {
-        int number = 1;
-        JSONObject json = (JSONObject) JSONValue.parse("1");
-        new HashMap<String, Object>();
+        JSONObject json = (JSONObject) JSONValue.parse(jsonString);
         visit.setResponse(json.toString());
         logger.debug("<jsonString> " + jsonString);
 
@@ -77,6 +75,14 @@ public class JsonParser {
             visit.setContinueURL(json.get(F_CONTINUE_URL).toString());
         } else {
             logger.debug("<parseVisitResponse> continue_)url not reported");
+        }
+
+        if (json.containsKey(F_BRANDING_NAME)) {
+            JSONObject brandingJson = (JSONObject) JSONValue.parse(json.get(F_BRANDING_NAME).toString());
+            String brandingString = brandingJson.toString();
+            visit.setBranding(brandingString);
+        } else {
+            logger.debug("<parseVisitResponse> Branding not reporting");
         }
 
         // skills
@@ -134,6 +140,7 @@ public class JsonParser {
         if (json.containsKey(F_BRANDING_HASH_NAME)) {
             visit.setBranding_mp5(json.get(F_BRANDING_HASH_NAME).toString());
         } else {
+            logger.debug("<parseVisitResponse> BrandingMp5 not reported");
         }
 
         if (json.containsKey(F_NEXT_INTERVAL)) {
@@ -181,13 +188,13 @@ public class JsonParser {
                     inputStr.append(currentLine);
                 }
             } catch (IOException e1) {
-                logger.debug(e1.toString());
+                e1.printStackTrace();
             } finally {
                 if (br != null) {
                     try {
                         br.close();
                     } catch (IOException e1) {
-                        logger.debug(e1.toString());
+                        e1.printStackTrace();
                     }
                 }
             }

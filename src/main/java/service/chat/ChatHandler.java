@@ -2,6 +2,7 @@ package service.chat;
 
 import json.JsonGenerator;
 import json.JsonParser;
+import json.model.Line;
 import model.*;
 import networking.chat.IntroChatResponse;
 import org.apache.http.Header;
@@ -41,69 +42,69 @@ public class ChatHandler {
         this.introChatResponse = chatConnectionHandler.createChatConnection(env, visit,visitor, chat);
     }
 
+// Old static way
 //    public void sendLine() {
 //        try {
+//            String suffix = "line/";
 //            String postBody = JsonGenerator.generateChatLineReqeust("Hello");
-//            HttpResponse response = chatConnectionHandler.sendLinePostRequest(visit, postBody, visitor, introChatResponse);
-//            logger.debug("<sendLine> response " + response.toString());
-//
+//            HttpResponse response = chatConnectionHandler.sendPost(visit, visitor, postBody, introChatResponse, suffix);
+//            logger.debug("<sendLine> response " + response);
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
 //    }
 
-    public void sendLine() {
-        try {
-            String suffix = "line/";
-            String postBody = JsonGenerator.generateChatLineReqeust("Hello");
-            HttpResponse response = chatConnectionHandler.sendPost(visit, visitor, postBody, introChatResponse, suffix);
-            logger.debug("<sendLine> response " + response);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    // Example: {"text":"hello"}
+    public HttpResponse sendLinePostRequest(LPMobileVisit visit, String postBody, IntroChatResponse intro) throws IOException {
+        Line line = new Line();
+        line.setText(postBody);
+        return chatConnectionHandler.sendPostRequest(visit, postBody, intro, "line/" + intro.getEngagementId());
     }
 
-    public void sendLine(String text) {
-        try {
-            String postBody = JsonGenerator.generateChatLineReqeust(text);
-            HttpResponse response = chatConnectionHandler.sendLinePostRequest(visit, postBody, visitor, introChatResponse);
-            logger.debug("<sendLine> response " + response.toString());
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    // Body not parsed
+    public HttpResponse sendOutroPostReqeust(LPMobileVisit visit, String postBody, IntroChatResponse intro) throws IOException {
+        return chatConnectionHandler.sendPostRequest(visit, postBody, intro, "outro/" + intro.getEngagementId());
     }
 
-//    public void endChat() {
-//        try {
-//            HttpResponse response = chatConnectionHandler.sendOutroPostReqeust(visit, "", visitor, introChatResponse);
-//            logger.debug("<sendOutro> response " + response.toString());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-    public void endChat() {
-        try {
-            String suffix = "outro/";
-            String postBody = "";
-            HttpResponse response = chatConnectionHandler.sendPost(visit, visitor, postBody, introChatResponse, suffix );
-            logger.debug("<endChat> response" + response);
-        } catch (IOException e ) {
-            e.printStackTrace();
-        }
+    // Example: {“prechat”:survey,"postchat":survey,"offline":survey}
+    public HttpResponse sendSurveyPostRequest(LPMobileVisit visit, String postBody, IntroChatResponse intro) throws IOException{
+        return chatConnectionHandler.sendPostRequest(visit, postBody, intro, "survey/" + intro.getEngagementId());
     }
 
-    public void sendFeedback(){
-
+    // Example: {"email_address":"visitor@email.com","message":"feedback text"}
+    public HttpResponse sendFeedbackPostRequest(LPMobileVisit visit, String postBody, IntroChatResponse intro) throws IOException {
+        return chatConnectionHandler.sendPostRequest(visit, postBody, intro, "feedback/" + intro.getEngagementId());
     }
 
-    public void getChatHistory() {
-
+    // Example: {"capabilities":["show_leavemessage","capability2",”capability3”]}
+    public HttpResponse sendCapabilitiesPostRequest(LPMobileVisit visit, String postBody, IntroChatResponse intro) throws IOException {
+        return chatConnectionHandler.sendPostRequest(visit, postBody, intro, "capabilities/" + intro.getEngagementId());
     }
 
-    public void sendAdvisory() {
+    // Example (to send chat history to email): {"email_addresses":["email1","email2"]}
+    // Example (to send chat history to SSE channel): {}
+    public HttpResponse sendChatHistoryPostRequest(LPMobileVisit visit, String postBody, IntroChatResponse intro) throws IOException {
+        return chatConnectionHandler.sendPostRequest(visit, postBody, intro, "chat_history/" + intro.getEngagementId());
+    }
 
+    // Example: {“variable”:value}
+    public HttpResponse sendCustomVarsPostRequest(LPMobileVisit visit, String postBody, IntroChatResponse intro) throws IOException {
+        return chatConnectionHandler.sendPostRequest(visit, postBody, intro, "custom_vars/" + intro.getEngagementId());
+    }
+
+    // Example: {"action":"typing_start"}
+    public HttpResponse sendAdvisoryPostRequest(LPMobileVisit visit, String postBody, IntroChatResponse intro) throws IOException {
+        return chatConnectionHandler.sendPostRequest(visit, postBody, intro, "advisory/" + intro.getEngagementId());
+    }
+
+    // Body: binary
+    public HttpResponse sendScreenShotPostRequest(LPMobileVisit visit, String postBody, IntroChatResponse intro) throws IOException {
+        return chatConnectionHandler.sendPostRequest(visit, postBody, intro, "screenshot/" + intro.getEngagementId());
+    }
+
+    //Example: {"permission":"revoked", “asset”:”screenshare”} , {"permission":"granted", “asset”:”screenshare”}
+    public HttpResponse sendPermissionPostRequest(LPMobileVisit visit, String postBody, IntroChatResponse intro) throws IOException {
+        return chatConnectionHandler.sendPostRequest(visit, postBody, intro, "permission/" + intro.getEngagementId());
     }
 
     public LPMobileEnvironment getEnv() {

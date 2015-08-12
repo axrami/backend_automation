@@ -30,6 +30,24 @@ public class Intro {
     int show_exit_survey_condition;
     String mask_cc;
     String visit_url;
+    Object branding;
+    String branding_md5;
+
+    public String getBranding() {
+        return branding.toString();
+    }
+
+    public void setBranding(String branding) {
+        this.branding = branding;
+    }
+
+    public String getBranding_md5() {
+        return branding_md5;
+    }
+
+    public void setBranding_md5(String branding_md5) {
+        this.branding_md5 = branding_md5;
+    }
 
     public String getVisit_id() {
         return visit_id;

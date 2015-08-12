@@ -1,16 +1,12 @@
 package service;
 
 
-import json.JsonGen;
 import model.*;
 import networking.ContinueRequestHandler;
 import networking.VisitHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import service.chat.ChatHandler;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Produces;
 
 /**
  * Created by andrew on 7/21/15.
@@ -57,9 +53,6 @@ public class Session {
         chat.createConnection(env, visit, visitor);
     }
 
-    public void endChat() {
-        chat.endChat();
-    }
 
     public void getChatHistory() {
 
@@ -71,16 +64,6 @@ public class Session {
 
     public void sendAdvisory() {
 
-    }
-
-    @GET @Produces("application/json")
-    public JsonGen jsonGen() {
-        return new JsonGen("andrew" , 23);
-    }
-
-
-    public void sendMessage() {
-        chat.sendLine();
     }
 
     public LPMobileEnvironment getEnv() {
