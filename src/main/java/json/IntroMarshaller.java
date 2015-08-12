@@ -1,7 +1,5 @@
 package json;
 
-import json.model.*;
-import model.LPMobileVisit;
 import org.apache.http.HttpResponse;
 import org.apache.http.conn.BasicManagedEntity;
 import org.eclipse.persistence.jaxb.JAXBContextFactory;
@@ -24,9 +22,6 @@ import java.io.*;
 
 public class IntroMarshaller {
     public Logger logger = LoggerFactory.getLogger("IntroMarshaller");
-
-    private static final Class[] classList = new Class[]{Intro.class, Line.class};
-
     public Object unmarshalJson(HttpResponse httpResponse, Class clazz) {
         try {
             if (httpResponse.getEntity() instanceof BasicManagedEntity) {
@@ -37,27 +32,22 @@ public class IntroMarshaller {
                 while ((currentLine = br.readLine()) != null) {
                     inputStr.append(currentLine);
                 }
-
                 logger.debug("<Response>  " + inputStr.toString());
                 StreamSource responseJson = new StreamSource(new StringReader("{\"response\":" + inputStr.toString() + "}"));
                 JAXBContext jc = JAXBContextFactory.createContext(new Class[]{clazz}, null);
                 Unmarshaller um = jc.createUnmarshaller();
                 um.setProperty(UnmarshallerProperties.MEDIA_TYPE, "application/json");
                 um.setProperty(UnmarshallerProperties.JSON_INCLUDE_ROOT, true);
-                Object unmarshalledObj = um.unmarshal(responseJson, clazz).getValue();
-//                Intro intro = um.unmarshal(responseJson, Intro.class).getValue();
-//                System.out.println(intro.getBranding_md5().isEmpty()); // true
-//                visit.setIntro(intro);
-                return unmarshalledObj;
+                return um.unmarshal(responseJson, clazz).getValue();
             }
-        } catch (JAXBException | IOException e) {
+        } catch (IOException | JAXBException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public String marshalIntro(Object obj) throws JAXBException {
-            JAXBContext jc = JAXBContextFactory.createContext(classList, null);
+    public String marshalObj(Object obj, Class clazz) throws JAXBException {
+            JAXBContext jc = JAXBContextFactory.createContext(new Class[]{clazz}, null);
             Marshaller marshaller = jc.createMarshaller();
             marshaller.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
 //            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
@@ -65,15 +55,4 @@ public class IntroMarshaller {
             marshaller.marshal(obj, sw);
             return sw.toString();
     }
-
-    public String marshalLine(Line line) throws JAXBException {
-        JAXBContext jc = JAXBContextFactory.createContext(new Class[]{Intro.class}, null);
-        Marshaller marshaller = jc.createMarshaller();
-        marshaller.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
-        StringWriter sw = new StringWriter();
-        marshaller.marshal(line, sw);
-        return sw.toString();
-    }
-
-
 }
