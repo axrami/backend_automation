@@ -3,7 +3,6 @@ package networking;
 
 import json.IntroMarshaller;
 import json.JsonGenerator;
-import json.JsonParser;
 import json.model.Intro;
 import model.LPMobileEnvironment;
 import model.LPMobileHttpResponse;
@@ -17,7 +16,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import properties.LPMobileProperties;
+import service.LPMobileProperties;
 
 
 /**
@@ -42,9 +41,10 @@ public class VisitHandler {
 
             LPMobileHttpResponse response = sendVisitRequest(env, visit, visitBaseURL, visitor.getVisitorId());
             visit.addResponse(response);
-            if (response.isSuccess()) {
-                logger.debug("<launch> response_code " + response.getResponseCode());
-            }
+//            if (response.isSuccess()) {
+//            } else {
+//                //TODO add retry
+//            }
         } catch (Throwable t) {
             t.printStackTrace();
         }
@@ -53,7 +53,7 @@ public class VisitHandler {
     public LPMobileHttpResponse sendVisitRequest(LPMobileEnvironment env, LPMobileVisit visit, String visitBaseURL, String visitorId) throws Exception {
         HttpClient httpclient = new DefaultHttpClient();
         HttpPost httppost = new HttpPost(visitBaseURL);
-
+        logger.debug("<sendVisitRequest> url " + visitBaseURL);
         httppost.addHeader(new BasicHeader("Content-type", "application/json"));
         httppost.addHeader(new BasicHeader("X-LivepersonMobile-Capabilities", "account-skills"));
         if (visitorId != null) {
@@ -74,8 +74,7 @@ public class VisitHandler {
 
         if (response.isSuccess()) {
             IntroMarshaller introMarshaller = new IntroMarshaller();
-            Class introClass = Class.forName("json.model.Intro");
-            Object marshalledObj = introMarshaller.unmarshalJson(httpResponse, introClass);
+            Object marshalledObj = introMarshaller.unmarshalJson(httpResponse, Class.forName("json.model.Intro"));
             if (marshalledObj instanceof Intro) {
                 Intro intro = (Intro)marshalledObj;
                 this.visit.setIntro(intro);

@@ -15,25 +15,31 @@ public class Session {
     private Visitor visitor = new Visitor();
     public LPMobileVisit visit;
     private LPMobileEnvironment env;
-    ChatHandler chat = new ChatHandler();
+    public ChatHandler chat = new ChatHandler();
     public void setEnv(LPMobileEnvironment env) {
         this.env = env;
     }
     public Logger logger = LoggerFactory.getLogger("Session");
 
-    public void beginVisit() {
+    public void somthing() {
+        visit.getBranding();
+    }
+
+    public LPMobileVisit beginVisit() {
         if (this.env == null) {
             this.env = SetEnvironment.createBaseEnv();
         }
         VisitHandler visitHandler = new VisitHandler();
         visitHandler.launch(env , visitor);
         this.visit = visitHandler.getVisit();
+        return visit;
     }
 
-    public void beginVisit(LPMobileEnvironment env) {
+    public LPMobileVisit beginVisit(LPMobileEnvironment env) {
         VisitHandler visitHandler = new VisitHandler();
         visitHandler.launch(env, visitor);
         this.visit = visitHandler.getVisit();
+        return visit;
     }
 
 
@@ -46,11 +52,12 @@ public class Session {
 
     }
 
-    public void beginChat() {
+    public ChatHandler beginChat() {
         if (this.visit == null ) {
             beginVisit();
         }
         chat.createConnection(env, visit, visitor);
+        return chat;
     }
 
 

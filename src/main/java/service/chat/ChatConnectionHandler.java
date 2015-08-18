@@ -3,8 +3,6 @@ package service.chat;
 import json.IntroMarshaller;
 import json.JsonGenerator;
 import json.JsonParser;
-import json.model.Intro;
-import json.model.Line;
 import model.LPMobileChat;
 import model.LPMobileEnvironment;
 import model.LPMobileVisit;
@@ -20,13 +18,12 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import properties.LPMobileProperties;
+import service.LPMobileProperties;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
 
@@ -62,7 +59,6 @@ public class ChatConnectionHandler {
             int statusCode = httpResponse.getStatusLine().getStatusCode();
 
             if (statusCode == 200 ) {
-                logger.debug("<IntroSuccessful>");
                 if (httpResponse.getEntity() instanceof BasicManagedEntity) {
                     BasicManagedEntity e = (BasicManagedEntity)httpResponse.getEntity();
                     StringBuffer b = getBodyContent(e);
@@ -71,7 +67,6 @@ public class ChatConnectionHandler {
                         Header[] headers = httpResponse.getHeaders("set-cookie");
                         if (headers != null && headers.length > 0) {
                             introChatResponse.setCookieHeader(headers[0].getValue());
-                            logger.debug("<sendIntroRequest> Headers " + headers[0].getValue());
                         }
                     }
                 }
@@ -90,36 +85,18 @@ public class ChatConnectionHandler {
         HttpClient httpClient = new DefaultHttpClient();
         String url = visit.getChatBaseURL() + uriSuffix;
         HttpPost httpPost = new HttpPost(url);
-        httpPost.addHeader(new BasicHeader("Content-type" , "application/json"));
+        httpPost.addHeader(new BasicHeader("Content-type", "application/json"));
         httpPost.addHeader(new BasicHeader("X-Liveperson-Capabilities", "account-skills"));
         httpPost.setEntity(new StringEntity(postBody, "UTF8"));
         if (intro != null) {
             httpPost.addHeader(new BasicHeader("Cookie", intro.getCookieHeader()));
         }
+        logger.debug("<sendPostRequest> " + url + " postBody " + postBody);
         HttpResponse response = httpClient.execute(httpPost);
+        logger.debug("<sendPostRequest> response " + response.getStatusLine());
         return response;
 
     }
-
-
-
-    public HttpResponse sendPost(LPMobileVisit visit, Visitor visitor, String postBody, IntroChatResponse intro, String suffix) throws IOException{
-        HttpClient httpCLient = new DefaultHttpClient();
-        String url = visit.getChatBaseURL() + suffix + intro.getEngagementId();
-        logger.debug("<sendPost> postURL " + url);
-        HttpPost httpPost = new HttpPost(url);
-        httpPost.addHeader(new BasicHeader("Content-type" , "application/json"));
-        httpPost.addHeader(new BasicHeader("X-Liveperson-Capabilities", "account-skills"));
-        if (!introChatResponse.getCookieHeader().isEmpty()) {
-            httpPost.addHeader(new BasicHeader("Cookie" , introChatResponse.getCookieHeader()));
-        }
-        httpPost.setEntity(new StringEntity(postBody, "UTF8"));
-        HttpResponse response = httpCLient.execute(httpPost);
-        return response;
-
-    }
-
-
 
     public StringBuffer getBodyContent(BasicManagedEntity e) throws IOException {
         InputStream is = e.getContent();
@@ -153,7 +130,6 @@ public class ChatConnectionHandler {
     }
 
     public void chatConnected() {
-        logger.debug("<chatConnected>");
         sendSSEPostRequest();
 
     }

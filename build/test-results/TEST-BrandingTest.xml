@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="BrandingTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2015-08-07T20:32:24" hostname="aramirez2-mac.local" time="0.051">
+<testsuite name="BrandingTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2015-08-17T19:12:27" hostname="aramirez2-mac.local" time="0.055">
   <properties/>
-  <testcase name="beginVisit" classname="BrandingTest" time="0.051"/>
+  <testcase name="beginVisit" classname="BrandingTest" time="0.055"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

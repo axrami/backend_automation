@@ -1,9 +1,19 @@
+import json.IntroMarshaller;
+import json.model.Intro;
+import json.model.Line;
 import model.LPMobileEnvironment;
 import model.LPMobileVisit;
 import org.junit.Test;
 import service.Session;
+import service.chat.ChatHandler;
 
+import javax.xml.bind.JAXBException;
+import java.io.IOException;
 import java.util.UUID;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -39,8 +49,39 @@ public class SessionTest {
     public void beginChatSendMessage() {
         Session session = new Session();
         session.beginVisit(createBaseEnv());
-        session.beginChat();
+    }
 
+    @Test
+    public void testMarshaller() {
+        try {
+            IntroMarshaller introMarshaller = new IntroMarshaller();
+            Line line = new Line();
+            line.setText("Hello");
+            String postBody = introMarshaller.marshalObj(line, Class.forName("json.model.Line"));
+            System.out.println(postBody);
+        } catch (ClassNotFoundException | JAXBException e ) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Test
+    public void lineTest() {
+        ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
+
+        Runnable task = () -> {
+            try {
+                Session session = new Session();
+                ChatHandler chat = session.beginChat();
+                chat.sendLinePostRequest();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        };
+
+        int intDelay = 1;
+        int period = 3000;
+        executorService.scheduleAtFixedRate(task, intDelay, period, TimeUnit.MILLISECONDS);
 
     }
 

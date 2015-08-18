@@ -37,7 +37,7 @@ public class IntroMarshaller {
                 JAXBContext jc = JAXBContextFactory.createContext(new Class[]{clazz}, null);
                 Unmarshaller um = jc.createUnmarshaller();
                 um.setProperty(UnmarshallerProperties.MEDIA_TYPE, "application/json");
-                um.setProperty(UnmarshallerProperties.JSON_INCLUDE_ROOT, true);
+                um.setProperty(UnmarshallerProperties.JSON_INCLUDE_ROOT, false);
                 return um.unmarshal(responseJson, clazz).getValue();
             }
         } catch (IOException | JAXBException e) {
@@ -50,7 +50,7 @@ public class IntroMarshaller {
             JAXBContext jc = JAXBContextFactory.createContext(new Class[]{clazz}, null);
             Marshaller marshaller = jc.createMarshaller();
             marshaller.setProperty(MarshallerProperties.MEDIA_TYPE, "application/json");
-//            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+            marshaller.setProperty(UnmarshallerProperties.JSON_INCLUDE_ROOT, false);
             StringWriter sw = new StringWriter();
             marshaller.marshal(obj, sw);
             return sw.toString();
