@@ -15,8 +15,8 @@ public class ChatHandlerTest {
         try {
             chat.sendLinePostRequest();
             chat.sendOutroPostRequest(session.getVisit(), null);
-        } catch (IOException  e) {
-            e.getMessage();
+        } catch (IOException e) {
+            e.getStackTrace();
         }
 
     }
