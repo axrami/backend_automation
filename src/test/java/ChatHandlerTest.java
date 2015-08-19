@@ -20,4 +20,16 @@ public class ChatHandlerTest {
         }
 
     }
+
+    @Test
+    public void sendCustomVars() {
+        Session session = new Session();
+        ChatHandler chat = session.beginChat();
+        try {
+            chat.sendLinePostRequest();
+            chat.sendCustomVarsPostRequest(session.getVisit(), "Andrew" );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
