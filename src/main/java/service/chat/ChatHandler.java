@@ -1,8 +1,8 @@
 package service.chat;
 
-import de.svenjacobs.loremipsum.LoremIpsum;
 import json.IntroMarshaller;
 import json.model.Line;
+import json.model.Survey;
 import model.*;
 import networking.chat.IntroChatResponse;
 import org.apache.http.HttpResponse;
@@ -24,7 +24,6 @@ public class ChatHandler {
     LPMobileVisit visit;
     Visitor visitor;
     IntroChatResponse introChatResponse;
-    LoremIpsum lorem = new LoremIpsum();
     IntroMarshaller jsonMarshaller = new IntroMarshaller();
     public Logger logger = LoggerFactory.getLogger("ChatHandler");
 
@@ -56,6 +55,7 @@ public class ChatHandler {
 
     // Example: {“prechat”:survey,"postchat":survey,"offline":survey}
     public HttpResponse sendSurveyPostRequest(LPMobileVisit visit, String postBody, IntroChatResponse intro) throws IOException{
+        Survey survey = new Survey();
         return chatConnectionHandler.sendPostRequest(visit, postBody, intro, "survey/" + intro.getEngagementId());
     }
 

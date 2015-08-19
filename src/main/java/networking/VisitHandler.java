@@ -41,10 +41,13 @@ public class VisitHandler {
 
             LPMobileHttpResponse response = sendVisitRequest(env, visit, visitBaseURL, visitor.getVisitorId());
             visit.addResponse(response);
-//            if (response.isSuccess()) {
-//            } else {
-//                //TODO add retry
-//            }
+            if (response.isSuccess()) {
+                if(LPMobileProperties.isDebug) {
+                    logger.debug("<launch> isSuccessful");
+                }
+            } else {
+                logger.error("<launch> failed" );
+            }
         } catch (Throwable t) {
             t.printStackTrace();
         }
@@ -53,7 +56,6 @@ public class VisitHandler {
     public LPMobileHttpResponse sendVisitRequest(LPMobileEnvironment env, LPMobileVisit visit, String visitBaseURL, String visitorId) throws Exception {
         HttpClient httpclient = new DefaultHttpClient();
         HttpPost httppost = new HttpPost(visitBaseURL);
-        logger.debug("<sendVisitRequest> url " + visitBaseURL);
         httppost.addHeader(new BasicHeader("Content-type", "application/json"));
         httppost.addHeader(new BasicHeader("X-LivepersonMobile-Capabilities", "account-skills"));
         if (visitorId != null) {
@@ -61,16 +63,18 @@ public class VisitHandler {
         }
 
         String postBody = JsonGenerator.generateVisitRequest(env, (visit != null && visit.getVisitId() != null) ? visit.getVisitId() : null, visitorId, null);
-        logger.debug("<sendVisitRequest> postBody " + postBody);
-
         httppost.setEntity(new StringEntity(postBody));
         HttpResponse httpResponse = httpclient.execute(httppost);
-        logger.debug("<sendVisitRequest> httpResponse " + httpResponse);
         LPMobileHttpResponse response = new LPMobileHttpResponse();
         response.setUrl(visitBaseURL);
         response.setHttpResponse(httpResponse.toString());
         response.setPostBody(postBody);
         response.setResponseCode(httpResponse.getStatusLine().getStatusCode());
+        if (LPMobileProperties.isDebug){
+            logger.debug("<sendVisitRequest> url " + visitBaseURL);
+            logger.debug("<sendVisitRequest> postBody " + postBody);
+            logger.debug("<sendVisitRequest> httpResponse " + httpResponse);
+        }
 
         if (response.isSuccess()) {
             IntroMarshaller introMarshaller = new IntroMarshaller();

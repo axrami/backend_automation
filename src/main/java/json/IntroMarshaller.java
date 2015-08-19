@@ -7,6 +7,7 @@ import org.eclipse.persistence.jaxb.MarshallerProperties;
 import org.eclipse.persistence.jaxb.UnmarshallerProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import service.LPMobileProperties;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -32,7 +33,9 @@ public class IntroMarshaller {
                 while ((currentLine = br.readLine()) != null) {
                     inputStr.append(currentLine);
                 }
-                logger.debug("<Response>  " + inputStr.toString());
+                if(LPMobileProperties.isDebug) {
+                    logger.debug("<Response>  " + inputStr.toString());
+                }
                 StreamSource responseJson = new StreamSource(new StringReader("{\"response\":" + inputStr.toString() + "}"));
                 JAXBContext jc = JAXBContextFactory.createContext(new Class[]{clazz}, null);
                 Unmarshaller um = jc.createUnmarshaller();
@@ -53,6 +56,9 @@ public class IntroMarshaller {
             marshaller.setProperty(UnmarshallerProperties.JSON_INCLUDE_ROOT, false);
             StringWriter sw = new StringWriter();
             marshaller.marshal(obj, sw);
+            if(LPMobileProperties.isDebug) {
+                logger.debug("<marshalObj> string " + sw.toString());
+            }
             return sw.toString();
     }
 }

@@ -4,6 +4,7 @@ package service;
  * Created by andrew on 6/16/15.
  */
 public class LPMobileProperties {
+    public static boolean isDebug = false;
     private static final String visitProdDomain = "dispatch.look.io";
     private static final String visitStagDomain = "dispatch.staging.look.io";
 //    private static final String visitStagDomain = "dispatch.look.io";

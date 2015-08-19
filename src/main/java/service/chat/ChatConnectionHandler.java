@@ -91,9 +91,11 @@ public class ChatConnectionHandler {
         if (intro != null) {
             httpPost.addHeader(new BasicHeader("Cookie", intro.getCookieHeader()));
         }
-        logger.debug("<sendPostRequest> " + url + " postBody " + postBody);
         HttpResponse response = httpClient.execute(httpPost);
-        logger.debug("<sendPostRequest> response " + response.getStatusLine());
+        if (LPMobileProperties.isDebug) {
+            logger.debug("<sendPostRequest> " + url + " postBody " + postBody);
+            logger.debug("<sendPostRequest> response " + response.getStatusLine());
+        }
         return response;
 
     }
@@ -114,7 +116,9 @@ public class ChatConnectionHandler {
                 return false;
             }
             String sseUrl = introChatResponse.getSseURL() + introChatResponse.getEngagementId();
-            logger.debug("<openSseChatConnection> sseURL " + sseUrl);
+            if (LPMobileProperties.isDebug) {
+                logger.debug("<openSseChatConnection> sseURL " + sseUrl);
+            }
             try {
                 URL url = new URL(sseUrl);
                 sseClient = (HttpsURLConnection) url.openConnection();

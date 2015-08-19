@@ -80,8 +80,6 @@ public class BrandingTest {
         executor2.scheduleAtFixedRate(task, intDelay, period, TimeUnit.MILLISECONDS);
     }
 
-    @BeforeTest
-
 
     @Test
     public void beginVisit() {
