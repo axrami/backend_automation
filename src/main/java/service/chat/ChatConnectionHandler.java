@@ -1,6 +1,6 @@
 package service.chat;
 
-import json.IntroMarshaller;
+import json.JsonMarshaller;
 import json.JsonGenerator;
 import json.JsonParser;
 import model.LPMobileChat;
@@ -36,7 +36,7 @@ public class ChatConnectionHandler {
     public HttpsURLConnection sseClient;
     public String COOKIE_HEADER_NAME = "Cookie";
     public Logger logger = LoggerFactory.getLogger("ChatConnectionHandler");
-    IntroMarshaller marshaller = new IntroMarshaller();
+    JsonMarshaller marshaller = new JsonMarshaller();
 
     public IntroChatResponse createChatConnection(LPMobileEnvironment env, LPMobileVisit visit, Visitor visitor, LPMobileChat chat) {
         boolean success = false;

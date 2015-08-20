@@ -1,8 +1,6 @@
-import json.IntroMarshaller;
-import json.model.Intro;
+import json.JsonMarshaller;
 import json.model.Line;
 import model.LPMobileEnvironment;
-import model.LPMobileVisit;
 import org.junit.Test;
 import service.Session;
 import service.chat.ChatHandler;
@@ -10,7 +8,6 @@ import service.chat.ChatHandler;
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.util.UUID;
-import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -54,10 +51,10 @@ public class SessionTest {
     @Test
     public void testMarshaller() {
         try {
-            IntroMarshaller introMarshaller = new IntroMarshaller();
+            JsonMarshaller jsonMarshaller = new JsonMarshaller();
             Line line = new Line();
             line.setText("Hello");
-            String postBody = introMarshaller.marshalObj(line, Class.forName("json.model.Line"));
+            String postBody = jsonMarshaller.marshalObj(line, Class.forName("json.model.Line"));
             System.out.println(postBody);
         } catch (ClassNotFoundException | JAXBException e ) {
             e.printStackTrace();

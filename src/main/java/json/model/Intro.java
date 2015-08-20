@@ -33,6 +33,7 @@ public class Intro {
     Object branding;
     String branding_md5;
 
+
     public String getBranding() {
         return branding.toString();
     }

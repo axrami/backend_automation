@@ -27,7 +27,7 @@ public class ChatHandlerTest {
         ChatHandler chat = session.beginChat();
         try {
             chat.sendLinePostRequest();
-            chat.sendCustomVarsPostRequest(session.getVisit(), "Andrew" );
+            chat.sendCustomVarsPostRequest(session.getVisit(), "Andrew" , "25");
         } catch (IOException e) {
             e.printStackTrace();
         }

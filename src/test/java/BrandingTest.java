@@ -1,16 +1,12 @@
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
-import json.IntroMarshaller;
-import json.model.Intro;
 import model.LPMobileEnvironment;
 import model.LPMobileVisit;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
 import service.Session;
-import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
-import javax.xml.bind.JAXBException;
 import java.util.UUID;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;

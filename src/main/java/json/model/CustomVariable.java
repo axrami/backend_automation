@@ -1,28 +1,28 @@
 package json.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by andrew on 8/18/15.
  */
 @XmlRootElement
 public class CustomVariable {
-    String variable;
-    String value;
+    Map<String, String> var;
 
-    public String getVariable() {
-        return variable;
+    public CustomVariable() {
     }
 
-    public void setVariable(String variable) {
-        this.variable = variable;
+    public CustomVariable(Map<String, String> var) {
+        this.var = var;
     }
 
-    public String getValue() {
-        return value;
+    public Map<String, String> getVar() {
+        return this.var;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setVar(Map<String, String> var) {
+        this.var = var;
     }
 }

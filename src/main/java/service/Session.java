@@ -21,10 +21,6 @@ public class Session {
     }
     public Logger logger = LoggerFactory.getLogger("Session");
 
-    public void somthing() {
-        visit.getBranding();
-    }
-
     public LPMobileVisit beginVisit() {
         if (this.env == null) {
             this.env = SetEnvironment.createBaseEnv();

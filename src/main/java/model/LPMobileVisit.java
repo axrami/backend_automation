@@ -16,7 +16,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class LPMobileVisit {
     boolean callDeflectionReported = false;
     Intro intro;
-    String visitorId;
     String visitId;
     String continueURL;
     String chatBaseURL;
@@ -54,15 +53,7 @@ public class LPMobileVisit {
     public List getResponses() {
         return responses;
     }
-
-    public String getVisitorId() {
-        return visitorId;
-    }
-
-    public void setVisitorId(String visitorId) {
-        this.visitorId = visitorId;
-    }
-
+    
     public void setResponse(String resposne) {
         this.response = resposne;
     }

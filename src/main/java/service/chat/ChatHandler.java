@@ -1,6 +1,6 @@
 package service.chat;
 
-import json.IntroMarshaller;
+import json.JsonMarshaller;
 import json.model.*;
 import model.*;
 import model.LPMobileEnvironment;
@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by andrew on 7/10/15.
@@ -24,7 +26,7 @@ public class ChatHandler {
     LPMobileVisit visit;
     Visitor visitor;
     IntroChatResponse introChatResponse;
-    IntroMarshaller jsonMarshaller = new IntroMarshaller();
+    JsonMarshaller jsonMarshaller = new JsonMarshaller();
     public Logger logger = LoggerFactory.getLogger("ChatHandler");
 
     public void createConnection(LPMobileEnvironment env, LPMobileVisit visit, Visitor visitor) {
@@ -91,9 +93,10 @@ public class ChatHandler {
     }
 
     // Example: {“variable”:value}
-    public HttpResponse sendCustomVarsPostRequest(LPMobileVisit visit, String var) throws IOException {
-        CustomVariable customVariable = new CustomVariable();
-        customVariable.setVariable(var);
+    public HttpResponse sendCustomVarsPostRequest(LPMobileVisit visit, String name, String value) throws IOException {
+        Map<String, String> var= new HashMap<>();
+        var.put(name, value);
+        CustomVariable customVariable = new CustomVariable(var);
         try {
             String postBody = jsonMarshaller.marshalObj(customVariable, Class.forName("json.model.CustomVariable"));
             return chatConnectionHandler.sendPostRequest(visit, postBody, introChatResponse, "custom_vars/" + introChatResponse.getEngagementId());

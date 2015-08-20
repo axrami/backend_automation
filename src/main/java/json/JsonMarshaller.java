@@ -21,8 +21,8 @@ import java.io.*;
  * Created by andrew on 7/30/15.
  */
 
-public class IntroMarshaller {
-    public Logger logger = LoggerFactory.getLogger("IntroMarshaller");
+public class JsonMarshaller {
+    public Logger logger = LoggerFactory.getLogger("JsonMarshaller");
     public Object unmarshalJson(HttpResponse httpResponse, Class clazz) {
         try {
             if (httpResponse.getEntity() instanceof BasicManagedEntity) {

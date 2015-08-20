@@ -13,29 +13,14 @@ import java.util.concurrent.TimeUnit;
 public class Main {
 
     public static void main(String args[]) {
-        ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
+        ScheduledExecutorService executorService = Executors.newScheduledThreadPool(20);
         Runnable task = () -> {
-            try {
-                Session session = new Session();
-                session.somthing();
-                session.beginVisit();
-                ChatHandler chat = session.beginChat();
-                chat.sendLinePostRequest();
-                chat.sendLinePostRequest();
-                chat.sendLinePostRequest();
-                chat.sendOutroPostRequest(session.getVisit(), null);
-                ChatHandler chat2 = session.beginChat();
-                chat2.sendLinePostRequest();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            Session session = new Session();
+            session.beginVisit();
         };
-        int intDelay = 1;
-        int period = 1000;
-        executorService.scheduleAtFixedRate(task, intDelay, period, TimeUnit.MILLISECONDS);
+        executorService.scheduleAtFixedRate(task, 0 , 100 , TimeUnit.MILLISECONDS);
 
-        ExecutorService executerService = new ExecutorService();
-        executerService.beginCounter();
     }
 
 }
+
