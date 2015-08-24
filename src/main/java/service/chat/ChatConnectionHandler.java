@@ -3,6 +3,7 @@ package service.chat;
 import json.JsonMarshaller;
 import json.JsonGenerator;
 import json.JsonParser;
+import json.model.AppSettings;
 import json.model.VisitIntroResponse;
 import model.LPMobileChat;
 import json.model.LPMobileEnvironment;
@@ -22,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import service.LPMobileProperties;
 
 import javax.net.ssl.HttpsURLConnection;
+import javax.xml.bind.JAXBException;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -37,11 +39,11 @@ public class ChatConnectionHandler {
     public HttpsURLConnection sseClient;
     public String COOKIE_HEADER_NAME = "Cookie";
     public Logger logger = LoggerFactory.getLogger("ChatConnectionHandler");
-    JsonMarshaller marshaller = new JsonMarshaller();
+    JsonMarshaller jsonMarshaller = new JsonMarshaller();
 
-    public IntroChatResponse createChatConnection(LPMobileEnvironment env, VisitIntroResponse visitIntroResponse, Visitor visitor) {
+    public IntroChatResponse createChatConnection(LPMobileEnvironment env, AppSettings appSettings, VisitIntroResponse visitIntroResponse) {
         boolean success = false;
-        introChatResponse = sendChatIntroRequest(env, visitIntroResponse, visitor);
+        introChatResponse = sendChatIntroRequest(appSettings, visitIntroResponse);
         success = openSseChatConnection();
         if (success = true) {
             chatConnected();
@@ -50,14 +52,12 @@ public class ChatConnectionHandler {
 
     }
 
-    public IntroChatResponse sendChatIntroRequest(LPMobileEnvironment env, VisitIntroResponse visitIntroResponse, Visitor visitor) {
+    public IntroChatResponse sendChatIntroRequest(AppSettings appSettings, VisitIntroResponse visitIntroResponse) {
         IntroChatResponse introChatResponse = null;
-
         try {
-            String postBody = JsonGenerator.generateVisitRequest(env, visitIntroResponse.getVisit_id(), visitor.getVisitorId(), null);
+            String postBody = jsonMarshaller.marshalObj(appSettings, Class.forName("json.model.AppSettings"));
             HttpResponse httpResponse = sendPostRequest(visitIntroResponse, postBody, null, "intro/");
             int statusCode = httpResponse.getStatusLine().getStatusCode();
-
             if (statusCode == 200 ) {
                 if (httpResponse.getEntity() instanceof BasicManagedEntity) {
                     BasicManagedEntity e = (BasicManagedEntity)httpResponse.getEntity();
@@ -74,7 +74,7 @@ public class ChatConnectionHandler {
                 logger.error("<VisitIntroResponse Not Successful>");
             }
 
-        } catch (IOException e) {
+        } catch (IOException | ClassNotFoundException | JAXBException e) {
             e.printStackTrace();
         }
 

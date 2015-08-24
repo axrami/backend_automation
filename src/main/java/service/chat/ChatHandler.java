@@ -27,13 +27,15 @@ public class ChatHandler {
     IntroChatResponse introChatResponse;
     JsonMarshaller jsonMarshaller = new JsonMarshaller();
     VisitIntroResponse visitIntroResponse;
+    AppSettings appSettings;
     public Logger logger = LoggerFactory.getLogger("ChatHandler");
 
-    public ChatHandler createConnection(LPMobileEnvironment env, VisitIntroResponse visitIntroResponse, Visitor visitor) {
+    public ChatHandler createConnection(LPMobileEnvironment env, AppSettings appSettings, VisitIntroResponse visitIntroResponse, Visitor visitor) {
         this.env = env;
         this.visitIntroResponse = visitIntroResponse;
         this.visitor = visitor;
-        this.introChatResponse = chatConnectionHandler.createChatConnection(env, visitIntroResponse, visitor);
+        this.appSettings = appSettings;
+        this.introChatResponse = chatConnectionHandler.createChatConnection(env, appSettings, visitIntroResponse);
         return this;
     }
 

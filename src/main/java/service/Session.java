@@ -46,7 +46,7 @@ public class Session {
     }
 
     public ChatHandler beginChat() {
-        chat.createConnection(env, visitIntroResponse, visitor);
+        chat.createConnection(env, appSettings, visitIntroResponse, visitor);
         return chat;
     }
 
