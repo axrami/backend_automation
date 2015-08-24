@@ -3,8 +3,9 @@ package service.chat;
 import json.JsonMarshaller;
 import json.JsonGenerator;
 import json.JsonParser;
+import json.model.VisitIntroResponse;
 import model.LPMobileChat;
-import model.LPMobileEnvironment;
+import json.model.LPMobileEnvironment;
 import model.LPMobileVisit;
 import model.Visitor;
 import networking.chat.IntroChatResponse;
@@ -38,9 +39,9 @@ public class ChatConnectionHandler {
     public Logger logger = LoggerFactory.getLogger("ChatConnectionHandler");
     JsonMarshaller marshaller = new JsonMarshaller();
 
-    public IntroChatResponse createChatConnection(LPMobileEnvironment env, LPMobileVisit visit, Visitor visitor, LPMobileChat chat) {
+    public IntroChatResponse createChatConnection(LPMobileEnvironment env, VisitIntroResponse visitIntroResponse, Visitor visitor) {
         boolean success = false;
-        introChatResponse = sendIntroRequest(env, visit, visitor);
+        introChatResponse = sendChatIntroRequest(env, visitIntroResponse, visitor);
         success = openSseChatConnection();
         if (success = true) {
             chatConnected();
@@ -49,13 +50,12 @@ public class ChatConnectionHandler {
 
     }
 
-    public IntroChatResponse sendIntroRequest(LPMobileEnvironment env, LPMobileVisit visit, Visitor visitor) {
+    public IntroChatResponse sendChatIntroRequest(LPMobileEnvironment env, VisitIntroResponse visitIntroResponse, Visitor visitor) {
         IntroChatResponse introChatResponse = null;
 
         try {
-            String postBody = JsonGenerator.generateVisitRequest(env, visit.getVisitId(), visitor.getVisitorId(), null);
-            visit.setChatBaseURL(String.format(CHAT_BASE_URL, LPMobileProperties.getChatStagDomain()));
-            HttpResponse httpResponse = sendPostRequest(visit, postBody, null, "intro/");
+            String postBody = JsonGenerator.generateVisitRequest(env, visitIntroResponse.getVisit_id(), visitor.getVisitorId(), null);
+            HttpResponse httpResponse = sendPostRequest(visitIntroResponse, postBody, null, "intro/");
             int statusCode = httpResponse.getStatusLine().getStatusCode();
 
             if (statusCode == 200 ) {
@@ -71,7 +71,7 @@ public class ChatConnectionHandler {
                     }
                 }
             } else {
-                logger.error("<Intro Not Successful>");
+                logger.error("<VisitIntroResponse Not Successful>");
             }
 
         } catch (IOException e) {
@@ -81,15 +81,15 @@ public class ChatConnectionHandler {
         return introChatResponse;
     }
 
-    public HttpResponse sendPostRequest(LPMobileVisit visit, String postBody, IntroChatResponse intro, String uriSuffix) throws IOException {
+    public HttpResponse sendPostRequest(VisitIntroResponse visitIntroResponse, String postBody, IntroChatResponse chatIntro, String uriSuffix) throws IOException {
         HttpClient httpClient = new DefaultHttpClient();
-        String url = visit.getChatBaseURL() + uriSuffix;
+        String url = String.format(CHAT_BASE_URL, LPMobileProperties.getDomain()) + uriSuffix;
         HttpPost httpPost = new HttpPost(url);
         httpPost.addHeader(new BasicHeader("Content-type", "application/json"));
         httpPost.addHeader(new BasicHeader("X-Liveperson-Capabilities", "account-skills"));
         httpPost.setEntity(new StringEntity(postBody, "UTF8"));
-        if (intro != null) {
-            httpPost.addHeader(new BasicHeader("Cookie", intro.getCookieHeader()));
+        if (chatIntro != null) {
+            httpPost.addHeader(new BasicHeader("Cookie", chatIntro.getCookieHeader()));
         }
         HttpResponse response = httpClient.execute(httpPost);
         if (LPMobileProperties.isDebug) {

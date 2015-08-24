@@ -1,7 +1,6 @@
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
-import model.LPMobileEnvironment;
-import model.LPMobileVisit;
+import json.model.LPMobileEnvironment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import service.Session;
@@ -45,7 +44,7 @@ public class ExecutorService {
 
         Runnable task = () -> {
             Session session = new Session();
-            session.beginVisit(createBaseEnv());
+//            session.beginVisit(createBaseEnv());
 
         };
         Runnable task2 = () -> {

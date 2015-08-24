@@ -1,7 +1,7 @@
 package networking;
 
 import json.JsonGenerator;
-import model.LPMobileEnvironment;
+import json.model.LPMobileEnvironment;
 import model.LPMobileHttpResponse;
 import model.LPMobileVisit;
 import model.Visitor;

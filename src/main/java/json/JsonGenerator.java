@@ -1,7 +1,7 @@
 package json;
 
 
-import model.LPMobileEnvironment;
+import json.model.LPMobileEnvironment;
 import org.json.simple.JSONObject;
 
 /**

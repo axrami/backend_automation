@@ -1,6 +1,9 @@
 package service;
 
 
+import json.model.AppSettings;
+import json.model.LPMobileEnvironment;
+import json.model.VisitIntroResponse;
 import model.*;
 import networking.ContinueRequestHandler;
 import networking.VisitHandler;
@@ -12,50 +15,40 @@ import service.chat.ChatHandler;
  * Created by andrew on 7/21/15.
  */
 public class Session {
-    private Visitor visitor = new Visitor();
-    public LPMobileVisit visit;
+    private Visitor visitor;
+    public VisitIntroResponse visitIntroResponse;
     private LPMobileEnvironment env;
+    private AppSettings appSettings;
+    public VisitHandler visitHandler = new VisitHandler();
     public ChatHandler chat = new ChatHandler();
-    public void setEnv(LPMobileEnvironment env) {
-        this.env = env;
-    }
     public Logger logger = LoggerFactory.getLogger("Session");
 
-    public LPMobileVisit beginVisit() {
-        if (this.env == null) {
-            this.env = SetEnvironment.createBaseEnv();
-        }
-        VisitHandler visitHandler = new VisitHandler();
-        visitHandler.launch(env , visitor);
-        this.visit = visitHandler.getVisit();
-        return visit;
+    public Session() {
+        this.appSettings = SetEnvironment.createAppSettings();
+        this.env = SetEnvironment.createBaseEnv();
+        this.visitor = new Visitor();
     }
 
-    public LPMobileVisit beginVisit(LPMobileEnvironment env) {
-        VisitHandler visitHandler = new VisitHandler();
-        visitHandler.launch(env, visitor);
-        this.visit = visitHandler.getVisit();
-        return visit;
+    public Session(LPMobileEnvironment env, AppSettings appSettings, Visitor visitor) {
+        this.env = env;
+        this.appSettings = appSettings;
+        this.visitor = visitor;
     }
 
+    public VisitHandler beginVisit() {
+        visitIntroResponse = visitHandler.launch(env, appSettings, visitor);
+        return visitHandler;
+    }
 
-    public void continuedVisit() {
-        if (this.visit == null) {
-            beginVisit();
-        }
-        ContinueRequestHandler c = new ContinueRequestHandler();
-        c.launchContinue(env, visit, visitor);
-
+    public VisitHandler continueVisit() {
+        visitHandler.continueVisit();
+        return visitHandler;
     }
 
     public ChatHandler beginChat() {
-        if (this.visit == null ) {
-            beginVisit();
-        }
-        chat.createConnection(env, visit, visitor);
+        chat.createConnection(env, visitIntroResponse, visitor);
         return chat;
     }
-
 
     public void getChatHistory() {
 
@@ -69,15 +62,4 @@ public class Session {
 
     }
 
-    public LPMobileEnvironment getEnv() {
-        return env;
-    }
-
-    public Visitor getVisitor() {
-        return visitor;
-    }
-
-    public LPMobileVisit getVisit() {
-        return visit;
-    }
 }

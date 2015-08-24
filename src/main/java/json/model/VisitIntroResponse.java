@@ -8,8 +8,9 @@ import java.util.List;
  * Created by andrew on 7/30/15.
  */
 
+
 @XmlRootElement
-public class Intro {
+public class VisitIntroResponse {
     String visit_id;
     String button_text;
     String button_text_color;

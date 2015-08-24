@@ -1,12 +1,11 @@
 package model;
 
-import json.model.Intro;
+import json.model.VisitIntroResponse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by andrew on 6/8/15.
@@ -15,7 +14,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class LPMobileVisit {
     boolean callDeflectionReported = false;
-    Intro intro;
+    VisitIntroResponse visitIntroResponse;
+    String visitorId;
     String visitId;
     String continueURL;
     String chatBaseURL;
@@ -27,8 +27,8 @@ public class LPMobileVisit {
     List responses = new ArrayList<LPMobileHttpResponse>();
     HashMap<String, HashMap<String, Skill>> skills = new HashMap<String, HashMap<String, Skill>>();
 
-    public Intro getIntro() {
-        return intro;
+    public VisitIntroResponse getVisitIntroResponse() {
+        return visitIntroResponse;
     }
 
     public String getBranding() {
@@ -39,8 +39,8 @@ public class LPMobileVisit {
         this.branding = branding;
     }
 
-    public void setIntro(Intro intro) {
-        this.intro = intro;
+    public void setVisitIntroResponse(VisitIntroResponse visitIntroResponse) {
+        this.visitIntroResponse = visitIntroResponse;
     }
 
     public void addResponse(LPMobileHttpResponse response) {
@@ -53,7 +53,15 @@ public class LPMobileVisit {
     public List getResponses() {
         return responses;
     }
-    
+
+    public String getVisitorId() {
+        return visitorId;
+    }
+
+    public void setVisitorId(String visitorId) {
+        this.visitorId = visitorId;
+    }
+
     public void setResponse(String resposne) {
         this.response = resposne;
     }
