@@ -7,6 +7,7 @@ import json.model.AppSettings;
 import json.model.VisitIntroResponse;
 import model.LPMobileChat;
 import json.model.LPMobileEnvironment;
+import model.LPMobileHttpResponse;
 import model.LPMobileVisit;
 import model.Visitor;
 import networking.chat.IntroChatResponse;
@@ -24,9 +25,7 @@ import service.LPMobileProperties;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.xml.bind.JAXBException;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.ProtocolException;
 import java.net.URL;
 
@@ -41,7 +40,7 @@ public class ChatConnectionHandler {
     public Logger logger = LoggerFactory.getLogger("ChatConnectionHandler");
     JsonMarshaller jsonMarshaller = new JsonMarshaller();
 
-    public IntroChatResponse createChatConnection(LPMobileEnvironment env, AppSettings appSettings, VisitIntroResponse visitIntroResponse) {
+    public IntroChatResponse createChatConnection(AppSettings appSettings, VisitIntroResponse visitIntroResponse) {
         boolean success = false;
         introChatResponse = sendChatIntroRequest(appSettings, visitIntroResponse);
         success = openSseChatConnection();
@@ -81,6 +80,26 @@ public class ChatConnectionHandler {
         return introChatResponse;
     }
 
+    public LPMobileHttpResponse postRequest(VisitIntroResponse visitIntroResponse, String postBody, IntroChatResponse chatIntro, String uriSuffix) throws IOException {
+        HttpClient httpClient = new DefaultHttpClient();
+        String url = String.format(CHAT_BASE_URL, LPMobileProperties.getDomain()) + uriSuffix;
+        HttpPost httpPost = new HttpPost(url);
+        httpPost.addHeader(new BasicHeader("Content-type", "application/json"));
+        httpPost.addHeader(new BasicHeader("X-Liveperson-Capabilities", "account-skills"));
+        httpPost.setEntity(new StringEntity(postBody, "UTF8"));
+        if (chatIntro != null) {
+            httpPost.addHeader(new BasicHeader("Cookie", chatIntro.getCookieHeader()));
+        }
+        HttpResponse response = httpClient.execute(httpPost);
+        LPMobileHttpResponse lpmResponse = new LPMobileHttpResponse(url, response.getStatusLine().getStatusCode(), postBody, getResponseBody(response));
+        if (LPMobileProperties.isDebug) {
+            logger.debug("<sendPostRequest> " + url + " postBody " + postBody);
+            logger.debug("<sendPostRequest> response " + response.getStatusLine());
+        }
+        return lpmResponse;
+
+    }
+
     public HttpResponse sendPostRequest(VisitIntroResponse visitIntroResponse, String postBody, IntroChatResponse chatIntro, String uriSuffix) throws IOException {
         HttpClient httpClient = new DefaultHttpClient();
         String url = String.format(CHAT_BASE_URL, LPMobileProperties.getDomain()) + uriSuffix;
@@ -92,12 +111,32 @@ public class ChatConnectionHandler {
             httpPost.addHeader(new BasicHeader("Cookie", chatIntro.getCookieHeader()));
         }
         HttpResponse response = httpClient.execute(httpPost);
+        logger.debug("<sendPostRequest> what is e? ");
+//        LPMobileHttpResponse lpmResponse = new LPMobileHttpResponse(url, response.getStatusLine().getStatusCode(), postBody, getResponseBody(response));
         if (LPMobileProperties.isDebug) {
             logger.debug("<sendPostRequest> " + url + " postBody " + postBody);
             logger.debug("<sendPostRequest> response " + response.getStatusLine());
         }
         return response;
 
+    }
+
+    public String getResponseBody(HttpResponse response) {
+        try {
+            if (response.getEntity() instanceof BasicManagedEntity) {
+                BasicManagedEntity entity = (BasicManagedEntity) response.getEntity();
+                StringBuilder inputstr = new StringBuilder(1000);
+                BufferedReader br = new BufferedReader(new InputStreamReader(entity.getContent(), "utf8"), 8192);
+                String currentLine;
+                while ((currentLine = br.readLine()) != null) {
+                    inputstr.append(currentLine);
+                }
+                return inputstr.toString();
+            }
+        } catch (IOException e ) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public StringBuffer getBodyContent(BasicManagedEntity e) throws IOException {

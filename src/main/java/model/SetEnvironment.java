@@ -28,8 +28,13 @@ public class SetEnvironment {
 
     public static AppSettings createAppSettings() {
         AppSettings appSettings = new AppSettings();
-        appSettings.setApp_id("P36511428").setLanguage("en").setPlatform("Android").setPlateform_release("0.1.0").setDevice_id("286c5550ba06df78");
-        appSettings.setApp_id("com.liveperson.mobile.ecosmart-P36511428").setBranding_md5("e3fa6750a0c2e557342831924e6d39d4");
+        appSettings.setApp_id("P36511428").setLanguage("en");
+        appSettings.setPlatform("Android");
+        appSettings.setPlateform_release("0.1.0");
+        appSettings.setDevice_id("286c5550ba06df78");
+        appSettings.setApp_id("com.liveperson.mobile.ecosmart-P36511428");
+        appSettings.setBranding_md5("e3fa6750a0c2e557342831924e6d39d4");
+        appSettings.setRequest_visitor_id(true);
         return appSettings;
     }
 

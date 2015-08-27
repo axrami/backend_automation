@@ -34,7 +34,7 @@ public class JsonMarshaller {
                     inputStr.append(currentLine);
                 }
                 if(LPMobileProperties.isDebug) {
-                    logger.debug("<Response>  " + inputStr.toString());
+                    logger.debug("<Response>  Class = " + clazz + " Response = " + inputStr.toString());
                 }
                 StreamSource responseJson = new StreamSource(new StringReader("{\"response\":" + inputStr.toString() + "}"));
                 JAXBContext jc = JAXBContextFactory.createContext(new Class[]{clazz}, null);

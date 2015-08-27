@@ -6,8 +6,17 @@ package model;
 public class LPMobileHttpResponse {
     private String url;
     private int responseCode;
-    public String postBody;
-    public String httpResponse;
+    private String postBody;
+    private String httpResponse;
+
+    public LPMobileHttpResponse() {}
+
+    public LPMobileHttpResponse(String url, int responseCode, String postBody, String httpResponse) {
+        this.url = url;
+        this.responseCode = responseCode;
+        this.postBody = postBody;
+        this.httpResponse = httpResponse;
+    }
 
     public String getHttpResponse() {
         return httpResponse;

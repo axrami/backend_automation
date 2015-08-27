@@ -30,22 +30,34 @@ public class ChatHandler {
     AppSettings appSettings;
     public Logger logger = LoggerFactory.getLogger("ChatHandler");
 
-    public ChatHandler createConnection(LPMobileEnvironment env, AppSettings appSettings, VisitIntroResponse visitIntroResponse, Visitor visitor) {
-        this.env = env;
+    public ChatHandler createConnection(AppSettings appSettings, VisitIntroResponse visitIntroResponse, Visitor visitor) {
         this.visitIntroResponse = visitIntroResponse;
         this.visitor = visitor;
         this.appSettings = appSettings;
-        this.introChatResponse = chatConnectionHandler.createChatConnection(env, appSettings, visitIntroResponse);
+        this.introChatResponse = chatConnectionHandler.createChatConnection(appSettings, visitIntroResponse);
         return this;
     }
 
     // Example: {"text":"hello"}
     public HttpResponse sendLinePostRequest() throws IOException {
+        LPMobileHttpResponse parsedResponse = new LPMobileHttpResponse();
         try {
             Line line = new Line();
             line.setText("Hello");
             String postBody = jsonMarshaller.marshalObj(line, Class.forName("json.model.Line"));
             return chatConnectionHandler.sendPostRequest(visitIntroResponse, postBody, introChatResponse, "line/" + introChatResponse.getEngagementId());
+        } catch (JAXBException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public LPMobileHttpResponse sendLinePostRequest(String text) throws IOException {
+        try {
+            Line line = new Line();
+            line.setText(text);
+            String postBody = jsonMarshaller.marshalObj(line, Class.forName("json.model.Line"));
+            return chatConnectionHandler.postRequest(visitIntroResponse, postBody, introChatResponse, "line/" + introChatResponse.getEngagementId());
         } catch (JAXBException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -139,6 +151,14 @@ public class ChatHandler {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public LPMobileHttpResponse parseHttpResponse(HttpResponse response) {
+        int statusCode = response.getStatusLine().getStatusCode();
+
+        LPMobileHttpResponse parsedResponse = new LPMobileHttpResponse();
+
+        return parsedResponse;
     }
 
     public LPMobileEnvironment getEnv() {

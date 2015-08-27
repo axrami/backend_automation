@@ -34,10 +34,10 @@ public class VisitHandler {
     private JsonMarshaller jsonMarshaller = new JsonMarshaller();
     private String visitBaseURL = String.format(APP_LAUNCHER_URL, LPMobileProperties.getDomain());
     public Logger logger = LoggerFactory.getLogger("VisitHandler");
+    public LPMobileHttpResponse response;
 
 
-    public VisitIntroResponse launch(LPMobileEnvironment env , AppSettings appSettings, Visitor visitor) {
-        this.env = env;
+    public VisitIntroResponse launch(AppSettings appSettings, Visitor visitor) {
         this.appSettings = appSettings;
         this.visitor = visitor;
         try {
@@ -58,7 +58,7 @@ public class VisitHandler {
         String postBody = jsonMarshaller.marshalObj(appSettings, Class.forName("json.model.AppSettings"));
         httppost.setEntity(new StringEntity(postBody));
         HttpResponse httpResponse = httpclient.execute(httppost);
-        LPMobileHttpResponse response = new LPMobileHttpResponse();
+        response = new LPMobileHttpResponse();
         response.setUrl(visitBaseURL);
         response.setPostBody(postBody);
         response.setResponseCode(httpResponse.getStatusLine().getStatusCode());
@@ -99,9 +99,5 @@ public class VisitHandler {
 
     }
 
-    public LPMobileHttpResponse retryLaunch(LPMobileEnvironment env, LPMobileVisit visit) {
-        LPMobileHttpResponse retryResponse = new LPMobileHttpResponse();
-        return retryResponse;
-    }
 
 }

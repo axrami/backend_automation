@@ -11,29 +11,38 @@ import java.util.List;
 
 @XmlRootElement
 public class VisitIntroResponse {
-    String visit_id;
-    String button_text;
-    String button_text_color;
-    String button_tint;
-//    Object button;
-    int button_visibility;
-//    Object default_availability;
-    int enabled;
-//    Object skills;
-    int voice_enabled;
-    String welcome_text;
-    String default_language;
-    List <String> supported_languages;
-    boolean surveys_enabled;
-    boolean hide_email_chat;
-    int next_interval;
-    String continue_url;
-    int show_exit_survey_condition;
-    String mask_cc;
-    String visit_url;
-    Object branding;
-    String branding_md5;
+    private String visit_id;
+    private String button_text;
+    private String button_text_color;
+    private String button_tint;
+    private Object button;
+    private int button_visibility;
+    private Object default_availability;
+    private int enabled;
+    private Object skills;
+    private int voice_enabled;
+    private String welcome_text;
+    private String default_language;
+    private List <String> supported_languages;
+    private boolean surveys_enabled;
+    private boolean hide_email_chat;
+    private int next_interval;
+    private String continue_url;
+    private int show_exit_survey_condition;
+    private String mask_cc;
+    private String visit_url;
+    private Object branding;
+    private String branding_md5;
+    private boolean request_visitor_id;
 
+
+    public boolean isRequest_visitor_id() {
+        return request_visitor_id;
+    }
+
+    public void setRequest_visitor_id(boolean request_visitor_id) {
+        this.request_visitor_id = request_visitor_id;
+    }
 
     public String getBranding() {
         return branding.toString();

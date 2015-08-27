@@ -5,7 +5,6 @@ import json.model.AppSettings;
 import json.model.LPMobileEnvironment;
 import json.model.VisitIntroResponse;
 import model.*;
-import networking.ContinueRequestHandler;
 import networking.VisitHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,14 +28,17 @@ public class Session {
         this.visitor = new Visitor();
     }
 
-    public Session(LPMobileEnvironment env, AppSettings appSettings, Visitor visitor) {
-        this.env = env;
+    public Session(AppSettings appSettings, Visitor visitor) {
         this.appSettings = appSettings;
-        this.visitor = visitor;
+        if (visitor != null) {
+            this.visitor = visitor;
+        } else {
+            this.visitor = new Visitor();
+        }
     }
 
     public VisitHandler beginVisit() {
-        visitIntroResponse = visitHandler.launch(env, appSettings, visitor);
+        visitIntroResponse = visitHandler.launch(appSettings, visitor);
         return visitHandler;
     }
 
@@ -46,7 +48,7 @@ public class Session {
     }
 
     public ChatHandler beginChat() {
-        chat.createConnection(env, appSettings, visitIntroResponse, visitor);
+        chat.createConnection(appSettings, visitIntroResponse, visitor);
         return chat;
     }
 
