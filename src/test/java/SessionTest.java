@@ -50,6 +50,13 @@ public class SessionTest {
 
     public AppSettings buildWebEnv() {
         AppSettings appSettings = new AppSettings();
+        appSettings.setApp_id("5df4277b");
+        appSettings.setPlateform_release("Web");
+        appSettings.setDevice_id("1b69aff5-a0d0-29c8-d02e-13428ba250e8");
+        appSettings.setLanguage("en");
+        appSettings.setBranding_md5("9bce1d24bf82e79e01b71753ec5bf6b4");
+        appSettings.setDevice_type("Mozilla\\/5.0 (Linux; Android 4.4.2; SM-G900H Build\\/KOT49H) AppleWebKit\\/537.36 (KHTML, like Gecko) Chrome\\/44.0.2403.133 Mobile Safari\\/537.36");
+        appSettings.setRequest_visitor_id(true);
 
         return appSettings;
     }

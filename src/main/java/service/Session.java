@@ -13,6 +13,7 @@ import service.chat.ChatHandler;
 /**
  * Created by andrew on 7/21/15.
  */
+
 public class Session {
     private Visitor visitor;
     public VisitIntroResponse visitIntroResponse;
@@ -20,6 +21,7 @@ public class Session {
     private AppSettings appSettings;
     public VisitHandler visitHandler = new VisitHandler();
     public ChatHandler chat = new ChatHandler();
+    private LPMobileConfig config;
     public Logger logger = LoggerFactory.getLogger("Session");
 
     public Session() {
@@ -28,7 +30,7 @@ public class Session {
         this.visitor = new Visitor();
     }
 
-    public Session(AppSettings appSettings, Visitor visitor) {
+    public Session(AppSettings appSettings, Visitor visitor, LPMobileConfig config) {
         this.appSettings = appSettings;
         if (visitor != null) {
             this.visitor = visitor;
