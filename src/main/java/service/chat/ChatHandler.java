@@ -39,13 +39,12 @@ public class ChatHandler {
     }
 
     // Example: {"text":"hello"}
-    public HttpResponse sendLinePostRequest() throws IOException {
-        LPMobileHttpResponse parsedResponse = new LPMobileHttpResponse();
+    public LPMobileHttpResponse sendLinePostRequest() throws IOException {
         try {
             Line line = new Line();
             line.setText("Hello");
             String postBody = jsonMarshaller.marshalObj(line, Class.forName("json.model.Line"));
-            return chatConnectionHandler.sendPostRequest(visitIntroResponse, postBody, introChatResponse, "line/" + introChatResponse.getEngagementId());
+            return chatConnectionHandler.postRequest(visitIntroResponse, postBody, introChatResponse, "line/" + introChatResponse.getEngagementId());
         } catch (JAXBException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -65,12 +64,12 @@ public class ChatHandler {
     }
 
     // Body not parsed
-    public HttpResponse sendOutroPostRequest(VisitIntroResponse visitIntroResponse, String postBody) throws IOException {
+    public LPMobileHttpResponse sendOutroPostRequest(VisitIntroResponse visitIntroResponse, String postBody) throws IOException {
         Outro outro = new Outro();
         outro.setBody(postBody);
         try {
             postBody = jsonMarshaller.marshalObj(outro, Class.forName("json.model.Outro"));
-            return chatConnectionHandler.sendPostRequest(visitIntroResponse, postBody, introChatResponse, "outro/" + introChatResponse.getEngagementId());
+            return chatConnectionHandler.postRequest(visitIntroResponse, postBody, introChatResponse, "outro/" + introChatResponse.getEngagementId());
         } catch (ClassNotFoundException | JAXBException e ) {
             e.printStackTrace();
         }
@@ -78,29 +77,29 @@ public class ChatHandler {
     }
 
     // Example: {“prechat”:survey,"postchat":survey,"offline":survey}
-    public HttpResponse sendSurveyPostRequest(VisitIntroResponse visitIntroResponse, String postBody, IntroChatResponse intro) throws IOException{
+    public LPMobileHttpResponse sendSurveyPostRequest(VisitIntroResponse visitIntroResponse, String postBody, IntroChatResponse intro) throws IOException{
         Survey survey = new Survey();
-        return chatConnectionHandler.sendPostRequest(visitIntroResponse, postBody, intro, "survey/" + intro.getEngagementId());
+        return chatConnectionHandler.postRequest(visitIntroResponse, postBody, intro, "survey/" + intro.getEngagementId());
     }
 
     // Example: {"email_address":"visitor@email.com","message":"feedback text"}
-    public HttpResponse sendFeedbackPostRequest(VisitIntroResponse visitIntroResponse, String postBody) throws IOException {
-        return chatConnectionHandler.sendPostRequest(visitIntroResponse, postBody, introChatResponse, "feedback/" + introChatResponse.getEngagementId());
+    public LPMobileHttpResponse sendFeedbackPostRequest(VisitIntroResponse visitIntroResponse, String postBody) throws IOException {
+        return chatConnectionHandler.postRequest(visitIntroResponse, postBody, introChatResponse, "feedback/" + introChatResponse.getEngagementId());
     }
 
     // Example: {"capabilities":["show_leavemessage","capability2",”capability3”]}
-    public HttpResponse sendCapabilitiesPostRequest(VisitIntroResponse visitIntroResponse, String postBody) throws IOException {
-        return chatConnectionHandler.sendPostRequest(visitIntroResponse, postBody, introChatResponse, "capabilities/" + introChatResponse.getEngagementId());
+    public LPMobileHttpResponse sendCapabilitiesPostRequest(VisitIntroResponse visitIntroResponse, String postBody) throws IOException {
+        return chatConnectionHandler.postRequest(visitIntroResponse, postBody, introChatResponse, "capabilities/" + introChatResponse.getEngagementId());
     }
 
     // Example (to send chat history to email): {"email_addresses":["email1","email2"]}
     // Example (to send chat history to SSE channel): {}
-    public HttpResponse sendChatHistoryPostRequest(VisitIntroResponse visitIntroResponse, String email) throws IOException {
+    public LPMobileHttpResponse sendChatHistoryPostRequest(VisitIntroResponse visitIntroResponse, String email) throws IOException {
         ChatHistory chatHistory = new ChatHistory();
         chatHistory.setEmail(email);
         try {
             String postBody = jsonMarshaller.marshalObj(chatHistory, Class.forName("json.model.ChatHistory"));
-            return chatConnectionHandler.sendPostRequest(visitIntroResponse, postBody, introChatResponse, "chat_history/" + introChatResponse.getEngagementId());
+            return chatConnectionHandler.postRequest(visitIntroResponse, postBody, introChatResponse, "chat_history/" + introChatResponse.getEngagementId());
         } catch (ClassNotFoundException | JAXBException e ) {
             e.printStackTrace();
         }
@@ -108,13 +107,13 @@ public class ChatHandler {
     }
 
     // Example: {“variable”:value}
-    public HttpResponse sendCustomVarsPostRequest(VisitIntroResponse visitIntroResponse, String name, String value) throws IOException {
+    public LPMobileHttpResponse sendCustomVarsPostRequest(VisitIntroResponse visitIntroResponse, String name, String value) throws IOException {
         Map<String, String> var= new HashMap<>();
         var.put(name, value);
         CustomVariable customVariable = new CustomVariable(var);
         try {
             String postBody = jsonMarshaller.marshalObj(customVariable, Class.forName("json.model.CustomVariable"));
-            return chatConnectionHandler.sendPostRequest(visitIntroResponse, postBody, introChatResponse, "custom_vars/" + introChatResponse.getEngagementId());
+            return chatConnectionHandler.postRequest(visitIntroResponse, postBody, introChatResponse, "custom_vars/" + introChatResponse.getEngagementId());
         } catch (ClassNotFoundException | JAXBException e) {
             e.printStackTrace();
         }
@@ -122,12 +121,12 @@ public class ChatHandler {
     }
 
     // Example: {"action":"typing_start"}
-    public HttpResponse sendAdvisoryPostRequest(VisitIntroResponse visitIntroResponse, String action) throws IOException {
+    public LPMobileHttpResponse sendAdvisoryPostRequest(VisitIntroResponse visitIntroResponse, String action) throws IOException {
         Advisory advisory = new Advisory();
         advisory.setAction(action);
         try {
             String postBody = jsonMarshaller.marshalObj(advisory, Class.forName("json.model.Advisory"));
-            return chatConnectionHandler.sendPostRequest(visitIntroResponse, postBody, introChatResponse, "advisory/" + introChatResponse.getEngagementId());
+            return chatConnectionHandler.postRequest(visitIntroResponse, postBody, introChatResponse, "advisory/" + introChatResponse.getEngagementId());
         } catch (ClassNotFoundException | JAXBException e) {
             e.printStackTrace();
         }
@@ -135,30 +134,22 @@ public class ChatHandler {
     }
 
     // Body: binary
-    public HttpResponse sendScreenShotPostRequest(VisitIntroResponse visitIntroResponse, String postBody) throws IOException {
-        return chatConnectionHandler.sendPostRequest(visitIntroResponse, postBody, introChatResponse, "screenshot/" + introChatResponse.getEngagementId());
+    public LPMobileHttpResponse sendScreenShotPostRequest(VisitIntroResponse visitIntroResponse, String postBody) throws IOException {
+        return chatConnectionHandler.postRequest(visitIntroResponse, postBody, introChatResponse, "screenshot/" + introChatResponse.getEngagementId());
     }
 
     //Example: {"permission":"revoked", “asset”:”screenshare”} , {"permission":"granted", “asset”:”screenshare”}
-    public HttpResponse sendPermissionPostRequest(VisitIntroResponse visitIntroResponse, String perm, String asset) throws IOException {
+    public LPMobileHttpResponse sendPermissionPostRequest(VisitIntroResponse visitIntroResponse, String perm, String asset) throws IOException {
         Permission permission = new Permission();
         permission.setPermission(perm);
         permission.setAsset(asset);
         try {
             String postBody = jsonMarshaller.marshalObj(permission, Class.forName("json.model.Permission"));
-            return chatConnectionHandler.sendPostRequest(visitIntroResponse, postBody, introChatResponse, "permission/" + introChatResponse.getEngagementId());
+            return chatConnectionHandler.postRequest(visitIntroResponse, postBody, introChatResponse, "permission/" + introChatResponse.getEngagementId());
         } catch (ClassNotFoundException | JAXBException e) {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public LPMobileHttpResponse parseHttpResponse(HttpResponse response) {
-        int statusCode = response.getStatusLine().getStatusCode();
-
-        LPMobileHttpResponse parsedResponse = new LPMobileHttpResponse();
-
-        return parsedResponse;
     }
 
     public LPMobileEnvironment getEnv() {
