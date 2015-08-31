@@ -39,7 +39,7 @@ public class LPMobileConfig {
     // constructors
     protected LPMobileConfig() {
         this.environment = "staging";
-        this.apiVersion = 2;
+        this.apiVersion = 1;
         this.isDebug = true;
         setBaseUrls();
     }
@@ -50,13 +50,6 @@ public class LPMobileConfig {
         }
         return instance;
     }
-
-//    public LPMobileConfig(String environment, int apiVersion, boolean isDebug) {
-//        this.environment = environment;
-//        this.apiVersion = apiVersion;
-//        this.isDebug = isDebug;
-//        setBaseUrls();
-//    }
 
 
     public void setBaseUrls() {

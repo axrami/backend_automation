@@ -1,8 +1,6 @@
 import json.model.AppSettings;
-import json.model.LPMobileEnvironment;
 import networking.VisitHandler;
 import org.testng.Assert;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import service.Session;
 import service.chat.ChatHandler;
