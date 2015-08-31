@@ -21,22 +21,21 @@ public class ChatHandler {
 
     boolean chatConnected = false;
     ChatConnectionHandler chatConnectionHandler = new ChatConnectionHandler();
-    LPMobileChat chat = new LPMobileChat();
     LPMobileEnvironment env;
     Visitor visitor;
     IntroChatResponse introChatResponse;
     JsonMarshaller jsonMarshaller = new JsonMarshaller();
     VisitIntroResponse visitIntroResponse;
     AppSettings appSettings;
-    LPMobileConfig config;
+    LPMobileConfig config = LPMobileConfig.getInstance();
     public Logger logger = LoggerFactory.getLogger("ChatHandler");
 
-    public ChatHandler createConnection(AppSettings appSettings, VisitIntroResponse visitIntroResponse, Visitor visitor, LPMobileConfig config) {
+    public ChatHandler createConnection(AppSettings appSettings, VisitIntroResponse visitIntroResponse, Visitor visitor) {
         this.config = config;
         this.visitIntroResponse = visitIntroResponse;
         this.visitor = visitor;
         this.appSettings = appSettings;
-        this.introChatResponse = chatConnectionHandler.createChatConnection(appSettings, visitIntroResponse, config);
+        this.introChatResponse = chatConnectionHandler.createChatConnection(appSettings, visitIntroResponse);
         return this;
     }
 

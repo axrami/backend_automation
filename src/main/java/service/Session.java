@@ -22,18 +22,16 @@ public class Session {
     private AppSettings appSettings;
     public VisitHandler visitHandler = new VisitHandler();
     public ChatHandler chat = new ChatHandler();
-    private LPMobileConfig config;
+    private LPMobileConfig config = LPMobileConfig.getInstance();
     public Logger logger = LoggerFactory.getLogger("Session");
 
     public Session() {
         this.appSettings = SetEnvironment.createAppSettings();
         this.env = SetEnvironment.createBaseEnv();
         this.visitor = new Visitor();
-        this.config = new LPMobileConfig();
     }
 
     public Session(AppSettings appSettings, Visitor visitor) {
-        this.config = new LPMobileConfig();
         this.appSettings = appSettings;
         if (visitor != null) {
             this.visitor = visitor;
@@ -50,7 +48,7 @@ public class Session {
     }
 
     public VisitHandler beginVisit() {
-        visitIntroResponse = visitHandler.launch(appSettings, visitor, config);
+        visitIntroResponse = visitHandler.launch(appSettings, visitor);
         return visitHandler;
     }
 
@@ -60,7 +58,7 @@ public class Session {
     }
 
     public ChatHandler beginChat() {
-        chat.createConnection(appSettings, visitIntroResponse, visitor, config);
+        chat.createConnection(appSettings, visitIntroResponse, visitor);
         return chat;
     }
 

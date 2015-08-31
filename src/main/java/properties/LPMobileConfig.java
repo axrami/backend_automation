@@ -34,20 +34,29 @@ public class LPMobileConfig {
     private String baseChatURL;
     private String baseVisitURL;
 
+    private static LPMobileConfig instance = null;
+
     // constructors
-    public LPMobileConfig() {
+    protected LPMobileConfig() {
         this.environment = "staging";
         this.apiVersion = 2;
         this.isDebug = true;
         setBaseUrls();
     }
 
-    public LPMobileConfig(String environment, int apiVersion, boolean isDebug) {
-        this.environment = environment;
-        this.apiVersion = apiVersion;
-        this.isDebug = isDebug;
-        setBaseUrls();
+    public static LPMobileConfig getInstance() {
+        if(instance == null) {
+            instance = new LPMobileConfig();
+        }
+        return instance;
     }
+
+//    public LPMobileConfig(String environment, int apiVersion, boolean isDebug) {
+//        this.environment = environment;
+//        this.apiVersion = apiVersion;
+//        this.isDebug = isDebug;
+//        setBaseUrls();
+//    }
 
 
     public void setBaseUrls() {

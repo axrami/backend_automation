@@ -32,11 +32,10 @@ public class ChatConnectionHandler {
     private HttpsURLConnection sseClient;
     private String COOKIE_HEADER_NAME = "Cookie";
     private Logger logger = LoggerFactory.getLogger("ChatConnectionHandler");
-    private LPMobileConfig config;
+    private LPMobileConfig config = LPMobileConfig.getInstance();
     private JsonMarshaller jsonMarshaller = new JsonMarshaller();
 
-    public IntroChatResponse createChatConnection(AppSettings appSettings, VisitIntroResponse visitIntroResponse, LPMobileConfig config) {
-        this.config = config;
+    public IntroChatResponse createChatConnection(AppSettings appSettings, VisitIntroResponse visitIntroResponse) {
         boolean success = false;
         introChatResponse = sendChatIntroRequest(appSettings, visitIntroResponse);
         success = openSseChatConnection();

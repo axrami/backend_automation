@@ -27,13 +27,12 @@ public class VisitHandler {
     private VisitIntroResponse visitIntroResponse;
     private AppSettings appSettings;
     private Visitor visitor;
-    private LPMobileConfig config;
+    private LPMobileConfig config = LPMobileConfig.getInstance();
     private JsonMarshaller jsonMarshaller = new JsonMarshaller();
     public Logger logger = LoggerFactory.getLogger("VisitHandler");
     public LPMobileHttpResponse response;
 
-    public VisitIntroResponse launch(AppSettings appSettings, Visitor visitor , LPMobileConfig config) {
-        this.config = config;
+    public VisitIntroResponse launch(AppSettings appSettings, Visitor visitor) {
         this.appSettings = appSettings;
         this.visitor = visitor;
         try {
