@@ -20,7 +20,7 @@ public class SessionTest {
         appSettings.setLocale("en_US");
         appSettings.setDevice_type("x86_64");
         appSettings.setPlatform_version("8.4");
-        appSettings.setPlateform_release("Apple iOS");
+        appSettings.setPlatform("Apple iOS");
 //        appSettings.setRequest_visitor_id(true);
         appSettings.setLanguage("en");
         appSettings.setStrings_hash("e8d2cb478b5411d43b5570ca0369bcb9"); // Default hash
@@ -49,7 +49,7 @@ public class SessionTest {
     public AppSettings buildWebEnv() {
         AppSettings appSettings = new AppSettings();
         appSettings.setApp_id("5df4277b");
-        appSettings.setPlateform_release("Web");
+        appSettings.setPlatform("Web");
         appSettings.setDevice_id("1b69aff5-a0d0-29c8-d02e-13428ba250e8");
         appSettings.setLanguage("en");
         appSettings.setBranding_md5("9bce1d24bf82e79e01b71753ec5bf6b4");
@@ -62,31 +62,32 @@ public class SessionTest {
     @Test
     public void beginIosVisit() {
         Session session = new Session(buildIosEnv(), null);
+        session.setConfig("staging", 1, true);
         VisitHandler visit = session.beginVisit();
         Assert.assertEquals(visit.response.isSuccess(), true);
     }
-
 
     @Test
     public void beginWebVisit() {
         Session session = new Session(buildWebEnv(), null);
+        session.setConfig("staging", 1, true);
         VisitHandler visit = session.beginVisit();
         Assert.assertEquals(visit.response.isSuccess(), true);
     }
 
-    // Android Environment
-
+    // Android on api v1
     @Test
     public void beginAndroidVisit() {
         Session session = new Session(buildAndroidEnv(), null);
-        session.setConfig("production", 1, true);
+        session.setConfig("staging", 1, true);
         VisitHandler visit = session.beginVisit();
         Assert.assertEquals(visit.response.isSuccess(), true);
     }
 
     @Test
-    public void beginChat() {
+    public void beginAndroidChat() {
         Session session = new Session(buildAndroidEnv(), null);
+        session.setConfig("staging", 1, true);
         VisitHandler visit = session.beginVisit();
         Assert.assertEquals(visit.response.isSuccess(), true);
         ChatHandler chat = session.beginChat();

@@ -10,7 +10,7 @@ public class LPMobileConfig {
     private boolean isDebug;
     private String environment;
     private int apiVersion;
-    public Logger logger = LoggerFactory.getLogger("LPMobileProperties");
+    private Logger logger = LoggerFactory.getLogger("LPMobileProperties");
 
     // Final base strings
     private final String visitProdDomain = "dispatch.look.io";
