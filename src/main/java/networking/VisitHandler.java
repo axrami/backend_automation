@@ -4,9 +4,7 @@ package networking;
 import json.JsonMarshaller;
 import json.model.AppSettings;
 import json.model.VisitIntroResponse;
-import json.model.LPMobileEnvironment;
 import model.LPMobileHttpResponse;
-import model.LPMobileVisit;
 import model.Visitor;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -16,7 +14,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import service.LPMobileProperties;
+import properties.LPMobileConfig;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
@@ -26,18 +24,16 @@ import java.io.IOException;
  * Created by andrew on 6/16/15.
  */
 public class VisitHandler {
-    private String APP_LAUNCHER_URL = "https://%s/api/v1/app/launch";
-    private LPMobileEnvironment env;
     private VisitIntroResponse visitIntroResponse;
     private AppSettings appSettings;
     private Visitor visitor;
+    private LPMobileConfig config;
     private JsonMarshaller jsonMarshaller = new JsonMarshaller();
-    private String visitBaseURL = String.format(APP_LAUNCHER_URL, LPMobileProperties.getDomain());
     public Logger logger = LoggerFactory.getLogger("VisitHandler");
     public LPMobileHttpResponse response;
 
-
-    public VisitIntroResponse launch(AppSettings appSettings, Visitor visitor) {
+    public VisitIntroResponse launch(AppSettings appSettings, Visitor visitor , LPMobileConfig config) {
+        this.config = config;
         this.appSettings = appSettings;
         this.visitor = visitor;
         try {
@@ -52,18 +48,19 @@ public class VisitHandler {
 
     public VisitIntroResponse sendVisitRequest() throws Exception {
         HttpClient httpclient = new DefaultHttpClient();
-        HttpPost httppost = new HttpPost(visitBaseURL);
+        HttpPost httppost = new HttpPost(config.getVisitDomain());
         httppost.addHeader(new BasicHeader("Content-type", "application/json"));
         httppost.addHeader(new BasicHeader("X-LivepersonMobile-Capabilities", "account-skills"));
         String postBody = jsonMarshaller.marshalObj(appSettings, Class.forName("json.model.AppSettings"));
         httppost.setEntity(new StringEntity(postBody));
         HttpResponse httpResponse = httpclient.execute(httppost);
         response = new LPMobileHttpResponse();
-        response.setUrl(visitBaseURL);
+        response.setUrl(config.getVisitDomain());
         response.setPostBody(postBody);
         response.setResponseCode(httpResponse.getStatusLine().getStatusCode());
-        if (LPMobileProperties.isDebug){
-            logger.debug("<sendVisitRequest> url " + visitBaseURL);
+
+        if (config.isDebug()){
+            logger.debug("<sendVisitRequest> url " + config.getVisitDomain());
             logger.debug("<sendVisitRequest> postBody " + postBody);
             logger.debug("<sendVisitRequest> httpResponse " + httpResponse);
         }
@@ -96,8 +93,5 @@ public class VisitHandler {
         } catch (IOException | JAXBException | ClassNotFoundException e ) {
             e.printStackTrace();
         }
-
     }
-
-
 }

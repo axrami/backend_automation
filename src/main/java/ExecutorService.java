@@ -40,29 +40,16 @@ public class ExecutorService {
 
     public void beginCounter() {
         ScheduledExecutorService executor2 = Executors.newScheduledThreadPool(3);
-        ScheduledExecutorService executor1 = Executors.newScheduledThreadPool(2);
 
         Runnable task = () -> {
             Session session = new Session();
-//            session.beginVisit(createBaseEnv());
+            session.beginVisit();
+
 
         };
-        Runnable task2 = () -> {
-            Session session2 = new Session();
-            ChatHandler chat = session2.beginChat();
-            try {
-                chat.sendLinePostRequest();
-                chat.sendLinePostRequest();
-                chat.sendLinePostRequest();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        };
-
         int intDelay = 1;
         int period = 5000;
         executor2.scheduleAtFixedRate(task, intDelay, period, TimeUnit.MILLISECONDS);
-        executor1.scheduleAtFixedRate(task2, intDelay, period + 3000, TimeUnit.MILLISECONDS);
     }
 
 

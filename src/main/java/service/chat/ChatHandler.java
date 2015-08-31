@@ -5,9 +5,9 @@ import json.model.*;
 import model.*;
 import json.model.LPMobileEnvironment;
 import networking.chat.IntroChatResponse;
-import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import properties.LPMobileConfig;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
@@ -28,13 +28,15 @@ public class ChatHandler {
     JsonMarshaller jsonMarshaller = new JsonMarshaller();
     VisitIntroResponse visitIntroResponse;
     AppSettings appSettings;
+    LPMobileConfig config;
     public Logger logger = LoggerFactory.getLogger("ChatHandler");
 
-    public ChatHandler createConnection(AppSettings appSettings, VisitIntroResponse visitIntroResponse, Visitor visitor) {
+    public ChatHandler createConnection(AppSettings appSettings, VisitIntroResponse visitIntroResponse, Visitor visitor, LPMobileConfig config) {
+        this.config = config;
         this.visitIntroResponse = visitIntroResponse;
         this.visitor = visitor;
         this.appSettings = appSettings;
-        this.introChatResponse = chatConnectionHandler.createChatConnection(appSettings, visitIntroResponse);
+        this.introChatResponse = chatConnectionHandler.createChatConnection(appSettings, visitIntroResponse, config);
         return this;
     }
 

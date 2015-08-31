@@ -8,6 +8,7 @@ import model.*;
 import networking.VisitHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import properties.LPMobileConfig;
 import service.chat.ChatHandler;
 
 /**
@@ -28,9 +29,11 @@ public class Session {
         this.appSettings = SetEnvironment.createAppSettings();
         this.env = SetEnvironment.createBaseEnv();
         this.visitor = new Visitor();
+        this.config = new LPMobileConfig();
     }
 
-    public Session(AppSettings appSettings, Visitor visitor, LPMobileConfig config) {
+    public Session(AppSettings appSettings, Visitor visitor) {
+        this.config = new LPMobileConfig();
         this.appSettings = appSettings;
         if (visitor != null) {
             this.visitor = visitor;
@@ -39,8 +42,15 @@ public class Session {
         }
     }
 
+    public void setConfig(String env, int apiVersion, boolean isDebug) {
+        config.setEnvironment(env);
+        config.setApiVersion(apiVersion);
+        config.setIsDebug(isDebug);
+        config.setBaseUrls();
+    }
+
     public VisitHandler beginVisit() {
-        visitIntroResponse = visitHandler.launch(appSettings, visitor);
+        visitIntroResponse = visitHandler.launch(appSettings, visitor, config);
         return visitHandler;
     }
 
@@ -50,7 +60,7 @@ public class Session {
     }
 
     public ChatHandler beginChat() {
-        chat.createConnection(appSettings, visitIntroResponse, visitor);
+        chat.createConnection(appSettings, visitIntroResponse, visitor, config);
         return chat;
     }
 

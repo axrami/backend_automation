@@ -81,6 +81,7 @@ public class SessionTest {
     @Test
     public void beginAndroidVisit() {
         Session session = new Session(buildAndroidEnv(), null);
+        session.setConfig("staging", 1, true);
         VisitHandler visit = session.beginVisit();
         Assert.assertEquals(visit.response.isSuccess(), true);
     }

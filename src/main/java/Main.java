@@ -17,15 +17,16 @@ import java.util.concurrent.TimeUnit;
 public class Main {
 
     public static void main(String args[]) {
-        try {
-            JsonMarshaller marshaller = new JsonMarshaller();
-            AppSettings appsettings = SetEnvironment.createAppSettings();
-            System.out.println(marshaller.marshalObj(appsettings, Class.forName("json.model.AppSettings")));
-        } catch (ClassNotFoundException | JAXBException e ) {
-            e.printStackTrace();
-        }
-
+        ScheduledExecutorService executor2 = Executors.newScheduledThreadPool(3);
+        Runnable task = () -> {
+            Session session = new Session();
+            session.beginVisit();
+        };
+        int intDelay = 0;
+        int period = 5000;
+        executor2.scheduleAtFixedRate(task, intDelay, period, TimeUnit.MILLISECONDS);
     }
-
 }
+
+
 
