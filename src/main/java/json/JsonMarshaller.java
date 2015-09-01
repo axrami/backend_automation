@@ -58,9 +58,6 @@ public class JsonMarshaller {
             marshaller.setProperty(UnmarshallerProperties.JSON_INCLUDE_ROOT, false);
             StringWriter sw = new StringWriter();
             marshaller.marshal(obj, sw);
-        if (config.isDebug()) {
-            logger.debug("<marshalObj> string " + sw.toString());
-        }
             return sw.toString();
     }
 }

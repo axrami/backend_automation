@@ -25,7 +25,7 @@ public class LPMobileConfig {
     private String APP_LAUNCHER_URL_2 = "https://%s/api/v2/app/launch";
 
     // Chat API base Strings
-    private static final String BASECHATURL_1 = "https://%s/api/v1/chat/";
+    private static final String BASECHATURL_1 = "https://%s/api/v2/chat/";
     private static final String BASECHATURL_2 = "https://%s/api/v2/chat/";
 
     // used to build domain stings

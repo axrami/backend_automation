@@ -89,6 +89,15 @@ public class SessionTest {
         session.setConfig("staging", 1, true);
         VisitHandler visit = session.beginVisit();
         ChatHandler chat = session.beginChat();
+        try {
+            chat.sendLinePostRequest();
+            Thread.sleep(7000);
+            chat.sendLinePostRequest();
+            chat.sendLinePostRequest();
+            chat.sendOutroPostRequest("");
+        } catch (IOException | InterruptedException e ) {
+            e.printStackTrace();
+        }
 
     }
 

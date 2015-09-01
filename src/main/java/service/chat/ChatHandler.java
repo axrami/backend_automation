@@ -20,21 +20,29 @@ import java.util.Map;
 public class ChatHandler {
 
     boolean chatConnected = false;
-    ChatConnectionHandler chatConnectionHandler = new ChatConnectionHandler();
-    LPMobileEnvironment env;
-    Visitor visitor;
-    IntroChatResponse introChatResponse;
-    JsonMarshaller jsonMarshaller = new JsonMarshaller();
-    VisitIntroResponse visitIntroResponse;
-    AppSettings appSettings;
-    LPMobileConfig config = LPMobileConfig.getInstance();
-    public Logger logger = LoggerFactory.getLogger("ChatHandler");
+    private ChatConnectionHandler chatConnectionHandler = new ChatConnectionHandler();
+    private LPMobileEnvironment env;
+    private Visitor visitor;
+    private IntroChatResponse introChatResponse;
+    private JsonMarshaller jsonMarshaller = new JsonMarshaller();
+    private VisitIntroResponse visitIntroResponse;
+    private AppSettings appSettings;
+    private LPMobileConfig config = LPMobileConfig.getInstance();
+    private ChatIntro chatIntro = new ChatIntro();
+    private Logger logger = LoggerFactory.getLogger("ChatHandler");
 
+    // {"app_id":"P58916451","platform":"Web","skill":"mobile","visit_id":"0a982f4b9782cf1a0d80e7f318a86ca4"}
     public ChatHandler createConnection(AppSettings appSettings, VisitIntroResponse visitIntroResponse, Visitor visitor) {
         this.visitIntroResponse = visitIntroResponse;
         this.visitor = visitor;
         this.appSettings = appSettings;
-        this.introChatResponse = chatConnectionHandler.createChatConnection(appSettings, visitIntroResponse);
+        chatIntro.setApp_id(appSettings.getApp_id());
+        chatIntro.setPlatform(appSettings.getPlatform());
+        chatIntro.setSkill("mobile");
+        chatIntro.setVisit_id(visitIntroResponse.getVisit_id());
+        chatIntro.setSite_id(appSettings.getSite_id());
+        chatIntro.setLanguage("en");
+        this.introChatResponse = chatConnectionHandler.createChatConnection(chatIntro);
         return this;
     }
 
@@ -64,7 +72,7 @@ public class ChatHandler {
     }
 
     // Body not parsed
-    public LPMobileHttpResponse sendOutroPostRequest(VisitIntroResponse visitIntroResponse, String postBody) throws IOException {
+    public LPMobileHttpResponse sendOutroPostRequest(String postBody) throws IOException {
         Outro outro = new Outro();
         outro.setBody(postBody);
         try {

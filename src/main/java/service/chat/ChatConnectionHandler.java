@@ -3,6 +3,7 @@ package service.chat;
 import json.JsonMarshaller;
 import json.JsonParser;
 import json.model.AppSettings;
+import json.model.ChatIntro;
 import json.model.VisitIntroResponse;
 import model.LPMobileHttpResponse;
 import networking.chat.IntroChatResponse;
@@ -35,10 +36,9 @@ public class ChatConnectionHandler {
     private LPMobileConfig config = LPMobileConfig.getInstance();
     private JsonMarshaller jsonMarshaller = new JsonMarshaller();
 
-    public IntroChatResponse createChatConnection(AppSettings appSettings, VisitIntroResponse visitIntroResponse) {
+    public IntroChatResponse createChatConnection(ChatIntro chatIntro) {
         boolean success = false;
-        appSettings.setVisit_id(visitIntroResponse.getVisit_id());
-        introChatResponse = sendChatIntroRequest(appSettings, visitIntroResponse);
+        introChatResponse = sendChatIntroRequest(chatIntro);
         success = openSseChatConnection();
         if (success = true) {
             chatConnected();
@@ -47,12 +47,9 @@ public class ChatConnectionHandler {
 
     }
 
-    public IntroChatResponse sendChatIntroRequest(AppSettings appSettings, VisitIntroResponse visitIntroResponse) {
-        IntroChatResponse introChatResponse = null;
-        logger.debug("<CHECKING FOR VISIT ID> appSettings " + appSettings.getVisit_id());
-        logger.debug("<CHECKING FOR VISIT ID> visitIntro " + visitIntroResponse.getVisit_id());
+    public IntroChatResponse sendChatIntroRequest(ChatIntro chatIntro) {
         try {
-            String postBody = jsonMarshaller.marshalObj(appSettings, Class.forName("json.model.AppSettings"));
+            String postBody = jsonMarshaller.marshalObj(chatIntro, Class.forName("json.model.ChatIntro"));
             HttpResponse httpResponse = sendPostRequest(null, postBody, null, "intro/");
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode == 200 ) {
@@ -110,7 +107,7 @@ public class ChatConnectionHandler {
             httpPost.addHeader(new BasicHeader("Cookie", chatIntro.getCookieHeader()));
         }
         HttpResponse response = httpClient.execute(httpPost);
-        LPMobileHttpResponse lpmResponse = new LPMobileHttpResponse(url, response.getStatusLine().getStatusCode(), postBody, getResponseBody(response));
+//        LPMobileHttpResponse lpmResponse = new LPMobileHttpResponse(url, response.getStatusLine().getStatusCode(), postBody, getResponseBody(response));
         if (config.isDebug()) {
             logger.debug("<sendPostRequest> " + url + " postBody " + postBody);
             logger.debug("<sendPostRequest> response " + response.getStatusLine());
