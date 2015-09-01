@@ -37,6 +37,7 @@ public class ChatConnectionHandler {
 
     public IntroChatResponse createChatConnection(AppSettings appSettings, VisitIntroResponse visitIntroResponse) {
         boolean success = false;
+        appSettings.setVisit_id(visitIntroResponse.getVisit_id());
         introChatResponse = sendChatIntroRequest(appSettings, visitIntroResponse);
         success = openSseChatConnection();
         if (success = true) {
@@ -48,9 +49,11 @@ public class ChatConnectionHandler {
 
     public IntroChatResponse sendChatIntroRequest(AppSettings appSettings, VisitIntroResponse visitIntroResponse) {
         IntroChatResponse introChatResponse = null;
+        logger.debug("<CHECKING FOR VISIT ID> appSettings " + appSettings.getVisit_id());
+        logger.debug("<CHECKING FOR VISIT ID> visitIntro " + visitIntroResponse.getVisit_id());
         try {
             String postBody = jsonMarshaller.marshalObj(appSettings, Class.forName("json.model.AppSettings"));
-            HttpResponse httpResponse = sendPostRequest(visitIntroResponse, postBody, null, "intro/");
+            HttpResponse httpResponse = sendPostRequest(null, postBody, null, "intro/");
             int statusCode = httpResponse.getStatusLine().getStatusCode();
             if (statusCode == 200 ) {
                 if (httpResponse.getEntity() instanceof BasicManagedEntity) {
@@ -65,7 +68,7 @@ public class ChatConnectionHandler {
                     }
                 }
             } else {
-                logger.error("<VisitIntroResponse Not Successful>");
+                logger.error("<IntroChatResponse Not Successful>");
             }
 
         } catch (IOException | ClassNotFoundException | JAXBException e) {
@@ -78,6 +81,7 @@ public class ChatConnectionHandler {
     public LPMobileHttpResponse postRequest(VisitIntroResponse visitIntroResponse, String postBody, IntroChatResponse chatIntro, String uriSuffix) throws IOException {
         HttpClient httpClient = new DefaultHttpClient();
         String url = config.getChatDomain() + uriSuffix;
+        logger.debug("URL" + url);
         HttpPost httpPost = new HttpPost(url);
         httpPost.addHeader(new BasicHeader("Content-type", "application/json"));
         httpPost.addHeader(new BasicHeader("X-Liveperson-Capabilities", "account-skills"));
@@ -106,14 +110,12 @@ public class ChatConnectionHandler {
             httpPost.addHeader(new BasicHeader("Cookie", chatIntro.getCookieHeader()));
         }
         HttpResponse response = httpClient.execute(httpPost);
-        logger.debug("<sendPostRequest> what is e? ");
-//        LPMobileHttpResponse lpmResponse = new LPMobileHttpResponse(url, response.getStatusLine().getStatusCode(), postBody, getResponseBody(response));
+        LPMobileHttpResponse lpmResponse = new LPMobileHttpResponse(url, response.getStatusLine().getStatusCode(), postBody, getResponseBody(response));
         if (config.isDebug()) {
             logger.debug("<sendPostRequest> " + url + " postBody " + postBody);
             logger.debug("<sendPostRequest> response " + response.getStatusLine());
         }
         return response;
-
     }
 
     public String getResponseBody(HttpResponse response) {

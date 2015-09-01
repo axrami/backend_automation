@@ -34,7 +34,7 @@ public class AppSettings {
 //    private String proto_response;
 //    private String capabilities;
     private String host;
-
+    private String visit_id;
     // clients sending extra stuffs
     private boolean app_foregrounded;
     private String connection_type;
@@ -252,5 +252,13 @@ public class AppSettings {
 
     public void setSite_id(String site_id) {
         this.site_id = site_id;
+    }
+
+    public String getVisit_id() {
+        return visit_id;
+    }
+
+    public void setVisit_id(String visit_id) {
+        this.visit_id = visit_id;
     }
 }

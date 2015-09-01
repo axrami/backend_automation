@@ -66,7 +66,9 @@ public class VisitHandler {
         if (response.isSuccess()) {
             Object marshalledObj = jsonMarshaller.unmarshalJson(httpResponse, Class.forName("json.model.VisitIntroResponse"));
             if (marshalledObj instanceof VisitIntroResponse) {
-                return visitIntroResponse = (VisitIntroResponse)marshalledObj;
+                VisitIntroResponse visitIntroResponse = (VisitIntroResponse)marshalledObj;
+                logger.debug("VISITID= " + visitIntroResponse.getVisit_id());
+                return visitIntroResponse;
             } else {
                 logger.error("<sendVisitRequest> Server response isSuccess: failed to unmarshal");
             }

@@ -48,7 +48,7 @@ public class Session {
     }
 
     public VisitHandler beginVisit() {
-        visitIntroResponse = visitHandler.launch(appSettings, visitor);
+        this.visitIntroResponse = visitHandler.launch(appSettings, visitor);
         return visitHandler;
     }
 
@@ -58,6 +58,7 @@ public class Session {
     }
 
     public ChatHandler beginChat() {
+        logger.debug("LOGGED FROM SESSION VISIT ID " + visitIntroResponse.getVisit_id());
         chat.createConnection(appSettings, visitIntroResponse, visitor);
         return chat;
     }

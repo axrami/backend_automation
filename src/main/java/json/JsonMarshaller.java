@@ -7,6 +7,7 @@ import org.eclipse.persistence.jaxb.MarshallerProperties;
 import org.eclipse.persistence.jaxb.UnmarshallerProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import properties.LPMobileConfig;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -21,7 +22,9 @@ import java.io.*;
  */
 
 public class JsonMarshaller {
-    public Logger logger = LoggerFactory.getLogger("JsonMarshaller");
+    private Logger logger = LoggerFactory.getLogger("JsonMarshaller");
+    private LPMobileConfig config = LPMobileConfig.getInstance();
+
     public Object unmarshalJson(HttpResponse httpResponse, Class clazz) {
         try {
             if (httpResponse.getEntity() instanceof BasicManagedEntity) {
@@ -32,12 +35,14 @@ public class JsonMarshaller {
                 while ((currentLine = br.readLine()) != null) {
                     inputStr.append(currentLine);
                 }
-                logger.debug("<Response>  Class = " + clazz + " Response = " + inputStr.toString());
+                if (config.isDebug()) {
+                    logger.debug("<Response>  Class = " + clazz + " Response = " + inputStr.toString());
+                }
                 StreamSource responseJson = new StreamSource(new StringReader("{\"response\":" + inputStr.toString() + "}"));
                 JAXBContext jc = JAXBContextFactory.createContext(new Class[]{clazz}, null);
                 Unmarshaller um = jc.createUnmarshaller();
                 um.setProperty(UnmarshallerProperties.MEDIA_TYPE, "application/json");
-                um.setProperty(UnmarshallerProperties.JSON_INCLUDE_ROOT, false);
+                um.setProperty(UnmarshallerProperties.JSON_INCLUDE_ROOT, true);
                 return um.unmarshal(responseJson, clazz).getValue();
             }
         } catch (IOException | JAXBException e) {
@@ -53,7 +58,9 @@ public class JsonMarshaller {
             marshaller.setProperty(UnmarshallerProperties.JSON_INCLUDE_ROOT, false);
             StringWriter sw = new StringWriter();
             marshaller.marshal(obj, sw);
+        if (config.isDebug()) {
             logger.debug("<marshalObj> string " + sw.toString());
+        }
             return sw.toString();
     }
 }

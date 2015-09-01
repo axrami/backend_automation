@@ -91,7 +91,6 @@ public class LPMobileConfig {
     }
 
     public String getChatDomain() {
-        setBaseUrls();
         return chatDomain;
     }
 

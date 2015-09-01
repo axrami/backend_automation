@@ -31,7 +31,6 @@ public class ChatHandler {
     public Logger logger = LoggerFactory.getLogger("ChatHandler");
 
     public ChatHandler createConnection(AppSettings appSettings, VisitIntroResponse visitIntroResponse, Visitor visitor) {
-        this.config = config;
         this.visitIntroResponse = visitIntroResponse;
         this.visitor = visitor;
         this.appSettings = appSettings;

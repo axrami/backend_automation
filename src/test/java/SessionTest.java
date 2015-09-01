@@ -75,7 +75,6 @@ public class SessionTest {
         Assert.assertEquals(visit.response.isSuccess(), true);
     }
 
-    // Android on api v1
     @Test
     public void beginAndroidVisit() {
         Session session = new Session(buildAndroidEnv(), null);
@@ -89,12 +88,7 @@ public class SessionTest {
         Session session = new Session(buildAndroidEnv(), null);
         session.setConfig("staging", 1, true);
         VisitHandler visit = session.beginVisit();
-        Assert.assertEquals(visit.response.isSuccess(), true);
         ChatHandler chat = session.beginChat();
-        try {
-            System.out.println("Is Success?  " + chat.sendLinePostRequest("Hello").isSuccess());
-        } catch (IOException e ) {
-        }
 
     }
 
