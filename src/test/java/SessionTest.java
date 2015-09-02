@@ -41,7 +41,7 @@ public class SessionTest {
         appSettings.setBranding_md5("e3fa6750a0c2e557342831924e6d39d4");
         appSettings.setSkill("mobile");
         appSettings.setSite_id("P36511428");
-
+        appSettings.setRequest_visitor_id(true);
 
         return appSettings;
     }
@@ -59,26 +59,46 @@ public class SessionTest {
         return appSettings;
     }
 
+    public Session setSessionConfig(Session session) {
+        session.setConfig("staging", 1, true);
+        return session;
+    }
+
     @Test
     public void beginIosVisit() {
         Session session = new Session(buildIosEnv(), null);
-        session.setConfig("staging", 1, true);
+        setSessionConfig(session);
         VisitHandler visit = session.beginVisit();
         Assert.assertEquals(visit.response.isSuccess(), true);
+    }
+
+    @Test
+    public void beginIosChat() {
+        Session session = new Session(buildIosEnv(), null);
+        setSessionConfig(session);
+
     }
 
     @Test
     public void beginWebVisit() {
         Session session = new Session(buildWebEnv(), null);
-        session.setConfig("staging", 1, true);
+        setSessionConfig(session);
         VisitHandler visit = session.beginVisit();
         Assert.assertEquals(visit.response.isSuccess(), true);
     }
 
     @Test
+    public void beginWebChat() {
+        Session session = new Session(buildIosEnv(), null);
+        setSessionConfig(session);
+
+    }
+
+
+    @Test
     public void beginAndroidVisit() {
         Session session = new Session(buildAndroidEnv(), null);
-        session.setConfig("staging", 1, true);
+        setSessionConfig(session);
         VisitHandler visit = session.beginVisit();
         Assert.assertEquals(visit.response.isSuccess(), true);
     }
@@ -86,15 +106,16 @@ public class SessionTest {
     @Test
     public void beginAndroidChat() {
         Session session = new Session(buildAndroidEnv(), null);
-        session.setConfig("staging", 1, true);
+        setSessionConfig(session);
         VisitHandler visit = session.beginVisit();
         ChatHandler chat = session.beginChat();
         try {
-            chat.sendLinePostRequest();
+            Assert.assertEquals(chat.sendLinePostRequest().isSuccess(), true);
             Thread.sleep(7000);
-            chat.sendLinePostRequest();
-            chat.sendLinePostRequest();
-            chat.sendOutroPostRequest("");
+            Assert.assertEquals(chat.sendLinePostRequest().isSuccess(), true);
+            Assert.assertEquals(chat.sendLinePostRequest().isSuccess(), true);
+            Assert.assertEquals(chat.sendLinePostRequest().isSuccess(), true);
+            Assert.assertEquals(chat.sendOutroPostRequest("").isSuccess(), true);
         } catch (IOException | InterruptedException e ) {
             e.printStackTrace();
         }

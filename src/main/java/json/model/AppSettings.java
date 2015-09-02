@@ -39,6 +39,7 @@ public class AppSettings {
     private boolean app_foregrounded;
     private String connection_type;
     private String platform_release;
+    private String current_skill;
 
     public String getPlateform_release() {
         return platform_release;
@@ -260,5 +261,13 @@ public class AppSettings {
 
     public void setVisit_id(String visit_id) {
         this.visit_id = visit_id;
+    }
+
+    public String getCurrent_skill() {
+        return current_skill;
+    }
+
+    public void setCurrent_skill(String current_skill) {
+        this.current_skill = current_skill;
     }
 }

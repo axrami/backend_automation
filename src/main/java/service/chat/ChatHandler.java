@@ -38,7 +38,7 @@ public class ChatHandler {
         this.appSettings = appSettings;
         chatIntro.setApp_id(appSettings.getApp_id());
         chatIntro.setPlatform(appSettings.getPlatform());
-        chatIntro.setSkill("mobile");
+        chatIntro.setSkill(appSettings.getSkill());
         chatIntro.setVisit_id(visitIntroResponse.getVisit_id());
         chatIntro.setSite_id(appSettings.getSite_id());
         chatIntro.setLanguage("en");
@@ -48,20 +48,15 @@ public class ChatHandler {
 
     // Example: {"text":"hello"}
     public LPMobileHttpResponse sendLinePostRequest() throws IOException {
-        try {
-            Line line = new Line();
-            line.setText("Hello");
-            String postBody = jsonMarshaller.marshalObj(line, Class.forName("json.model.Line"));
-            return chatConnectionHandler.postRequest(visitIntroResponse, postBody, introChatResponse, "line/" + introChatResponse.getEngagementId());
-        } catch (JAXBException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return sendLinePostRequest(null);
     }
 
     public LPMobileHttpResponse sendLinePostRequest(String text) throws IOException {
         try {
             Line line = new Line();
+            if (text == null) {
+                text = "hello";
+            }
             line.setText(text);
             String postBody = jsonMarshaller.marshalObj(line, Class.forName("json.model.Line"));
             return chatConnectionHandler.postRequest(visitIntroResponse, postBody, introChatResponse, "line/" + introChatResponse.getEngagementId());
@@ -91,8 +86,16 @@ public class ChatHandler {
     }
 
     // Example: {"email_address":"visitor@email.com","message":"feedback text"}
-    public LPMobileHttpResponse sendFeedbackPostRequest(VisitIntroResponse visitIntroResponse, String postBody) throws IOException {
-        return chatConnectionHandler.postRequest(visitIntroResponse, postBody, introChatResponse, "feedback/" + introChatResponse.getEngagementId());
+    public LPMobileHttpResponse sendFeedbackPostRequest(String email, String message) throws IOException {
+        try {
+            Feedback feedback = new Feedback();
+            feedback.setEmail(email).setMessage(message);
+            String postBody = jsonMarshaller.marshalObj(feedback, Class.forName("json.model.Feedback"));
+            return chatConnectionHandler.postRequest(visitIntroResponse, postBody, introChatResponse, "feedback/" + introChatResponse.getEngagementId());
+        } catch (JAXBException | ClassNotFoundException e ) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     // Example: {"capabilities":["show_leavemessage","capability2",”capability3”]}
@@ -129,7 +132,7 @@ public class ChatHandler {
     }
 
     // Example: {"action":"typing_start"}
-    public LPMobileHttpResponse sendAdvisoryPostRequest(VisitIntroResponse visitIntroResponse, String action) throws IOException {
+    public LPMobileHttpResponse sendAdvisoryPostRequest(String action) throws IOException {
         Advisory advisory = new Advisory();
         advisory.setAction(action);
         try {

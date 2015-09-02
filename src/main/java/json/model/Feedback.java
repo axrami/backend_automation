@@ -14,15 +14,17 @@ public class Feedback {
         return email;
     }
 
-    public void setEmail(String email) {
+    public Feedback setEmail(String email) {
         this.email = email;
+        return this;
     }
 
     public String getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
+    public Feedback setMessage(String message) {
         this.message = message;
+        return this;
     }
 }

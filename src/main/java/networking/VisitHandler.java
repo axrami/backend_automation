@@ -77,7 +77,7 @@ public class VisitHandler {
         return null;
     }
 
-    public void continueVisit() {
+    public LPMobileHttpResponse continueVisit() {
         try {
             HttpClient httpclient = new DefaultHttpClient();
             HttpPost httppost = new HttpPost(visitIntroResponse.getContinue_url());
@@ -90,8 +90,10 @@ public class VisitHandler {
             response.setUrl(visitIntroResponse.getContinue_url());
             response.setPostBody(postBody);
             response.setResponseCode(httpResponse.getStatusLine().getStatusCode());
+            return response;
         } catch (IOException | JAXBException | ClassNotFoundException e ) {
             e.printStackTrace();
         }
+        return null;
     }
 }

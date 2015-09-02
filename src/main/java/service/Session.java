@@ -52,9 +52,8 @@ public class Session {
         return visitHandler;
     }
 
-    public VisitHandler continueVisit() {
-        visitHandler.continueVisit();
-        return visitHandler;
+    public LPMobileHttpResponse continueVisit() {
+        return visitHandler.continueVisit();
     }
 
     public ChatHandler beginChat() {
