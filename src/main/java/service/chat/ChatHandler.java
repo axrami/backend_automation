@@ -55,7 +55,7 @@ public class ChatHandler {
         try {
             Line line = new Line();
             if (text == null) {
-                text = "hello";
+                text = "";
             }
             line.setText(text);
             String postBody = jsonMarshaller.marshalObj(line, Class.forName("json.model.Line"));
@@ -67,6 +67,10 @@ public class ChatHandler {
     }
 
     // Body not parsed
+    public LPMobileHttpResponse sendOutroPostRequest() throws IOException {
+        return sendOutroPostRequest("");
+    }
+
     public LPMobileHttpResponse sendOutroPostRequest(String postBody) throws IOException {
         Outro outro = new Outro();
         outro.setBody(postBody);
@@ -118,7 +122,7 @@ public class ChatHandler {
     }
 
     // Example: {“variable”:value}
-    public LPMobileHttpResponse sendCustomVarsPostRequest(VisitIntroResponse visitIntroResponse, String name, String value) throws IOException {
+    public LPMobileHttpResponse sendCustomVarsPostRequest(String name, String value) throws IOException {
         Map<String, String> var= new HashMap<>();
         var.put(name, value);
         CustomVariable customVariable = new CustomVariable(var);
