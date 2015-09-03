@@ -3,7 +3,6 @@ package service.chat;
 import json.JsonMarshaller;
 import json.model.*;
 import model.*;
-import json.model.LPMobileEnvironment;
 import networking.chat.IntroChatResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +20,6 @@ public class ChatHandler {
 
     boolean chatConnected = false;
     private ChatConnectionHandler chatConnectionHandler = new ChatConnectionHandler();
-    private LPMobileEnvironment env;
     private Visitor visitor;
     private IntroChatResponse introChatResponse;
     private JsonMarshaller jsonMarshaller = new JsonMarshaller();
@@ -128,6 +126,7 @@ public class ChatHandler {
         CustomVariable customVariable = new CustomVariable(var);
         try {
             String postBody = jsonMarshaller.marshalObj(customVariable, Class.forName("json.model.CustomVariable"));
+            logger.debug("<CUSTOMEVAR VALUE>" + postBody);
             return chatConnectionHandler.postRequest(visitIntroResponse, postBody, introChatResponse, "custom_vars/" + introChatResponse.getEngagementId());
         } catch (ClassNotFoundException | JAXBException e) {
             e.printStackTrace();
@@ -167,13 +166,6 @@ public class ChatHandler {
         return null;
     }
 
-    public LPMobileEnvironment getEnv() {
-        return env;
-    }
-
-    public void setEnv(LPMobileEnvironment env) {
-        this.env = env;
-    }
 
     public VisitIntroResponse getVisit() {
         return visitIntroResponse;

@@ -38,7 +38,7 @@ public class Main {
             }
         };
         int intDelay = 0;
-        int period = 100;
+        int period = 10000;
         executor2.scheduleAtFixedRate(task, intDelay, period, TimeUnit.MILLISECONDS);
         executor1.scheduleAtFixedRate(task1, intDelay, period, TimeUnit.MILLISECONDS);
     }

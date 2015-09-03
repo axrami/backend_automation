@@ -76,10 +76,9 @@ public class SessionTest {
     }
 
 
-
-    @Test(dataProvider = "platformPicker")
-    public void beginVisit(AppSettings appsettings) {
-        Session session = new Session(appsettings , null);
+    @Test(dataProvider = "platformPicker", threadPoolSize = 3, invocationCount = 10, timeOut = 10000)
+    public void beginVisit(AppSettings appSettings) {
+        Session session = new Session(appSettings , null);
         setSessionConfig(session);
         VisitHandler visit = session.beginVisit();
         Assert.assertEquals(visit.response.isSuccess(), true);
@@ -156,6 +155,19 @@ public class SessionTest {
             Assert.assertEquals(visit.continueVisit().isSuccess(), true);
             Assert.assertEquals(chat.sendFeedbackPostRequest("ramirez.andrew989@gmail.com", "I thought the chat was great!").isSuccess() , true);
         } catch (IOException | InterruptedException e ) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void sendCustomVars() {
+        try {
+            Session session = new Session(buildAndroidEnv(), null);
+            setSessionConfig(session);
+            VisitHandler visit = session.beginVisit();
+            ChatHandler chat = session.beginChat();
+            chat.sendCustomVarsPostRequest("Andrew", "Ramirez");
+        } catch (IOException e ) {
             e.printStackTrace();
         }
     }

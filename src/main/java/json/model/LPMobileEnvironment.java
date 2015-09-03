@@ -27,7 +27,7 @@ public class LPMobileEnvironment {
     String brandingHashStr;
     String currentAccount;
     String currentSkill;
-    String language = "en";
+    String language;
     boolean reqeust_visitor_id;
 
     private boolean isAccessibilityActive = false;

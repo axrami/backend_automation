@@ -1,5 +1,6 @@
 package json.model;
 
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +19,8 @@ public class CustomVariable {
         this.var = var;
     }
 
+
+    @XmlElementWrapper(name="andrew")
     public Map<String, String> getVar() {
         return this.var;
     }
