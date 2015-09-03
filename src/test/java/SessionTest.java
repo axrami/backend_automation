@@ -1,11 +1,17 @@
+import json.JsonMarshaller;
 import json.model.AppSettings;
+import model.LPMobileHttpResponse;
 import networking.VisitHandler;
+import org.json.simple.JSONObject;
+import org.junit.After;
+import org.junit.Before;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import service.Session;
 import service.chat.ChatHandler;
 
+import javax.xml.bind.JAXBException;
 import java.io.IOException;
 
 /**
@@ -13,6 +19,8 @@ import java.io.IOException;
  */
 public class SessionTest {
 
+    private JsonMarshaller jsonMarshaller = new JsonMarshaller();
+    private JSONObject testResults = new JSONObject();
 
     @DataProvider(name = "platformPicker")
     public Object[][] createAppSettings() {
@@ -76,22 +84,33 @@ public class SessionTest {
     }
 
 
-    @Test(dataProvider = "platformPicker", threadPoolSize = 3, invocationCount = 10, timeOut = 10000)
+    @Test(dataProvider = "platformPicker", threadPoolSize = 3, invocationCount = 2, timeOut = 10000)
     public void beginVisit(AppSettings appSettings) {
         Session session = new Session(appSettings , null);
         setSessionConfig(session);
         VisitHandler visit = session.beginVisit();
         Assert.assertEquals(visit.response.isSuccess(), true);
+        LPMobileHttpResponse result = visit.response;
+        try {
+            String resultString = jsonMarshaller.marshalObj(result, Class.forName("model.LPMobileHttpResponse"));
+            testResults.put("visit", resultString);
+        } catch (ClassNotFoundException | JAXBException e ) {
+            e.printStackTrace();
+        }
+        System.out.println("JSON TestResults " + testResults.toJSONString());
     }
 
-    @Test(dataProvider = "platformPicker")
+    @Test(dataProvider = "platformPicker", threadPoolSize = 20, invocationCount = 50, timeOut = 10000)
     public void continueVisit(AppSettings appSettings) {
         try {
             Session session = new Session(appSettings, null);
             setSessionConfig(session);
             VisitHandler visit = session.beginVisit();
             Assert.assertEquals(visit.response.isSuccess(), true);
-            Thread.sleep(session.visitIntroResponse.getNext_interval() * 1000);
+            Thread.sleep(session.visitIntroResponse.getNext_interval() * 100);
+            Assert.assertEquals(visit.continueVisit().isSuccess(), true);
+            Assert.assertEquals(visit.continueVisit().isSuccess(), true);
+            Assert.assertEquals(visit.continueVisit().isSuccess(), true);
             Assert.assertEquals(visit.continueVisit().isSuccess(), true);
         } catch (InterruptedException e ) {
             e.printStackTrace();
@@ -170,6 +189,11 @@ public class SessionTest {
         } catch (IOException e ) {
             e.printStackTrace();
         }
+    }
+
+    @After
+    public void publishResult() {
+        System.out.println("JSON TestResults " + testResults.toJSONString());
     }
 
 

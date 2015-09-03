@@ -8,6 +8,8 @@ public class LPMobileHttpResponse {
     private int responseCode;
     private String postBody;
     private String httpResponse;
+    private String continue_url;
+    private String visit_id;
 
     public LPMobileHttpResponse() {}
 
@@ -52,5 +54,21 @@ public class LPMobileHttpResponse {
 
     public void setPostBody(String postBody) {
         this.postBody = postBody;
+    }
+
+    public String getContinue_url() {
+        return continue_url;
+    }
+
+    public void setContinue_url(String continue_url) {
+        this.continue_url = continue_url;
+    }
+
+    public String getVisit_id() {
+        return visit_id;
+    }
+
+    public void setVisit_id(String visit_id) {
+        this.visit_id = visit_id;
     }
 }

@@ -57,7 +57,6 @@ public class VisitHandler {
         response.setUrl(config.getVisitDomain());
         response.setPostBody(postBody);
         response.setResponseCode(httpResponse.getStatusLine().getStatusCode());
-
         if (config.isDebug()){
             logger.debug("<sendVisitRequest> url " + config.getVisitDomain());
             logger.debug("<sendVisitRequest> postBody " + postBody);
@@ -67,6 +66,8 @@ public class VisitHandler {
             Object marshalledObj = jsonMarshaller.unmarshalJson(httpResponse, Class.forName("json.model.VisitIntroResponse"));
             if (marshalledObj instanceof VisitIntroResponse) {
                 VisitIntroResponse visitIntroResponse = (VisitIntroResponse)marshalledObj;
+                response.setContinue_url(visitIntroResponse.getContinue_url());
+                response.setVisit_id(visitIntroResponse.getVisit_id());
                 return visitIntroResponse;
             } else {
                 logger.error("<sendVisitRequest> Server response isSuccess: failed to unmarshal");
