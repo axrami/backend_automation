@@ -57,7 +57,10 @@ public class ChatHandler {
             }
             line.setText(text);
             String postBody = jsonMarshaller.marshalObj(line, Class.forName("json.model.Line"));
-            return chatConnectionHandler.postRequest(visitIntroResponse, postBody, introChatResponse, "line/" + introChatResponse.getEngagementId());
+            LPMobileHttpResponse response = chatConnectionHandler.postRequest(visitIntroResponse, postBody, introChatResponse, "line/" + introChatResponse.getEngagementId());
+            response.setRequestType("Line");
+            return response;
+
         } catch (JAXBException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -66,7 +69,10 @@ public class ChatHandler {
 
     // Body not parsed
     public LPMobileHttpResponse sendOutroPostRequest() throws IOException {
-        return sendOutroPostRequest("");
+        LPMobileHttpResponse result = sendOutroPostRequest("");
+        result.setRequestType("Outro");
+        return result;
+
     }
 
     public LPMobileHttpResponse sendOutroPostRequest(String postBody) throws IOException {
@@ -74,7 +80,9 @@ public class ChatHandler {
         outro.setBody(postBody);
         try {
             postBody = jsonMarshaller.marshalObj(outro, Class.forName("json.model.Outro"));
-            return chatConnectionHandler.postRequest(visitIntroResponse, postBody, introChatResponse, "outro/" + introChatResponse.getEngagementId());
+            LPMobileHttpResponse result = chatConnectionHandler.postRequest(visitIntroResponse, postBody, introChatResponse, "outro/" + introChatResponse.getEngagementId());
+            result.setRequestType("Outro");
+            return result;
         } catch (ClassNotFoundException | JAXBException e ) {
             e.printStackTrace();
         }
@@ -93,7 +101,9 @@ public class ChatHandler {
             Feedback feedback = new Feedback();
             feedback.setEmail(email).setMessage(message);
             String postBody = jsonMarshaller.marshalObj(feedback, Class.forName("json.model.Feedback"));
-            return chatConnectionHandler.postRequest(visitIntroResponse, postBody, introChatResponse, "feedback/" + introChatResponse.getEngagementId());
+            LPMobileHttpResponse result = chatConnectionHandler.postRequest(visitIntroResponse, postBody, introChatResponse, "feedback/" + introChatResponse.getEngagementId());
+            result.setRequestType("Feedback");
+            return result;
         } catch (JAXBException | ClassNotFoundException e ) {
             e.printStackTrace();
         }
@@ -140,7 +150,9 @@ public class ChatHandler {
         advisory.setAction(action);
         try {
             String postBody = jsonMarshaller.marshalObj(advisory, Class.forName("json.model.Advisory"));
-            return chatConnectionHandler.postRequest(visitIntroResponse, postBody, introChatResponse, "advisory/" + introChatResponse.getEngagementId());
+            LPMobileHttpResponse result = chatConnectionHandler.postRequest(visitIntroResponse, postBody, introChatResponse, "advisory/" + introChatResponse.getEngagementId());
+            result.setRequestType("Advisory");
+            return result;
         } catch (ClassNotFoundException | JAXBException e) {
             e.printStackTrace();
         }

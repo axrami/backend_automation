@@ -1,15 +1,18 @@
 package model;
 
+import org.joda.time.DateTime;
+
 /**
  * Created by andrew on 6/9/15.
  */
 public class LPMobileHttpResponse {
-    private String url;
+    private String requestType;
     private int responseCode;
-    private String postBody;
-    private String httpResponse;
-    private String continue_url;
     private String visit_id;
+    private String httpResponse;
+    private String url;
+    private String continue_url;
+    private String postBody;
 
     public LPMobileHttpResponse() {}
 
@@ -70,5 +73,13 @@ public class LPMobileHttpResponse {
 
     public void setVisit_id(String visit_id) {
         this.visit_id = visit_id;
+    }
+
+    public String getRequestType() {
+        return requestType;
+    }
+
+    public void setRequestType(String requestType) {
+        this.requestType = requestType;
     }
 }

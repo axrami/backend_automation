@@ -88,9 +88,17 @@ public class VisitHandler {
             httppost.setEntity(new StringEntity(postBody));
             HttpResponse httpResponse = httpclient.execute(httppost);
             LPMobileHttpResponse response = new LPMobileHttpResponse();
-            response.setUrl(visitIntroResponse.getContinue_url());
+            response.setContinue_url(visitIntroResponse.getContinue_url());
             response.setPostBody(postBody);
             response.setResponseCode(httpResponse.getStatusLine().getStatusCode());
+            response.setVisit_id(visitIntroResponse.getVisit_id());
+            if (config.isDebug()) {
+                logger.debug("<contineuVisit> ***************Continue RESPONSE*************");
+                logger.debug("<contineuVisit> *** ContinueURL " + response.getContinue_url());
+                logger.debug("<contineuVisit> *** ResponseCode " + response.getResponseCode());
+                logger.debug("<contineuVisit> *** VisitID " + response.getVisit_id());
+
+            }
             return response;
         } catch (IOException | JAXBException | ClassNotFoundException e ) {
             e.printStackTrace();

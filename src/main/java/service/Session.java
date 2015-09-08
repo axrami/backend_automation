@@ -61,16 +61,5 @@ public class Session {
         return chat;
     }
 
-    public void getChatHistory() {
-
-    }
-
-    public void setCustomVars() {
-
-    }
-
-    public void sendAdvisory() {
-
-    }
 
 }

@@ -1,6 +1,8 @@
 import json.JsonMarshaller;
 import json.model.AppSettings;
+import junit.framework.Assert;
 import model.SetEnvironment;
+import networking.VisitHandler;
 import org.apache.http.HttpResponse;
 import service.Session;
 import service.chat.ChatHandler;
@@ -17,18 +19,19 @@ import java.util.concurrent.TimeUnit;
 public class Main {
 
     public static void main(String args[]) {
-        ScheduledExecutorService executor1 = Executors.newScheduledThreadPool(3);
-        ScheduledExecutorService executor2 = Executors.newScheduledThreadPool(3);
+        ScheduledExecutorService executor1 = Executors.newScheduledThreadPool(50);
+        ScheduledExecutorService executor2 = Executors.newScheduledThreadPool(50);
         Runnable task = () -> {
-            Session session = new Session(buildAndroidEnv(), null);
-            session.setConfig("staging", 1, true);
-            session.beginVisit();
+                Session session = new Session(buildAndroidEnv(), null);
+                session.setConfig("production", 1, true);
+                VisitHandler visit = session.beginVisit();
+
         };
         Runnable task1 = () -> {
             try {
                 Session session = new Session(buildAndroidEnv(), null);
-                session.setConfig("staging", 1, true);
-                session.beginVisit();
+                session.setConfig("production", 1, true);
+                VisitHandler visit = session.beginVisit();
                 ChatHandler chat = session.beginChat();
                 chat.sendLinePostRequest("Hello");
                 chat.sendLinePostRequest("Hello");
@@ -38,7 +41,7 @@ public class Main {
             }
         };
         int intDelay = 0;
-        int period = 2000;
+        int period = 5000;
         executor2.scheduleAtFixedRate(task, intDelay, period, TimeUnit.MILLISECONDS);
         executor1.scheduleAtFixedRate(task1, intDelay, period, TimeUnit.MILLISECONDS);
     }

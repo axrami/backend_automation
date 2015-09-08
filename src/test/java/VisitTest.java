@@ -1,37 +1,35 @@
-package models;
-
-import json.JsonMarshaller;
 import json.model.AppSettings;
 import model.LPMobileHttpResponse;
+import model.TestReporter;
 import networking.VisitHandler;
-import org.json.simple.JSONObject;
-import org.junit.After;
+import org.slf4j.Logger;
 import org.testng.Assert;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import org.testng.annotations.AfterTest;
 import service.Session;
 
-import javax.xml.bind.JAXBException;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * Created by andrew on 9/3/15.
+ * Created by andrew on 9/4/15.
  */
-public class VisitGenerator {
-    private JsonMarshaller jsonMarshaller = new JsonMarshaller();
-    private JSONObject testResults = new JSONObject();
+public class VisitTest {
+    private Logger logger = org.slf4j.LoggerFactory.getLogger("SessionTest");
+    private static TestReporter reporter = new TestReporter();
+    private CopyOnWriteArrayList resultArray = new CopyOnWriteArrayList();
 
     @DataProvider(name = "platformPicker")
     public Object[][] createAppSettings() {
-        return new Object[][] {
-                {buildIosEnv()},
+        return new Object[][]{
                 {buildAndroidEnv()},
                 {buildWebEnv()},
         };
     }
 
+    // Set environment api version and debug
     public Session setSessionConfig(Session session) {
-        session.setConfig("staging", 1, false);
+        session.setConfig("staging", 1, true);
         return session;
     }
 
@@ -82,26 +80,18 @@ public class VisitGenerator {
         return appSettings;
     }
 
-    @Test(dataProvider = "platformPicker", threadPoolSize = 3, invocationCount = 2, timeOut = 10000)
+    @Test(dataProvider = "platformPicker", threadPoolSize = 10, invocationCount = 5, timeOut = 10000)
     public void beginVisit(AppSettings appSettings) {
-        Session session = new Session(appSettings , null);
+        Session session = new Session(appSettings, null);
         setSessionConfig(session);
         VisitHandler visit = session.beginVisit();
         Assert.assertEquals(visit.response.isSuccess(), true);
-        logResult(visit.response);
-    }
-
-    public void logResult(LPMobileHttpResponse result) {
-        try {
-            String resultString = jsonMarshaller.marshalObj(result, Class.forName("model.LPMobileHttpResponse"));
-            testResults.put("visit", resultString);
-        } catch (ClassNotFoundException | JAXBException e ) {
-            e.printStackTrace();
-        }
+        LPMobileHttpResponse result = visit.response;
+        resultArray.add(result);
     }
 
     @AfterTest
-    public void publishResults() {
-        System.out.println("JSON TestResults " + testResults.toJSONString());
+    public void logResults() {
+        reporter.parseArray(resultArray);
     }
 }
