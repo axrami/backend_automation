@@ -38,6 +38,7 @@ public class TestReporter {
         }
     }
 
+    // Can be used to send post to another service
     public void parseArray(List list) {
         JSONArray obj = new JSONArray();
         try {
@@ -55,7 +56,7 @@ public class TestReporter {
     public void postResults(String postBody) {
         try {
             HttpClient httpClient = new DefaultHttpClient();
-            HttpPost httpPost = new HttpPost("http://localhost:4567/test-result");
+            HttpPost httpPost = new HttpPost("http://lpmobile-test-results.s3.amazonaws.com");
             httpPost.addHeader(new BasicHeader("Content-type", "application/json"));
             httpPost.setEntity(new StringEntity(postBody));
             HttpResponse response = httpClient.execute(httpPost);
@@ -65,29 +66,50 @@ public class TestReporter {
 
     }
 
-//    public String generateHTML(List list) {
-//        String html = body().with(
-//        ).render();
-//        return html;
-//    }
-//
-//    public ContainerTag htmlStuff(List list) {
-//        for (int i = 0; i > list.size(); i++) {
-//            Object obj = list.get(i);
-//            LPMobileHttpResponse result = (LPMobileHttpResponse)obj;
-//            div().with(
-//                    p(result.getVisit_id())
-//            );
-//        }
-//    }
-//
-//    public void createResults(List list) {
-//        try {
-//            PrintWriter writer = new PrintWriter("test.html", "UTF8");
-//            writer.println(generateHTML());
-//            writer.close();
-//        } catch (FileNotFoundException | UnsupportedEncodingException e ) {
-//            e.printStackTrace();
-//        }
-//    }
+
+    // takes array of LPMobileHTTP response and gens html
+    public String generateHTML(List list) {
+        String html = body().with(
+                h1("Test Results" ),
+                h3("Total Test: " + list.size()),
+                resultBuilder(list)
+        ).render();
+        return html;
+    }
+
+    public ContainerTag resultBuilder(List list) {
+        ContainerTag tag = new ContainerTag("div");
+        for (int i = 0; i < list.size(); i++) {
+            Object obj = list.get(i);
+            LPMobileHttpResponse result = (LPMobileHttpResponse)obj;
+            tag.with(
+                    div().withClass("result").with(
+                            div().withClass("request-type").with(
+                                    p(result.getRequestType())
+                            ),
+                            div().withClass("response-code").with(
+                                    p(result.getResponseCode().toString())
+                            ),
+                            div().withClass("visit-id").with(
+                                p(result.getVisit_id())
+                            ),
+                            div().withClass("request-url").with(
+                                    p(result.getUrl())
+                            )
+                    )
+            );
+        }
+        return tag;
+    }
+
+// Creates a file with results
+    public void createResults(List list) {
+        try {
+            PrintWriter writer = new PrintWriter("test.html", "UTF8");
+            writer.println(generateHTML(list));
+            writer.close();
+        } catch (FileNotFoundException | UnsupportedEncodingException e ) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -15,6 +15,7 @@ import org.apache.http.conn.BasicManagedEntity;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
+import org.joda.time.Instant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import properties.LPMobileConfig;
@@ -86,12 +87,15 @@ public class ChatConnectionHandler {
         if (chatIntro != null) {
             httpPost.addHeader(new BasicHeader("Cookie", chatIntro.getCookieHeader()));
         }
+        Instant start = new Instant();
         HttpResponse response = httpClient.execute(httpPost);
-        LPMobileHttpResponse lpmResponse = new LPMobileHttpResponse(url, response.getStatusLine().getStatusCode(), postBody, getResponseBody(response));
+        Instant stop = new Instant();
+        LPMobileHttpResponse lpmResponse = new LPMobileHttpResponse(url, response.getStatusLine().getStatusCode(), postBody, getResponseBody(response), uriSuffix);
         if (config.isDebug()) {
             logger.debug("<sendPostRequest> " + url + " postBody " + postBody);
             logger.debug("<sendPostRequest> response " + response.getStatusLine());
         }
+        lpmResponse.setLatency(stop.getMillis() - start.getMillis());
         return lpmResponse;
 
     }

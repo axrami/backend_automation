@@ -15,7 +15,7 @@ import org.apache.http.message.BasicHeader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import properties.LPMobileConfig;
-
+import org.joda.time.Instant;
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
 
@@ -52,8 +52,11 @@ public class VisitHandler {
         httppost.addHeader(new BasicHeader("X-LivepersonMobile-Capabilities", "account-skills"));
         String postBody = jsonMarshaller.marshalObj(appSettings, Class.forName("json.model.AppSettings"));
         httppost.setEntity(new StringEntity(postBody));
+        Instant start = new Instant();
         HttpResponse httpResponse = httpclient.execute(httppost);
+        Instant stop = new Instant();
         response = new LPMobileHttpResponse();
+        response.setLatency( stop.getMillis() - start.getMillis());
         response.setUrl(config.getVisitDomain());
         response.setPostBody(postBody);
         response.setResponseCode(httpResponse.getStatusLine().getStatusCode());

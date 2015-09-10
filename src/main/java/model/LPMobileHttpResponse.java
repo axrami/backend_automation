@@ -1,26 +1,31 @@
 package model;
 
 import org.joda.time.DateTime;
+import org.joda.time.Instant;
 
 /**
  * Created by andrew on 6/9/15.
  */
 public class LPMobileHttpResponse {
     private String requestType;
-    private int responseCode;
+    private Integer responseCode;
     private String visit_id;
     private String httpResponse;
     private String url;
     private String continue_url;
     private String postBody;
+    private Instant start;
+    private Instant stop;
+    private Long latency;
 
     public LPMobileHttpResponse() {}
 
-    public LPMobileHttpResponse(String url, int responseCode, String postBody, String httpResponse) {
+    public LPMobileHttpResponse(String url, int responseCode, String postBody, String httpResponse, String requestType) {
         this.url = url;
         this.responseCode = responseCode;
         this.postBody = postBody;
         this.httpResponse = httpResponse;
+        this.requestType = requestType;
     }
 
     public String getHttpResponse() {
@@ -39,7 +44,7 @@ public class LPMobileHttpResponse {
         this.url = url;
     }
 
-    public int getResponseCode() {
+    public Integer getResponseCode() {
         return responseCode;
     }
 
@@ -81,5 +86,17 @@ public class LPMobileHttpResponse {
 
     public void setRequestType(String requestType) {
         this.requestType = requestType;
+    }
+
+    public void setResponseCode(Integer responseCode) {
+        this.responseCode = responseCode;
+    }
+
+    public Long getLatency() {
+        return latency;
+    }
+
+    public void setLatency(Long latency) {
+        this.latency = latency;
     }
 }

@@ -78,14 +78,18 @@ public class ChatHandler {
     public LPMobileHttpResponse sendOutroPostRequest(String postBody) throws IOException {
         Outro outro = new Outro();
         outro.setBody(postBody);
+        String suffix = "outro/";
+        LPMobileHttpResponse result;
         try {
             postBody = jsonMarshaller.marshalObj(outro, Class.forName("json.model.Outro"));
-            LPMobileHttpResponse result = chatConnectionHandler.postRequest(visitIntroResponse, postBody, introChatResponse, "outro/" + introChatResponse.getEngagementId());
+            result = chatConnectionHandler.postRequest(visitIntroResponse, postBody, introChatResponse, suffix + introChatResponse.getEngagementId());
             result.setRequestType("Outro");
             return result;
         } catch (ClassNotFoundException | JAXBException e ) {
             e.printStackTrace();
         }
+        // (String url, int responseCode, String postBody, String httpResponse, String requestType)
+//        return result = new LPMobileHttpResponse(null, null, postBody,introChatResponse,suffix)
         return null;
     }
 
