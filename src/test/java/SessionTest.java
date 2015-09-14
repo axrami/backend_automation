@@ -7,12 +7,14 @@ import org.glassfish.jersey.jaxb.internal.XmlCollectionJaxbProvider;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.testng.Assert;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import service.Session;
 import service.chat.ChatHandler;
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Created by andrew on 8/24/15.
@@ -24,6 +26,7 @@ public class SessionTest extends LPTest {
     private static JSONObject testResults = new JSONObject();
     private Logger logger = org.slf4j.LoggerFactory.getLogger("SessionTest");
     private TestReporter reporter = new TestReporter();
+    private CopyOnWriteArrayList resultArray = new CopyOnWriteArrayList();
 
     @Test(dataProvider = "platformPicker", threadPoolSize = 5, invocationCount = 2, timeOut = 10000)
     public void beginVisit(AppSettings appSettings) {
@@ -32,7 +35,7 @@ public class SessionTest extends LPTest {
         VisitHandler visit = session.beginVisit();
         Assert.assertEquals(visit.response.isSuccess(), true);
         LPMobileHttpResponse result = visit.response;
-        reporter.logResult(result);
+        resultArray.add(result);
     }
 
     @Test(dataProvider = "platformPicker", threadPoolSize = 5, invocationCount = 2, timeOut = 1000000)
@@ -41,8 +44,9 @@ public class SessionTest extends LPTest {
             Session session = new Session(appSettings, null);
             setSessionConfig(session);
             VisitHandler visit = session.beginVisit();
-            Assert.assertEquals(visit.response.isSuccess(), true);
+            resultArray.add(visit.response);
             Thread.sleep(15000);
+            resultArray.add(visit.continueVisit());
             LPMobileHttpResponse contineueResponse = visit.continueVisit();
             Assert.assertEquals(contineueResponse.isSuccess(), true);
         } catch (InterruptedException e ) {
@@ -50,18 +54,45 @@ public class SessionTest extends LPTest {
         }
     }
 
-    @Test(dataProvider = "platformPicker", threadPoolSize = 200, invocationCount = 200, timeOut = 10000)
+    @Test(dataProvider = "platformPicker", threadPoolSize = 20, invocationCount = 1, timeOut = 100000000)
     public void beginChatAgentEnd(AppSettings appSettings) {
         Session session = new Session(appSettings, null);
         setSessionConfig(session);
         VisitHandler visit = session.beginVisit();
+        resultArray.add(visit.response);
         ChatHandler chat = session.beginChat();
         try {
-            Assert.assertEquals(chat.sendLinePostRequest("hello").isSuccess(), true);
-            Assert.assertEquals(chat.sendLinePostRequest("hello").isSuccess(), true);
-            Assert.assertEquals(chat.sendLinePostRequest("hello").isSuccess(), true);
-            Assert.assertEquals(chat.sendLinePostRequest("end").isSuccess(), true);
-        } catch (IOException e) {
+            resultArray.add(chat.sendLinePostRequest("hello"));
+            Thread.sleep(100);
+            resultArray.add(chat.sendLinePostRequest("hello"));
+            Thread.sleep(100);
+            resultArray.add(chat.sendLinePostRequest("hello"));
+            Thread.sleep(100);
+            visit.continueVisit();
+            Thread.sleep(300);
+            visit.continueVisit();
+            resultArray.add(chat.sendLinePostRequest("hello"));
+            Thread.sleep(300);
+            resultArray.add(visit.continueVisit());
+            Thread.sleep(300);
+            resultArray.add(visit.continueVisit());
+            Thread.sleep(300);
+            resultArray.add(visit.continueVisit());
+            Thread.sleep(300);
+            resultArray.add(visit.continueVisit());
+            Thread.sleep(300);
+            resultArray.add(visit.continueVisit());
+            Thread.sleep(300);
+            resultArray.add(visit.continueVisit());
+            Thread.sleep(300);
+            resultArray.add(visit.continueVisit());
+            resultArray.add(chat.sendLinePostRequest("hello"));
+            Thread.sleep(300);
+            resultArray.add(visit.continueVisit());
+            resultArray.add(chat.sendLinePostRequest("hello"));
+            Thread.sleep(100);
+            resultArray.add(chat.sendLinePostRequest("end"));
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -120,6 +151,11 @@ public class SessionTest extends LPTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @AfterTest
+    public void logResults() {
+        reporter.createResults(resultArray);
     }
 
 }

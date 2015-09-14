@@ -1,6 +1,10 @@
 import json.model.AppSettings;
+import model.TestReporter;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.DataProvider;
 import service.Session;
+
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Created by andrew on 9/9/15.
@@ -65,4 +69,5 @@ public class LPTest {
 
         return appSettings;
     }
+
 }

@@ -95,6 +95,7 @@ public class ChatConnectionHandler {
             logger.debug("<sendPostRequest> " + url + " postBody " + postBody);
             logger.debug("<sendPostRequest> response " + response.getStatusLine());
         }
+        lpmResponse.setVisit_id(visitIntroResponse.getVisit_id());
         lpmResponse.setLatency(stop.getMillis() - start.getMillis());
         return lpmResponse;
 

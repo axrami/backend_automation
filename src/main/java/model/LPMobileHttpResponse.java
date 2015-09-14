@@ -92,8 +92,11 @@ public class LPMobileHttpResponse {
         this.responseCode = responseCode;
     }
 
-    public Long getLatency() {
-        return latency;
+    public String getLatency() {
+        if(latency == null) {
+            return "Not provided";
+        }
+        return latency.toString();
     }
 
     public void setLatency(Long latency) {

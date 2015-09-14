@@ -59,6 +59,7 @@ public class ChatHandler {
             String postBody = jsonMarshaller.marshalObj(line, Class.forName("json.model.Line"));
             LPMobileHttpResponse response = chatConnectionHandler.postRequest(visitIntroResponse, postBody, introChatResponse, "line/" + introChatResponse.getEngagementId());
             response.setRequestType("Line");
+            response.setVisit_id(visitIntroResponse.getVisit_id());
             return response;
 
         } catch (JAXBException | ClassNotFoundException e) {

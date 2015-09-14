@@ -12,6 +12,7 @@ public class LPMobileConfig {
     private int apiVersion;
     private Logger logger = LoggerFactory.getLogger("LPMobileProperties");
 
+    // TODO make string static final
     // Final base strings
     private final String visitProdDomain = "dispatch.look.io";
     private final String visitStagDomain = "dispatch.staging.look.io";
@@ -44,6 +45,7 @@ public class LPMobileConfig {
         setBaseUrls();
     }
 
+    //TODO bug read book
     public static LPMobileConfig getInstance() {
         if(instance == null) {
             instance = new LPMobileConfig();
@@ -67,6 +69,7 @@ public class LPMobileConfig {
     }
 
     private void setDomains() {
+        // TODO make switch on an enum
         switch (environment) {
             case "staging":
                 chatDomain = String.format(baseChatURL, chatStagDomain);
@@ -81,8 +84,10 @@ public class LPMobileConfig {
                 visitDomain = String.format(baseVisitURL, visitDevDomain);
                 break;
             default:
+                // TODO throw excetiopn for arg
                 chatDomain = String.format(baseChatURL, chatProdDomain);
                 visitDomain = String.format(baseVisitURL, visitProdDomain);
+                break;
         }
     }
 

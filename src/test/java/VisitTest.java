@@ -9,7 +9,11 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import service.Session;
 
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by andrew on 9/4/15.
@@ -17,21 +21,33 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class VisitTest extends LPTest {
     private Logger logger = org.slf4j.LoggerFactory.getLogger("SessionTest");
     private static TestReporter reporter = new TestReporter();
-    private CopyOnWriteArrayList resultArray = new CopyOnWriteArrayList();
+    private List resultArray = new CopyOnWriteArrayList();
 
-    @Test(dataProvider = "platformPicker", threadPoolSize = 1, invocationCount = 1, timeOut = 10000)
+    @Test(dataProvider = "platformPicker", threadPoolSize = 10, invocationCount = 10, timeOut = 10000)
     public void beginVisit(AppSettings appSettings) {
         Session session = new Session(appSettings, null);
         setSessionConfig(session);
         VisitHandler visit = session.beginVisit();
         Assert.assertEquals(visit.response.isSuccess(), true);
         LPMobileHttpResponse result = visit.response;
+        System.out.println(result.getLatency());
         resultArray.add(result);
-        logger.debug("START: " + result.getStart().getMillis() + " STOP: " + result.getStop().getMillis());
+    }
+
+    @Test
+    public void testExe() {
+        ScheduledExecutorService executor = Executors.newScheduledThreadPool(5);
+        Runnable task = () -> {
+            Session session = new Session();
+            setSessionConfig(session);
+            session.beginVisit();
+        };
+        executor.scheduleAtFixedRate(task, 1, 2, TimeUnit.SECONDS);
     }
 
     @AfterTest
     public void logResults() {
         reporter.createResults(resultArray);
     }
+
 }

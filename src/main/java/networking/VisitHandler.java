@@ -56,6 +56,7 @@ public class VisitHandler {
         HttpResponse httpResponse = httpclient.execute(httppost);
         Instant stop = new Instant();
         response = new LPMobileHttpResponse();
+        response.setRequestType("VisitRequest");
         response.setLatency( stop.getMillis() - start.getMillis());
         response.setUrl(config.getVisitDomain());
         response.setPostBody(postBody);
@@ -89,9 +90,14 @@ public class VisitHandler {
             httppost.addHeader(new BasicHeader("X-LivepersonMobile-Capabilities", "account-skills"));
             String postBody = jsonMarshaller.marshalObj(appSettings, Class.forName("json.model.AppSettings"));
             httppost.setEntity(new StringEntity(postBody));
+            Instant start = new Instant();
             HttpResponse httpResponse = httpclient.execute(httppost);
+            Instant stop = new Instant();
             LPMobileHttpResponse response = new LPMobileHttpResponse();
             response.setContinue_url(visitIntroResponse.getContinue_url());
+            response.setLatency(stop.getMillis() - start.getMillis());
+            response.setRequestType("ContinueVisit");
+            response.setUrl(visitIntroResponse.getContinue_url());
             response.setPostBody(postBody);
             response.setResponseCode(httpResponse.getStatusLine().getStatusCode());
             response.setVisit_id(visitIntroResponse.getVisit_id());

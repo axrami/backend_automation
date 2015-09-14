@@ -9,15 +9,19 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
+import org.joda.time.DateTime;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
+
 import static j2html.TagCreator.*;
+
 import javax.xml.bind.JAXBException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -33,13 +37,13 @@ public class TestReporter {
         try {
             String resultString = jsonMarshaller.marshalObj(result, Class.forName("model.LPMobileHttpResponse"));
             resultJson.put("visit", resultString);
-        } catch (ClassNotFoundException | JAXBException e ) {
+        } catch (ClassNotFoundException | JAXBException e) {
             e.printStackTrace();
         }
     }
 
     // Can be used to send post to another service
-    public void parseArray(List list) {
+    public String parseArray(List list) {
         JSONArray obj = new JSONArray();
         try {
             for (int i = 0; i < list.size(); i++) {
@@ -47,10 +51,11 @@ public class TestReporter {
                 String resultString = jsonMarshaller.marshalObj(item, Class.forName("model.LPMobileHttpResponse"));
                 obj.add(resultString);
             }
-        } catch(ClassNotFoundException | JAXBException e ) {
+        } catch (ClassNotFoundException | JAXBException e) {
             e.printStackTrace();
         }
-        postResults(obj.toJSONString());
+//        postResults(obj.toJSONString());
+        return obj.toJSONString();
     }
 
     public void postResults(String postBody) {
@@ -60,7 +65,7 @@ public class TestReporter {
             httpPost.addHeader(new BasicHeader("Content-type", "application/json"));
             httpPost.setEntity(new StringEntity(postBody));
             HttpResponse response = httpClient.execute(httpPost);
-        } catch (IOException e ) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -69,11 +74,11 @@ public class TestReporter {
 
     // takes array of LPMobileHTTP response and gens html
     public String generateHTML(List list) {
-        String html = body().with(
-                h1("Test Results" ),
-                h3("Total Test: " + list.size()),
+        String html = html().with(body().with(
+                h1("Test Results"),
+                h3("Total Request: " + list.size()),
                 resultBuilder(list)
-        ).render();
+        )).render();
         return html;
     }
 
@@ -81,20 +86,23 @@ public class TestReporter {
         ContainerTag tag = new ContainerTag("div");
         for (int i = 0; i < list.size(); i++) {
             Object obj = list.get(i);
-            LPMobileHttpResponse result = (LPMobileHttpResponse)obj;
+            LPMobileHttpResponse result = (LPMobileHttpResponse) obj;
             tag.with(
                     div().withClass("result").with(
                             div().withClass("request-type").with(
-                                    p(result.getRequestType())
+                                    p("Request-type: " + result.getRequestType())
                             ),
                             div().withClass("response-code").with(
-                                    p(result.getResponseCode().toString())
+                                    p("Response-code: " + result.getResponseCode().toString())
                             ),
                             div().withClass("visit-id").with(
-                                p(result.getVisit_id())
+                                    p("VisitId: " + result.getVisit_id())
+                            ),
+                            div().withClass("latency").with(
+                                    p("Latency in Mill: " + result.getLatency())
                             ),
                             div().withClass("request-url").with(
-                                    p(result.getUrl())
+                                    p("request-url: " + result.getUrl())
                             )
                     )
             );
@@ -102,13 +110,17 @@ public class TestReporter {
         return tag;
     }
 
-// Creates a file with results
+    // Creates a file with results
     public void createResults(List list) {
         try {
-            PrintWriter writer = new PrintWriter("test.html", "UTF8");
-            writer.println(generateHTML(list));
-            writer.close();
-        } catch (FileNotFoundException | UnsupportedEncodingException e ) {
+            String fileName = new DateTime().toString();
+            PrintWriter htmlwriter = new PrintWriter("testResults/" + fileName + ".html", "UTF8");
+            htmlwriter.println(generateHTML(list));
+            htmlwriter.close();
+            PrintWriter jsonwriter = new PrintWriter("testResults/" + fileName + ".json", "UTF8");
+            jsonwriter.println(parseArray(list));
+            jsonwriter.close();
+        } catch (FileNotFoundException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
     }
