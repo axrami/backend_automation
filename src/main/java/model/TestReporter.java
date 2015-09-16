@@ -29,18 +29,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * Created by andrew on 9/4/15.
  */
 public class TestReporter {
-    private JSONObject resultJson = new JSONObject();
     private JsonMarshaller jsonMarshaller = new JsonMarshaller();
     private Logger logger = org.slf4j.LoggerFactory.getLogger("model.TestReporter");
-
-    public void logResult(LPMobileHttpResponse result) {
-        try {
-            String resultString = jsonMarshaller.marshalObj(result, Class.forName("model.LPMobileHttpResponse"));
-            resultJson.put("visit", resultString);
-        } catch (ClassNotFoundException | JAXBException e) {
-            e.printStackTrace();
-        }
-    }
 
     // Can be used to send post to another service
     public String parseArray(List list) {
@@ -55,6 +45,7 @@ public class TestReporter {
             e.printStackTrace();
         }
 //        postResults(obj.toJSONString());
+        logger.debug("Parsed json " + obj.toJSONString());
         return obj.toJSONString();
     }
 
