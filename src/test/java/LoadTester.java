@@ -12,6 +12,6 @@ public class LoadTester {
     @Test
     public void testGen() {
         Generator gen = new Generator();
-        gen.beginChats(1 , 10);
+        gen.beginChats(10 , 30);
     }
 }

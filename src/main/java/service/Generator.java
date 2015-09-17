@@ -37,9 +37,7 @@ public class Generator {
         long end = start + time * 1000; // assuming time is seconds convert to mills
         this.requestedAmount = amount;
         createExecutor(1);
-        while (System.currentTimeMillis() < end) {
-        }
-        logger.debug("***********Shutting down************");
+        while (System.currentTimeMillis() < end) {}
         if (resultArray.size() < requestedAmount) {
             logger.error("Results less than requested amount");
             logger.error("Requested: " + requestedAmount + " Executed: " + resultArray.size());

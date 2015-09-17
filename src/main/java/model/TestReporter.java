@@ -2,7 +2,6 @@ package model;
 
 import j2html.tags.ContainerTag;
 import json.JsonMarshaller;
-import model.LPMobileHttpResponse;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -11,7 +10,6 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
 import org.joda.time.DateTime;
 import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 
 import static j2html.TagCreator.*;
@@ -21,9 +19,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.util.Date;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Created by andrew on 9/4/15.
@@ -63,13 +59,15 @@ public class TestReporter {
     }
 
 
-    // takes array of LPMobileHTTP response and gens html
+    // takes array of LPMobileHTTPResponse and gens html
     public String generateHTML(List list) {
-        String html = html().with(body().with(
-                h1("Test Results"),
-                h3("Total Request: " + list.size()),
-                resultBuilder(list)
-        )).render();
+        String html = html().with(
+                head().with(link().withRel("stylesheet").withHref("css/test.css"))).with(
+                body().with(
+                        h1("Test Results"),
+                        h3("Total Request: " + list.size()),
+                        resultBuilder(list)
+                )).render();
         return html;
     }
 
@@ -79,20 +77,20 @@ public class TestReporter {
             Object obj = list.get(i);
             LPMobileHttpResponse result = (LPMobileHttpResponse) obj;
             tag.with(
-                    div().withClass("result").with(
-                            div().withClass("request-type").with(
+                    ul().withClass("result").with(
+                            li().withClass("request-type").with(
                                     p("Request-type: " + result.getRequestType())
                             ),
-                            div().withClass("response-code").with(
+                            li().withClass("response-code").with(
                                     p("Response-code: " + result.getResponseCode().toString())
                             ),
-                            div().withClass("visit-id").with(
+                            li().withClass("visit-id").with(
                                     p("VisitId: " + result.getVisit_id())
                             ),
-                            div().withClass("latency").with(
+                            li().withClass("latency").with(
                                     p("Latency in Mill: " + result.getLatency())
                             ),
-                            div().withClass("request-url").with(
+                            li().withClass("request-url").with(
                                     p("request-url: " + result.getUrl())
                             )
                     )
