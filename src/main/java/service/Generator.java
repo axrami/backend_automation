@@ -32,11 +32,20 @@ public class Generator {
         return stopRequested;
     }
 
+    public void beginVisits(int amount, long time) {
+        long start = new Instant().getMillis();
+        long end = start + time * 1000;
+        this.requestedAmount = amount;
+        createVisitExecutor(20);
+
+
+    }
+
     public void beginChats(int amount, long time) {
         long start = new Instant().getMillis();
         long end = start + time * 1000; // assuming time is seconds convert to mills
         this.requestedAmount = amount;
-        createExecutor(1);
+        createChatExecutor(1);
         while (System.currentTimeMillis() < end) {}
         if (resultArray.size() < requestedAmount) {
             logger.error("Results less than requested amount");
@@ -47,15 +56,25 @@ public class Generator {
         reportResults();
     }
 
-    public void createExecutor(int rate) {
+    public void createVisitExecutor(int continueInvercal) {
         executor = Executors.newScheduledThreadPool(10);
-        executor.scheduleAtFixedRate(chatRunnable, 0, rate, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(visitRunnable, 0, continueInvercal, TimeUnit.SECONDS);
+    }
+
+
+    public void createChatExecutor(int messageInverval) {
+        executor = Executors.newScheduledThreadPool(10);
+        executor.scheduleAtFixedRate(chatRunnable, 0, messageInverval, TimeUnit.SECONDS);
     }
 
     public void reportResults() {
         TestReporter reporter = new TestReporter();
         reporter.createResults(resultArray);
     }
+
+    Runnable visitRunnable = () -> {
+
+    };
 
     Runnable chatRunnable = () -> {
         while (!isStopReqeusted() && counter.get() < requestedAmount) {
