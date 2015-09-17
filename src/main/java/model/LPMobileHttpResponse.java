@@ -14,8 +14,6 @@ public class LPMobileHttpResponse {
     private String url;
     private String continue_url;
     private String postBody;
-    private Instant start;
-    private Instant stop;
     private Long latency;
 
     public LPMobileHttpResponse() {}
@@ -92,7 +90,7 @@ public class LPMobileHttpResponse {
         this.responseCode = responseCode;
     }
 
-    public long getLatency() {
+    public Long getLatency() {
         return latency;
     }
 

@@ -23,7 +23,7 @@ public class VisitTest extends LPTest {
     private static TestReporter reporter = new TestReporter();
     private List resultArray = new CopyOnWriteArrayList();
 
-    @Test(dataProvider = "platformPicker", threadPoolSize = 10, invocationCount = 10, timeOut = 10000)
+    @Test(dataProvider = "platformPicker", threadPoolSize = 100, invocationCount = 100, timeOut = 10000)
     public void beginVisit(AppSettings appSettings) {
         Session session = new Session(appSettings, null);
         setSessionConfig(session);
@@ -34,16 +34,16 @@ public class VisitTest extends LPTest {
         resultArray.add(result);
     }
 
-    @Test
-    public void testExe() {
-        ScheduledExecutorService executor = Executors.newScheduledThreadPool(5);
-        Runnable task = () -> {
-            Session session = new Session();
-            setSessionConfig(session);
-            session.beginVisit();
-        };
-        executor.scheduleAtFixedRate(task, 1, 2, TimeUnit.SECONDS);
-    }
+//    @Test
+//    public void testExe() {
+//        ScheduledExecutorService executor = Executors.newScheduledThreadPool(5);
+//        Runnable task = () -> {
+//            Session session = new Session();
+//            setSessionConfig(session);
+//            session.beginVisit();
+//        };
+//        executor.scheduleAtFixedRate(task, 1, 1, TimeUnit.SECONDS);
+//    }
 
     @AfterTest
     public void logResults() {

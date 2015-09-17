@@ -6,18 +6,21 @@ import networking.VisitHandler;
 import org.joda.time.Instant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import service.chat.ChatHandler;
 
-import java.util.HashSet;
+import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Created by andrew on 9/11/15.
  */
 public class Generator {
+    private AtomicInteger counter = new AtomicInteger(0);
     private List resultArray = new CopyOnWriteArrayList();
     public Logger logger = LoggerFactory.getLogger("Generator");
+    private int requestedAmount;
     private static boolean stopRequested;
     private ScheduledExecutorService executor;
 
@@ -29,20 +32,26 @@ public class Generator {
         return stopRequested;
     }
 
-    public void beginVisits(int amount, long time ) {
+    public void beginChats(int amount, long time) {
         long start = new Instant().getMillis();
         long end = start + time * 1000; // assuming time is seconds convert to mills
-        long cycle = amount / time;
+        this.requestedAmount = amount;
         createExecutor(1);
-        while(System.currentTimeMillis() < end) {}
+        while (System.currentTimeMillis() < end) {
+        }
         logger.debug("***********Shutting down************");
+        if (resultArray.size() < requestedAmount) {
+            logger.error("Results less than requested amount");
+            logger.error("Requested: " + requestedAmount + " Executed: " + resultArray.size());
+            logger.error("May not be enough time");
+        }
         requestStop();
         reportResults();
     }
 
     public void createExecutor(int rate) {
         executor = Executors.newScheduledThreadPool(10);
-        executor.scheduleAtFixedRate(visitRunable, 0, rate, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(chatRunnable, 0, rate, TimeUnit.SECONDS);
     }
 
     public void reportResults() {
@@ -50,15 +59,40 @@ public class Generator {
         reporter.createResults(resultArray);
     }
 
-    Runnable visitRunable = () -> {
-        while(!isStopReqeusted()) {
-            Session session = new Session();
-            session.setConfig("staging", 1, true);
-            VisitHandler visit = session.beginVisit();
-            LPMobileHttpResponse response = visit.response;
-            resultArray.add(response);
+    Runnable chatRunnable = () -> {
+        while (!isStopReqeusted() && counter.get() < requestedAmount) {
+                counter.getAndIncrement();
+                Session session = new Session();
+                session.setConfig("staging", 1, false);
+                VisitHandler visit = session.beginVisit();
+                resultArray.add(visit.response);
+                beginChat(session);
+                logger.debug("**********WHILE LOOP IS RUNNING********");
         }
-        executor.shutdown();
     };
+
+    private void beginChat(Session session) {
+        Executor chatExe = Executors.newSingleThreadExecutor();
+        chatExe.execute(new Runnable() {
+            @Override
+            public void run() {
+                ChatHandler chat = session.beginChat();
+                while (!isStopReqeusted()) {
+                    try {
+                        logger.debug("Thread name: " + Thread.currentThread().getName());
+                        resultArray.add(chat.sendLinePostRequest("Hello"));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                try {
+                    resultArray.add(chat.sendLinePostRequest("end"));
+                } catch (IOException e ) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
 
 }

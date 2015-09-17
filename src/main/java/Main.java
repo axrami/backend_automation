@@ -1,16 +1,13 @@
-import com.sun.tools.javac.jvm.Gen;
 import json.JsonMarshaller;
 import json.model.AppSettings;
-import junit.framework.Assert;
 import model.SetEnvironment;
 import networking.VisitHandler;
-import org.apache.http.HttpResponse;
-import service.Generator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import properties.LPMobileConfig;
 import service.Session;
 import service.chat.ChatHandler;
-import javax.xml.bind.JAXBException;
 import java.io.IOException;
-import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -21,33 +18,43 @@ import java.util.concurrent.TimeUnit;
 public class Main {
 
     public static void main(String args[]) {
-        Generator gen = new Generator();
+//        Generator gen = new Generator();
+        LPMobileConfig config = LPMobileConfig.getInstance();
+        JsonMarshaller jsonMarshaller = new JsonMarshaller();
+        Logger logger = LoggerFactory.getLogger("Visits");
         ScheduledExecutorService executor1 = Executors.newScheduledThreadPool(50);
+        AppSettings appSettings = SetEnvironment.createAppSettings();
 
-
-        ScheduledExecutorService executor2 = Executors.newScheduledThreadPool(300);
-        Runnable task = () -> {
-                Session session = new Session(buildAndroidEnv(), null);
-                session.setConfig("staging", 1, true);
-                VisitHandler visit = session.beginVisit();
-        };
-//        Runnable task1 = () -> {
+//        ScheduledExecutorService executor2 = Executors.newScheduledThreadPool(100);
+//        Runnable task = () -> {
 //            try {
-//                Session session = new Session(buildAndroidEnv(), null);
-//                session.setConfig("staging", 1, true);
-//                VisitHandler visit = session.beginVisit();
-//                ChatHandler chat = session.beginChat();
-//                chat.sendLinePostRequest("Hello");
-//                chat.sendLinePostRequest("Hello");
-//                chat.sendLinePostRequest("end");
-//            } catch (IOException e ) {
+//                HttpClient httpclient = new DefaultHttpClient();
+//                HttpPost httppost = new HttpPost(config.getVisitDomain());
+//                httppost.addHeader(new BasicHeader("Content-type", "application/json"));
+//                httppost.addHeader(new BasicHeader("X-LivepersonMobile-Capabilities", "account-skills"));
+//                String postBody = jsonMarshaller.marshalObj(appSettings, Class.forName("json.model.AppSettings"));
+//                httppost.setEntity(new StringEntity(postBody));
+//                HttpResponse httpResponse = httpclient.execute(httppost);
+//                logger.debug(httpResponse.getStatusLine().getStatusCode() + "");
+//            } catch (ClassNotFoundException | JAXBException | IOException e ) {
 //                e.printStackTrace();
 //            }
 //        };
+        Runnable task1 = () -> {
+            try {
+                Session session = new Session(buildAndroidEnv(), null);
+                session.setConfig("staging", 1, true);
+                VisitHandler visit = session.beginVisit();
+                ChatHandler chat = session.beginChat();
+                chat.sendLinePostRequest("Hello");
+            } catch (IOException e ) {
+                e.printStackTrace();
+            }
+        };
         int intDelay = 0;
         int period = 5000;
-        executor2.scheduleAtFixedRate(task, intDelay, 1, TimeUnit.MILLISECONDS);
-//        executor1.scheduleAtFixedRate(task1, intDelay, 5, TimeUnit.MILLISECONDS);
+//        executor2.scheduleAtFixedRate(task, intDelay, 1, TimeUnit.MILLISECONDS);
+        executor1.scheduleAtFixedRate(task1, intDelay, 5, TimeUnit.MILLISECONDS);
     }
 
     public static AppSettings buildAndroidEnv() {

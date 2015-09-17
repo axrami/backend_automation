@@ -61,7 +61,6 @@ public class ChatHandler {
             response.setRequestType("Line");
             response.setVisit_id(visitIntroResponse.getVisit_id());
             return response;
-
         } catch (JAXBException | ClassNotFoundException e) {
             e.printStackTrace();
         }

@@ -15,6 +15,8 @@ public class LPTest {
     public Object[][] createAppSettings() {
         return new Object[][]{
                 {buildAndroidEnv()},
+                {buildIosEnv()},
+                {buildWebEnv()}
         };
     }
 
