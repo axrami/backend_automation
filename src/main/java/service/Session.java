@@ -61,5 +61,8 @@ public class Session {
         return chat;
     }
 
+    public VisitHandler getVisitHandler() {
+        return this.visitHandler;
+    }
 
 }

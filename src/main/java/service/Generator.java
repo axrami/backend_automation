@@ -1,6 +1,5 @@
 package service;
 
-import model.LPMobileHttpResponse;
 import model.TestReporter;
 import networking.VisitHandler;
 import org.joda.time.Instant;
@@ -11,6 +10,7 @@ import service.chat.ChatHandler;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -18,97 +18,124 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class Generator {
     private AtomicInteger counter = new AtomicInteger(0);
+    private AtomicBoolean chatStopRequested = new AtomicBoolean();
+    private AtomicBoolean visitStopRequested = new AtomicBoolean();
     private List resultArray = new CopyOnWriteArrayList();
     public Logger logger = LoggerFactory.getLogger("Generator");
     private int requestedAmount;
-    private static boolean stopRequested;
     private ScheduledExecutorService executor;
-
-    private static synchronized void requestStop() {
-        stopRequested = true;
-    }
-
-    private static synchronized boolean isStopReqeusted() {
-        return stopRequested;
-    }
+    private int messageInterval;
+    private int continueInterval;
 
     public void beginVisits(int amount, long time) {
-        long start = new Instant().getMillis();
-        long end = start + time * 1000;
-        this.requestedAmount = amount;
-        createVisitExecutor(20);
-
-
+        beginVisits(amount, time, 30);
     }
 
-    public void beginChats(int amount, long time) {
+    public void beginVisits(int amount, long time, int continueInterval) {
         long start = new Instant().getMillis();
-        long end = start + time * 1000; // assuming time is seconds convert to mills
+        long end = start + time * 1000;
+        this.continueInterval = continueInterval;
         this.requestedAmount = amount;
-        createChatExecutor(1);
-        while (System.currentTimeMillis() < end) {}
-        if (resultArray.size() < requestedAmount) {
-            logger.error("Results less than requested amount");
-            logger.error("Requested: " + requestedAmount + " Executed: " + resultArray.size());
-            logger.error("May not be enough time");
+        createVisitExecutor();
+        try {
+            Thread.sleep(time * 1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-        requestStop();
+        visitStopRequested.set(true);
         reportResults();
     }
 
-    public void createVisitExecutor(int continueInvercal) {
+    public void beginChats(int amount, long time) {
+        beginChats(amount, time, 1);
+    }
+
+    public void beginChats(int amount, long time, int messageInterval) {
+        long start = new Instant().getMillis();
+        long end = start + time * 1000; // assuming time is seconds convert to mills
+        this.requestedAmount = amount;
+        this.messageInterval = messageInterval > -1 ? messageInterval : 1;
+        createChatExecutor();
+        try {
+            Thread.sleep(time * 1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        chatStopRequested.set(true);
+        reportResults();
+    }
+
+    private void createVisitExecutor() {
         executor = Executors.newScheduledThreadPool(10);
-        executor.scheduleAtFixedRate(visitRunnable, 0, continueInvercal, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(visitRunnable, 0, 1, TimeUnit.SECONDS);
     }
 
 
-    public void createChatExecutor(int messageInverval) {
+    private void createChatExecutor() {
         executor = Executors.newScheduledThreadPool(10);
-        executor.scheduleAtFixedRate(chatRunnable, 0, messageInverval, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(chatRunnable, 0, 1, TimeUnit.SECONDS);
     }
 
-    public void reportResults() {
+    private void reportResults() {
         TestReporter reporter = new TestReporter();
         reporter.createResults(resultArray);
     }
 
+    // runnable that creates the requested amount of visits
     Runnable visitRunnable = () -> {
+        while (!visitStopRequested.get() && counter.get() < requestedAmount) {
+            counter.getAndIncrement();
+            Session session = new Session();
+            session.setConfig("staging", 1,false);
+            VisitHandler visit = session.beginVisit();
+            resultArray.add(visit.response);
+            beginVisit(session);
+        }
 
     };
 
+    // runnable that creates the requested amount of chats starts
     Runnable chatRunnable = () -> {
-        while (!isStopReqeusted() && counter.get() < requestedAmount) {
+        while (!chatStopRequested.get() && counter.get() < requestedAmount) {
                 counter.getAndIncrement();
                 Session session = new Session();
                 session.setConfig("staging", 1, false);
                 VisitHandler visit = session.beginVisit();
                 resultArray.add(visit.response);
                 beginChat(session);
-                logger.debug("**********WHILE LOOP IS RUNNING********");
         }
     };
 
+    // keeps chats running for defined amount of time, sends lines according to messageInterval
     private void beginChat(Session session) {
-        Executor chatExe = Executors.newSingleThreadExecutor();
-        chatExe.execute(new Runnable() {
-            @Override
-            public void run() {
-                ChatHandler chat = session.beginChat();
-                while (!isStopReqeusted()) {
-                    try {
-                        logger.debug("Thread name: " + Thread.currentThread().getName());
-                        resultArray.add(chat.sendLinePostRequest("Hello"));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
+        ScheduledExecutorService chatExecutor = Executors.newSingleThreadScheduledExecutor();
+        chatExecutor.scheduleAtFixedRate(() -> {
+            ChatHandler chat = session.beginChat();
+            while (!chatStopRequested.get()) {
                 try {
-                    resultArray.add(chat.sendLinePostRequest("end"));
-                } catch (IOException e ) {
+                    resultArray.add(chat.sendLinePostRequest("Hello"));
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-        });
+            try {
+                resultArray.add(chat.sendLinePostRequest("end"));
+            } catch (IOException e ) {
+                e.printStackTrace();
+            }
+        }, 0, messageInterval, TimeUnit.SECONDS);
+    }
+
+    // keeps visits running for defined amount of time, sends continues according to continueInterval
+    private void beginVisit(Session session) {
+        ScheduledExecutorService visitExecutor = Executors.newSingleThreadScheduledExecutor();
+        visitExecutor.scheduleAtFixedRate(() -> {
+            VisitHandler visit = session.getVisitHandler();
+            while(!visitStopRequested.get()) {
+                resultArray.add(visit.continueVisit());
+            }
+        }, 0, continueInterval, TimeUnit.SECONDS);
+
     }
 
 

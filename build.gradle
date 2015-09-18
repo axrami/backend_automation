@@ -20,6 +20,7 @@ dependencies {
     compile 'joda-time:joda-time:2.2'
     compile 'org.eclipse.persistence:org.eclipse.persistence.moxy:2.5.0'
     compile 'com.j2html:j2html:0.5.0'
+    compile 'com.amazonaws:aws-java-sdk-s3:1.10.20'
     testCompile 'org.testng:testng:6.9.6'
     testCompile gradleTestKit()
     testCompile "org.mockito:mockito-core:1+"

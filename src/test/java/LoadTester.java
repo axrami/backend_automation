@@ -11,7 +11,11 @@ public class LoadTester {
 
     @Test
     public void testGen() {
-        Generator gen = new Generator();
-        gen.beginChats(10 , 30);
+        // begins 50 visits over 60 seconds sends continue ever 20 seconds
+//        Generator visitGen = new Generator();
+//        visitGen.beginVisits(50, 60, 20);
+        // begins 10 chats over 60 seconds a line sent every 10 second
+        Generator chatGen = new Generator();
+        chatGen.beginChats(1 , 8, 2);
     }
 }

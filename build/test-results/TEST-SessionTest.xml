@@ -1,59 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="SessionTest" tests="22" skipped="0" failures="0" errors="0" timestamp="2015-09-17T18:14:07" hostname="aramirez2-mac.lpnet.com" time="89.142">
+<testsuite name="SessionTest" tests="22" skipped="0" failures="0" errors="0" timestamp="2015-09-18T19:45:28" hostname="aramirez2-mac.lpnet.com" time="85.918">
   <properties/>
-  <testcase name="beginChatAgentEnd[0](json.model.AppSettings@7c2a9cc8)" classname="SessionTest" time="9.268"/>
-  <testcase name="beginChatAgentEnd[2](json.model.AppSettings@3582bee0)" classname="SessionTest" time="5.787"/>
-  <testcase name="beginChatAgentEnd[4](json.model.AppSettings@7532a279)" classname="SessionTest" time="5.757"/>
-  <testcase name="beginVisit[0](json.model.AppSettings@20c3238a)" classname="SessionTest" time="0.15"/>
-  <testcase name="beginVisit[0](json.model.AppSettings@1ba2389f)" classname="SessionTest" time="0.164"/>
-  <testcase name="beginVisit[2](json.model.AppSettings@5c9c4b23)" classname="SessionTest" time="0.221"/>
-  <testcase name="beginVisit[4](json.model.AppSettings@7792423b)" classname="SessionTest" time="0.229"/>
-  <testcase name="beginVisit[6](json.model.AppSettings@2224badd)" classname="SessionTest" time="0.263"/>
-  <testcase name="beginVisit[8](json.model.AppSettings@edb3fc6)" classname="SessionTest" time="0.286"/>
-  <testcase name="chatSendFeedback[0](json.model.AppSettings@1d9fb9c)" classname="SessionTest" time="3.462"/>
-  <testcase name="chatSendFeedback[1](json.model.AppSettings@1bd476cd)" classname="SessionTest" time="3.503"/>
-  <testcase name="chatSendFeedback[2](json.model.AppSettings@2866c496)" classname="SessionTest" time="3.392"/>
-  <testcase name="continueVisit[0](json.model.AppSettings@1003750a)" classname="SessionTest" time="15.637"/>
-  <testcase name="continueVisit[0](json.model.AppSettings@77c8ec1a)" classname="SessionTest" time="15.656"/>
-  <testcase name="continueVisit[2](json.model.AppSettings@283643a)" classname="SessionTest" time="15.449"/>
-  <testcase name="continueVisit[4](json.model.AppSettings@17f3e7cf)" classname="SessionTest" time="15.47"/>
-  <testcase name="continueVisit[8](json.model.AppSettings@556a474c)" classname="SessionTest" time="15.654"/>
-  <testcase name="continueVisit[6](json.model.AppSettings@79f750a1)" classname="SessionTest" time="15.706"/>
-  <testcase name="sendCustomVars" classname="SessionTest" time="0.49"/>
-  <testcase name="visitAdvisories[0](json.model.AppSettings@47e55d15)" classname="SessionTest" time="3.372"/>
-  <testcase name="visitAdvisories[1](json.model.AppSettings@661fa0c1)" classname="SessionTest" time="3.298"/>
-  <testcase name="visitAdvisories[2](json.model.AppSettings@2558fc04)" classname="SessionTest" time="3.329"/>
-  <system-out><![CDATA[Invalid cookie header: "set-cookie: visitor_id=15115021730624; Version=1; Expires=Sat, 24-Aug-2115 18:14:08 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
-Invalid cookie header: "set-cookie: visitor_id=15115021730624; Version=1; Expires=Sat, 24-Aug-2115 18:14:08 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
-Invalid cookie header: "set-cookie: visitor_id=15115021730624; Version=1; Expires=Sat, 24-Aug-2115 18:14:09 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
-Invalid cookie header: "set-cookie: visitor_id=15115021730624; Version=1; Expires=Sat, 24-Aug-2115 18:14:09 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
-Invalid cookie header: "set-cookie: visitor_id=15115021730624; Version=1; Expires=Sat, 24-Aug-2115 18:14:10 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
-Invalid cookie header: "set-cookie: visitor_id=15115021730624; Version=1; Expires=Sat, 24-Aug-2115 18:14:10 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
-Invalid cookie header: "set-cookie: visitor_id=15115021730624; Version=1; Expires=Sat, 24-Aug-2115 18:14:11 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
-Invalid cookie header: "set-cookie: visitor_id=15115021730624; Version=1; Expires=Sat, 24-Aug-2115 18:14:11 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
-Invalid cookie header: "set-cookie: visitor_id=15115021730624; Version=1; Expires=Sat, 24-Aug-2115 18:14:12 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
-Invalid cookie header: "set-cookie: visitor_id=15115021730624; Version=1; Expires=Sat, 24-Aug-2115 18:14:12 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
-Invalid cookie header: "set-cookie: visitor_id=15115021730627; Version=1; Expires=Sat, 24-Aug-2115 18:14:20 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
-Invalid cookie header: "set-cookie: visitor_id=15115021730627; Version=1; Expires=Sat, 24-Aug-2115 18:14:20 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
-Invalid cookie header: "set-cookie: visitor_id=15115021730627; Version=1; Expires=Sat, 24-Aug-2115 18:14:21 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
-Invalid cookie header: "set-cookie: visitor_id=15115021730627; Version=1; Expires=Sat, 24-Aug-2115 18:14:21 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
-Invalid cookie header: "set-cookie: visitor_id=15115021730627; Version=1; Expires=Sat, 24-Aug-2115 18:14:21 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
-Invalid cookie header: "set-cookie: visitor_id=15115021730627; Version=1; Expires=Sat, 24-Aug-2115 18:14:22 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
-Invalid cookie header: "set-cookie: visitor_id=15115021730627; Version=1; Expires=Sat, 24-Aug-2115 18:14:22 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
-Invalid cookie header: "set-cookie: visitor_id=15115021730627; Version=1; Expires=Sat, 24-Aug-2115 18:14:23 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
-Invalid cookie header: "set-cookie: visitor_id=15115021730627; Version=1; Expires=Sat, 24-Aug-2115 18:14:23 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
-Invalid cookie header: "set-cookie: visitor_id=15115021730627; Version=1; Expires=Sat, 24-Aug-2115 18:14:24 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
-Invalid cookie header: "set-cookie: visitor_id=15115021730634; Version=1; Expires=Sat, 24-Aug-2115 18:14:28 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
-Invalid cookie header: "set-cookie: visitor_id=15115021730637; Version=1; Expires=Sat, 24-Aug-2115 18:14:35 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
-Invalid cookie header: "set-cookie: visitor_id=15115021730639; Version=1; Expires=Sat, 24-Aug-2115 18:14:51 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
-Invalid cookie header: "set-cookie: visitor_id=15115021730640; Version=1; Expires=Sat, 24-Aug-2115 18:14:51 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
-Invalid cookie header: "set-cookie: visitor_id=15115021730639; Version=1; Expires=Sat, 24-Aug-2115 18:14:51 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
-Invalid cookie header: "set-cookie: visitor_id=15115021730640; Version=1; Expires=Sat, 24-Aug-2115 18:14:51 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
-Invalid cookie header: "set-cookie: visitor_id=15115021730646; Version=1; Expires=Sat, 24-Aug-2115 18:15:22 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
-Invalid cookie header: "set-cookie: visitor_id=15115021730645; Version=1; Expires=Sat, 24-Aug-2115 18:15:22 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
-Invalid cookie header: "set-cookie: visitor_id=15115021730646; Version=1; Expires=Sat, 24-Aug-2115 18:15:22 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
-Invalid cookie header: "set-cookie: visitor_id=15115021730649; Version=1; Expires=Sat, 24-Aug-2115 18:15:26 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
-Invalid cookie header: "set-cookie: visitor_id=15115021730651; Version=1; Expires=Sat, 24-Aug-2115 18:15:32 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
+  <testcase name="beginChatAgentEnd[0](json.model.AppSettings@4e7fa1d2)" classname="SessionTest" time="6.666"/>
+  <testcase name="beginChatAgentEnd[2](json.model.AppSettings@60779664)" classname="SessionTest" time="5.605"/>
+  <testcase name="beginChatAgentEnd[4](json.model.AppSettings@29a8572d)" classname="SessionTest" time="5.778"/>
+  <testcase name="beginVisit[0](json.model.AppSettings@6ee8d03d)" classname="SessionTest" time="0.148"/>
+  <testcase name="beginVisit[0](json.model.AppSettings@3100ff7e)" classname="SessionTest" time="0.152"/>
+  <testcase name="beginVisit[4](json.model.AppSettings@4412734b)" classname="SessionTest" time="0.155"/>
+  <testcase name="beginVisit[2](json.model.AppSettings@5db1c1a8)" classname="SessionTest" time="0.215"/>
+  <testcase name="beginVisit[6](json.model.AppSettings@4d794e9e)" classname="SessionTest" time="0.182"/>
+  <testcase name="beginVisit[8](json.model.AppSettings@32f1e19b)" classname="SessionTest" time="0.193"/>
+  <testcase name="chatSendFeedback[0](json.model.AppSettings@1a501eb3)" classname="SessionTest" time="3.361"/>
+  <testcase name="chatSendFeedback[1](json.model.AppSettings@75a76937)" classname="SessionTest" time="3.627"/>
+  <testcase name="chatSendFeedback[2](json.model.AppSettings@61b8e75)" classname="SessionTest" time="3.521"/>
+  <testcase name="continueVisit[0](json.model.AppSettings@4119c6f3)" classname="SessionTest" time="15.371"/>
+  <testcase name="continueVisit[0](json.model.AppSettings@60ac99bd)" classname="SessionTest" time="15.382"/>
+  <testcase name="continueVisit[2](json.model.AppSettings@1b10a1be)" classname="SessionTest" time="15.394"/>
+  <testcase name="continueVisit[4](json.model.AppSettings@1de9acd7)" classname="SessionTest" time="15.45"/>
+  <testcase name="continueVisit[6](json.model.AppSettings@527a8bcb)" classname="SessionTest" time="15.41"/>
+  <testcase name="continueVisit[8](json.model.AppSettings@70e0d82)" classname="SessionTest" time="15.453"/>
+  <testcase name="sendCustomVars" classname="SessionTest" time="0.459"/>
+  <testcase name="visitAdvisories[0](json.model.AppSettings@4a66dcc9)" classname="SessionTest" time="3.256"/>
+  <testcase name="visitAdvisories[1](json.model.AppSettings@7190cb36)" classname="SessionTest" time="3.294"/>
+  <testcase name="visitAdvisories[2](json.model.AppSettings@7ffd6109)" classname="SessionTest" time="3.502"/>
+  <system-out><![CDATA[Invalid cookie header: "set-cookie: visitor_id=15115021736835; Version=1; Expires=Sun, 25-Aug-2115 19:45:24 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
+Invalid cookie header: "set-cookie: visitor_id=15115021736835; Version=1; Expires=Sun, 25-Aug-2115 19:45:24 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
+Invalid cookie header: "set-cookie: visitor_id=15115021736835; Version=1; Expires=Sun, 25-Aug-2115 19:45:25 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
+Invalid cookie header: "set-cookie: visitor_id=15115021736835; Version=1; Expires=Sun, 25-Aug-2115 19:45:25 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
+Invalid cookie header: "set-cookie: visitor_id=15115021736835; Version=1; Expires=Sun, 25-Aug-2115 19:45:26 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
+Invalid cookie header: "set-cookie: visitor_id=15115021736835; Version=1; Expires=Sun, 25-Aug-2115 19:45:26 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
+Invalid cookie header: "set-cookie: visitor_id=15115021736835; Version=1; Expires=Sun, 25-Aug-2115 19:45:27 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
+Invalid cookie header: "set-cookie: visitor_id=15115021736835; Version=1; Expires=Sun, 25-Aug-2115 19:45:27 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
+Invalid cookie header: "set-cookie: visitor_id=15115021736835; Version=1; Expires=Sun, 25-Aug-2115 19:45:27 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
+Invalid cookie header: "set-cookie: visitor_id=15115021736835; Version=1; Expires=Sun, 25-Aug-2115 19:45:28 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
+Invalid cookie header: "set-cookie: visitor_id=15115021736837; Version=1; Expires=Sun, 25-Aug-2115 19:45:35 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
+Invalid cookie header: "set-cookie: visitor_id=15115021736837; Version=1; Expires=Sun, 25-Aug-2115 19:45:36 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
+Invalid cookie header: "set-cookie: visitor_id=15115021736837; Version=1; Expires=Sun, 25-Aug-2115 19:45:36 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
+Invalid cookie header: "set-cookie: visitor_id=15115021736837; Version=1; Expires=Sun, 25-Aug-2115 19:45:37 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
+Invalid cookie header: "set-cookie: visitor_id=15115021736837; Version=1; Expires=Sun, 25-Aug-2115 19:45:37 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
+Invalid cookie header: "set-cookie: visitor_id=15115021736837; Version=1; Expires=Sun, 25-Aug-2115 19:45:37 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
+Invalid cookie header: "set-cookie: visitor_id=15115021736837; Version=1; Expires=Sun, 25-Aug-2115 19:45:38 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
+Invalid cookie header: "set-cookie: visitor_id=15115021736837; Version=1; Expires=Sun, 25-Aug-2115 19:45:38 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
+Invalid cookie header: "set-cookie: visitor_id=15115021736837; Version=1; Expires=Sun, 25-Aug-2115 19:45:39 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
+Invalid cookie header: "set-cookie: visitor_id=15115021736837; Version=1; Expires=Sun, 25-Aug-2115 19:45:39 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
+Invalid cookie header: "set-cookie: visitor_id=15115021736844; Version=1; Expires=Sun, 25-Aug-2115 19:45:43 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
+Invalid cookie header: "set-cookie: visitor_id=15115021736846; Version=1; Expires=Sun, 25-Aug-2115 19:45:51 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
+Invalid cookie header: "set-cookie: visitor_id=15115021736847; Version=1; Expires=Sun, 25-Aug-2115 19:46:06 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
+Invalid cookie header: "set-cookie: visitor_id=15115021736848; Version=1; Expires=Sun, 25-Aug-2115 19:46:06 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
+Invalid cookie header: "set-cookie: visitor_id=15115021736847; Version=1; Expires=Sun, 25-Aug-2115 19:46:06 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
+Invalid cookie header: "set-cookie: visitor_id=15115021736848; Version=1; Expires=Sun, 25-Aug-2115 19:46:06 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
+Invalid cookie header: "set-cookie: visitor_id=15115021736854; Version=1; Expires=Sun, 25-Aug-2115 19:46:37 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
+Invalid cookie header: "set-cookie: visitor_id=15115021736855; Version=1; Expires=Sun, 25-Aug-2115 19:46:37 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
+Invalid cookie header: "set-cookie: visitor_id=15115021736854; Version=1; Expires=Sun, 25-Aug-2115 19:46:37 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
+Invalid cookie header: "set-cookie: visitor_id=15115021736857; Version=1; Expires=Sun, 25-Aug-2115 19:46:41 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
+Invalid cookie header: "set-cookie: visitor_id=15115021736859; Version=1; Expires=Sun, 25-Aug-2115 19:46:48 GMT; Max-Age=3153600000; Path=/". Invalid max-age attribute: 3153600000
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
