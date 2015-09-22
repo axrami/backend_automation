@@ -38,64 +38,64 @@ public class SessionTest extends LPTest {
         resultArray.add(result);
     }
 
-    @Test(dataProvider = "platformPicker", threadPoolSize = 5, invocationCount = 2, timeOut = 1000000)
-    public void continueVisit(AppSettings appSettings) {
-        try {
-            Session session = new Session(appSettings, null);
-            setSessionConfig(session);
-            VisitHandler visit = session.beginVisit();
-            resultArray.add(visit.response);
-            Thread.sleep(15000);
-            resultArray.add(visit.continueVisit());
-            LPMobileHttpResponse contineueResponse = visit.continueVisit();
-            Assert.assertEquals(contineueResponse.isSuccess(), true);
-        } catch (InterruptedException e ) {
-            e.printStackTrace();
-        }
-    }
+//    @Test(dataProvider = "platformPicker", threadPoolSize = 5, invocationCount = 2, timeOut = 1000000)
+//    public void continueVisit(AppSettings appSettings) {
+//        try {
+//            Session session = new Session(appSettings, null);
+//            setSessionConfig(session);
+//            VisitHandler visit = session.beginVisit();
+//            resultArray.add(visit.response);
+//            Thread.sleep(15000);
+//            resultArray.add(visit.continueVisit());
+//            LPMobileHttpResponse contineueResponse = visit.continueVisit();
+//            Assert.assertEquals(contineueResponse.isSuccess(), true);
+//        } catch (InterruptedException e ) {
+//            e.printStackTrace();
+//        }
+//    }
 
-    @Test(dataProvider = "platformPicker", threadPoolSize = 20, invocationCount = 1, timeOut = 100000000)
-    public void beginChatAgentEnd(AppSettings appSettings) {
-        Session session = new Session(appSettings, null);
-        setSessionConfig(session);
-        VisitHandler visit = session.beginVisit();
-        resultArray.add(visit.response);
-        ChatHandler chat = session.beginChat();
-        try {
-            resultArray.add(chat.sendLinePostRequest("hello"));
-            Thread.sleep(100);
-            resultArray.add(chat.sendLinePostRequest("hello"));
-            Thread.sleep(100);
-            resultArray.add(chat.sendLinePostRequest("hello"));
-            Thread.sleep(100);
-            visit.continueVisit();
-            Thread.sleep(300);
-            visit.continueVisit();
-            resultArray.add(chat.sendLinePostRequest("hello"));
-            Thread.sleep(300);
-            resultArray.add(visit.continueVisit());
-            Thread.sleep(300);
-            resultArray.add(visit.continueVisit());
-            Thread.sleep(300);
-            resultArray.add(visit.continueVisit());
-            Thread.sleep(300);
-            resultArray.add(visit.continueVisit());
-            Thread.sleep(300);
-            resultArray.add(visit.continueVisit());
-            Thread.sleep(300);
-            resultArray.add(visit.continueVisit());
-            Thread.sleep(300);
-            resultArray.add(visit.continueVisit());
-            resultArray.add(chat.sendLinePostRequest("hello"));
-            Thread.sleep(300);
-            resultArray.add(visit.continueVisit());
-            resultArray.add(chat.sendLinePostRequest("hello"));
-            Thread.sleep(100);
-            resultArray.add(chat.sendLinePostRequest("end"));
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
+//    @Test(dataProvider = "platformPicker", threadPoolSize = 20, invocationCount = 1, timeOut = 100000000)
+//    public void beginChatAgentEnd(AppSettings appSettings) {
+//        Session session = new Session(appSettings, null);
+//        setSessionConfig(session);
+//        VisitHandler visit = session.beginVisit();
+//        resultArray.add(visit.response);
+//        ChatHandler chat = session.beginChat();
+//        try {
+//            resultArray.add(chat.sendLinePostRequest("hello"));
+//            Thread.sleep(100);
+//            resultArray.add(chat.sendLinePostRequest("hello"));
+//            Thread.sleep(100);
+//            resultArray.add(chat.sendLinePostRequest("hello"));
+//            Thread.sleep(100);
+//            visit.continueVisit();
+//            Thread.sleep(300);
+//            visit.continueVisit();
+//            resultArray.add(chat.sendLinePostRequest("hello"));
+//            Thread.sleep(300);
+//            resultArray.add(visit.continueVisit());
+//            Thread.sleep(300);
+//            resultArray.add(visit.continueVisit());
+//            Thread.sleep(300);
+//            resultArray.add(visit.continueVisit());
+//            Thread.sleep(300);
+//            resultArray.add(visit.continueVisit());
+//            Thread.sleep(300);
+//            resultArray.add(visit.continueVisit());
+//            Thread.sleep(300);
+//            resultArray.add(visit.continueVisit());
+//            Thread.sleep(300);
+//            resultArray.add(visit.continueVisit());
+//            resultArray.add(chat.sendLinePostRequest("hello"));
+//            Thread.sleep(300);
+//            resultArray.add(visit.continueVisit());
+//            resultArray.add(chat.sendLinePostRequest("hello"));
+//            Thread.sleep(100);
+//            resultArray.add(chat.sendLinePostRequest("end"));
+//        } catch (IOException | InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     @Test(dataProvider = "platformPicker")
     public void visitAdvisories(AppSettings appSettings) {
@@ -110,7 +110,7 @@ public class SessionTest extends LPTest {
             Assert.assertEquals(chat.sendAdvisoryPostRequest("typing_stop").isSuccess(), true);
             Assert.assertEquals(chat.sendLinePostRequest("Hello World!").isSuccess(), true);
             Thread.sleep(2000);
-            Assert.assertEquals(chat.sendLinePostRequest("end").isSuccess(), true);
+//            Assert.assertEquals(chat.sendLinePostRequest("end").isSuccess(), true);
             Assert.assertEquals(chat.sendAdvisoryPostRequest("chat_down").isSuccess(), true);
             Assert.assertEquals(visit.continueVisit().isSuccess(), true);
         } catch (IOException | InterruptedException e) {

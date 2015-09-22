@@ -2,6 +2,7 @@ package model;
 
 import json.model.AppSettings;
 import json.model.LPMobileEnvironment;
+import service.Session;
 
 /**
  * Created by andrew on 6/11/15.
@@ -36,6 +37,12 @@ public class SetEnvironment {
         appSettings.setBranding_md5("e3fa6750a0c2e557342831924e6d39d4");
         appSettings.setRequest_visitor_id(true);
         return appSettings;
+    }
+
+    public static Session createSession() {
+        Session session = new Session(createAppSettings() , null);
+        session.setConfig("staging", 1, true);
+        return session;
     }
 
 }

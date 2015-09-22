@@ -16,6 +16,6 @@ public class LoadTester {
 //        visitGen.beginVisits(50, 60, 20);
         // begins 10 chats over 60 seconds a line sent every 10 second
         Generator chatGen = new Generator();
-        chatGen.beginChats(1 , 8, 2);
+        chatGen.beginChats(5, 30, 5);
     }
 }

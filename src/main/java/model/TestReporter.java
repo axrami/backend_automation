@@ -69,7 +69,6 @@ public class TestReporter {
 
     }
 
-
     // takes array of LPMobileHTTPResponse and gens html
     public String generateHTML(List list) {
         String html = html().with(
