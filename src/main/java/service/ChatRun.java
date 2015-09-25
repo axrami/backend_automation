@@ -15,8 +15,9 @@ import java.util.concurrent.*;
 public class ChatRun implements Callable {
     private Session session;
     private GenConfig genConfig;
-    private ScheduledExecutorService executor = Executors.newScheduledThreadPool(4);
     private List<LPMobileHttpResponse> result = new ArrayList<>();
+
+    public ChatRun() {}
 
     public ChatRun(Session session) {
         this.session = session;
@@ -28,9 +29,14 @@ public class ChatRun implements Callable {
     }
 
     @Override
-    public String call() {
-        executor.scheduleAtFixedRate(task, 0, genConfig.getInterval(), TimeUnit.SECONDS);
-        return "Did I work?";
+    public LPMobileHttpResponse call() {
+        Session session = new Session();
+        session.setConfig("staging", 1, false);
+        VisitHandler visit = session.beginVisit();
+        result.add(visit.response);
+        ChatHandler chat = session.beginChat();
+
+        return visit.response;
     }
 
     Runnable task = () -> {

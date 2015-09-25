@@ -97,4 +97,16 @@ public class LPMobileHttpResponse {
     public void setLatency(Long latency) {
         this.latency = latency;
     }
+
+    @Override
+    public String toString() {
+        return "requestType: " + requestType +
+                "responseCode: " + responseCode +
+                "visit_id: " + visit_id +
+                "httpResponse: " + httpResponse +
+                "url: " + url +
+                "continue_url: " + continue_url +
+                "postBody: " + postBody +
+                "latency: " + latency;
+    }
 }

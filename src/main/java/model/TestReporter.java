@@ -28,14 +28,14 @@ import java.util.List;
 public class TestReporter {
     private JsonMarshaller jsonMarshaller = new JsonMarshaller();
     private Logger logger = org.slf4j.LoggerFactory.getLogger("model.TestReporter");
-    BasicAWSCredentials awsCredentials = new BasicAWSCredentials("AKIAJCAD6HSB5OYLZOTA" , "DfrdTSmMekbIquJO1hfzOvOBGj6CVZlxV49mn5Fs");
+//    BasicAWSCredentials awsCredentials = new BasicAWSCredentials("AKIAJCAD6HSB5OYLZOTA" , "DfrdTSmMekbIquJO1hfzOvOBGj6CVZlxV49mn5Fs");
 
-    private void postToS3(String fileName) {
-        AmazonS3 amazonS3 = new AmazonS3Client(awsCredentials);
-        File file = new File(fileName);
-        amazonS3.putObject(new PutObjectRequest("lpmobile-test-results", "Test Result", file));
-        file.delete();
-    }
+//    private void postToS3(String fileName) {
+//        AmazonS3 amazonS3 = new AmazonS3Client(awsCredentials);
+//        File file = new File(fileName);
+//        amazonS3.putObject(new PutObjectRequest("lpmobile-test-results", fileName, file));
+//        file.delete();
+//    }
 
 
 
@@ -51,7 +51,7 @@ public class TestReporter {
         } catch (ClassNotFoundException | JAXBException e) {
             e.printStackTrace();
         }
-        postResults(obj.toJSONString());
+//        postResults(obj.toJSONString());
         return obj.toJSONString();
     }
 
@@ -84,6 +84,8 @@ public class TestReporter {
     public ContainerTag resultBuilder(List list) {
         ContainerTag tag = new ContainerTag("div");
         for (Object obj : list) {
+            System.out.println("obj trying to report " + obj);
+            System.out.println("list from result builder " + list);
             LPMobileHttpResponse result = (LPMobileHttpResponse) obj;
             tag.with(
                     ul().withClass("result").with(
@@ -118,8 +120,8 @@ public class TestReporter {
             PrintWriter jsonwriter = new PrintWriter(fileName + ".json", "UTF8");
             jsonwriter.println(parseArray(list));
             jsonwriter.close();
-            File result = new File(generateHTML(list));
-            postToS3(fileName + ".html");
+//            File result = new File(generateHTML(list));
+//            postToS3(fileName + ".html");
         } catch (FileNotFoundException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }

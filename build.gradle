@@ -11,6 +11,12 @@ jar {
     version = '0.1.0'
 }
 
+task hello {
+    doLast {
+        println 'hellow world'
+    }
+}
+
 dependencies {
     compile 'org.apache.httpcomponents:httpclient:4.1.1'
     compile 'com.google.code.gson:gson:2.3.1'
