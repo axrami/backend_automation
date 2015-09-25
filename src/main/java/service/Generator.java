@@ -1,7 +1,6 @@
 package service;
 
 import model.LPMobileHttpResponse;
-import model.SetEnvironment;
 import model.TestReporter;
 import networking.VisitHandler;
 import org.joda.time.Instant;
@@ -182,7 +181,7 @@ public class Generator {
                 counter.getAndIncrement();
                 Session session = new Session();
                 session.setConfig("staging", 1, false);
-                callables.add(new ChatRun(session , genConfig));
+                callables.add(new VisitStart(session , genConfig));
         }
     };
 
@@ -192,7 +191,7 @@ public class Generator {
             counter.getAndIncrement();
             Session session = new Session();
             session.setConfig("staging", 1, false);
-            callables.add(new ChatRun(session, genConfig));
+            callables.add(new VisitStart(session, genConfig));
         }
         return callables;
     };
@@ -211,7 +210,7 @@ public class Generator {
             // adds callable to executor
             // Thread timeout to gen visits over period of time
             for (int i=0; i < visits; i++) {
-                    responseList.add(executor.submit(new ChatRun()));
+                    responseList.add(executor.submit(new VisitStart()));
                     Thread.sleep(intervalTimeout);
             }
 
