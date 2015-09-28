@@ -181,7 +181,6 @@ public class Generator {
                 counter.getAndIncrement();
                 Session session = new Session();
                 session.setConfig("staging", 1, false);
-                callables.add(new VisitStart(session , genConfig));
         }
     };
 
@@ -191,7 +190,6 @@ public class Generator {
             counter.getAndIncrement();
             Session session = new Session();
             session.setConfig("staging", 1, false);
-            callables.add(new VisitStart(session, genConfig));
         }
         return callables;
     };
@@ -202,9 +200,15 @@ public class Generator {
 
 
     public void generateVisits(int visits, long time) {
-        long timeInMills = time * 1000; // assume time is seconds
-        long intervalTimeout = timeInMills / visits;
         try {
+            long timeInMills;
+            long intervalTimeout;
+            if ( time > 0) {
+                timeInMills = time * 1000; // assume time is seconds
+                intervalTimeout = timeInMills / visits;
+            } else {
+                intervalTimeout = 0;
+            }
             ExecutorService executor = Executors.newFixedThreadPool(5);
             List<Future<LPMobileHttpResponse>> responseList = new ArrayList<>();
             // adds callable to executor

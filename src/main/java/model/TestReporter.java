@@ -28,7 +28,6 @@ import java.util.List;
 public class TestReporter {
     private JsonMarshaller jsonMarshaller = new JsonMarshaller();
     private Logger logger = org.slf4j.LoggerFactory.getLogger("model.TestReporter");
-//    BasicAWSCredentials awsCredentials = new BasicAWSCredentials("AKIAJCAD6HSB5OYLZOTA" , "DfrdTSmMekbIquJO1hfzOvOBGj6CVZlxV49mn5Fs");
 
 //    private void postToS3(String fileName) {
 //        AmazonS3 amazonS3 = new AmazonS3Client(awsCredentials);

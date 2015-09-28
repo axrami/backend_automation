@@ -20,6 +20,6 @@ public class ChatStart implements Callable {
         VisitHandler visit = session.beginVisit();
         responseList.add(visit.response);
         ChatHandler chat = session.beginChat();
-        
+        return responseList;
     }
 }
